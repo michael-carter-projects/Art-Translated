@@ -50,12 +50,12 @@
 
 **5-Coat-of-Arms-Idenitifier**
 
-    This is a more hands-on machine learning project that will attempt to determine the best machine learning
-    model to classify an image of a coat of arms. I will first be turning 35 images into XXX images by running
-    each of them through multiple permutations of filters (using Python Pillow), then I will be using YYY to
-    run said images through a Multi-Layer Perceptron, a blahblahblah, and a Convolutional Nerual Network. If
-    any of them can classify with any usable precision, I may add this to the Movement Detection app. It would
-    likely be offered as an extra layer of analysis if a requisite movement is detected.
+    This is a more hands-on machine learning project that will attempt to determine the best machine
+    learning model to classify an image of a coat of arms. I will first be turning 35 images into XXX images
+    by running each of them through multiple permutations of filters (using Python Pillow), then I will be
+    using YYY to run said images through a Multi-Layer Perceptron, a blahblahblah, and a Convolutional Nerual
+    Network. If any of them can classify with any usable precision, I may add this to the Movement Detection
+    app. It would likely be offered as an extra layer of analysis if a requisite movement is detected.
    
     coat-of-arms_images - file folder containing images sorted by the family associated with the coat of arms
     img_src.txt         - the sources of the original images
