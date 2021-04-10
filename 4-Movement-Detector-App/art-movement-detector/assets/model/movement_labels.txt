@@ -1,0 +1,8 @@
+baroque
+northern-renaissance
+renaissance
+mannerism-late-renaissance
+rococo
+gothic
+neoclassicism
+post_impressionism
