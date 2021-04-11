@@ -12,7 +12,7 @@ coa__fam_ita_pamphili.jpg
 coa__felice_peretti_pope_sisto_v_pope_sixtus_v.jpeg
 coa__francesco_della_rovere_pope_sisto_iv_pope_sixtus_iv.png
 coa__francesco_todeschini_piccolomini_pope_pio_iii_pope_pius_iii.png
-coa__giovanni_de_medici_pope_leone_x.png
+coa__giovanni_de_medici_pope_leone_x.png,                                       https://www.papalartifacts.com/the-medici-popes-the-papal-artifacts-collection/
 coa__giuliano_della_roviere_pope_giulio_ii_pope_julius_ii.png
 coa__house_of_gonzaga.png
 coa__house_of_luxembourg_bohemia_charles_iv.png
