@@ -1,7 +1,5 @@
 """
-/Users/markevans/Documents/Python_Projects/Art_Translate_Machine_Learning/art_translate_test_t3.py
-This pulls data out from Google automl and is used by: art_translate_movements_results_v2.py to
-match information from: Art_Translate_Art_Movements_10_21_20.csv
+This is the gateway between our main python script and AutoML
 """
 
 from google.cloud import automl

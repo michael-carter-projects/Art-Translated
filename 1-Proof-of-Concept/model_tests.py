@@ -3,7 +3,7 @@ tests every test image in test_images to determine if model predicted
 the correct movement
 """
 import csv
-import art_translate_api_caller_t3
+import api_caller_t3
 
 
 """ -----------------------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ def test_model_on_all_images(img_folder, filenames):
         filepath = img_folder + "/" + filenames[file_index]
 
         # run API caller to determine most likely movement using AutoML model
-        results = art_translate_api_caller_t3.get_results_from_automl(filepath)
+        results = api_caller_t3.get_results_from_automl(filepath)
         automl_result = get_best_result(results)
 
         longest_file = get_max_string_length(filenames) # for formatting

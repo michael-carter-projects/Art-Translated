@@ -8,9 +8,9 @@ then calls the required methods to:
 
 from os import listdir
 from os.path import isfile, join
-import art_translate_api_caller_t3
-import art_translate_movements_results_w_image_v2
-import art_translate_model_tests
+import api_caller_t3
+import movements_results_w_image_v2
+import model_tests
 
 """ -----------------------------------------------------------------------------------------------
 determines if a string is an integer
@@ -71,16 +71,16 @@ def analyze_image(img_folder, filenames):
     filepath = img_folder + "/" + filenames[int(input1)]
 
     # preview the image being analyzed for user convenience
-    art_translate_movements_results_w_image_v2.preview_subject_image(filepath)
+    movements_results_w_image_v2.preview_subject_image(filepath)
 
     # run API caller to determine movement data using AutoML model
-    results = art_translate_api_caller_t3.get_results_from_automl(filepath)
+    results = api_caller_t3.get_results_from_automl(filepath)
 
     for result in results:
         print(result)
 
     # run movements_results_v2 to aquire movement information
-    art_translate_movements_results_w_image_v2.report_art_movement_image_analysis_results(results)
+    movements_results_w_image_v2.report_art_movement_image_analysis_results(results)
 
 """ -----------------------------------------------------------------------------------------------
 displays a menu that allows user to either analyze a single image or test the AutoML model
@@ -115,7 +115,7 @@ def run_main_menu(img_folder, filenames):
                 analyze_image(img_folder, filenames)
             elif (input1 == '1'):
                 # test every image for correct
-                art_translate_model_tests.test_model_on_all_images(img_folder, filenames)
+                model_tests.test_model_on_all_images(img_folder, filenames)
 
         valid = False # reset valid
 
