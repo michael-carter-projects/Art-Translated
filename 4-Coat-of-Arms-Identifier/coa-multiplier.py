@@ -1,6 +1,10 @@
-# This script will be used to pre-process the coat of arms images to be used for training.
-#
-#  coa_giovanni_de_medici_pope_leone_x, https://www.papalartifacts.com/the-medici-popes-the-papal-artifacts-collection/
+"""
+ coa-multiplier.py
+ Author: Michael Carter
+ Date Created: 04-10-2021
+ Last Modified: 04-28-2021
+ This script will be used to pre-process the coat of arms images to be used for training.
+"""
 import os
 from os import listdir
 from os.path import isfile, join
@@ -45,7 +49,6 @@ def create_new_exposure(filename, factor, suffix):
     im_output.save(name+suffix+ext)        # save image with suffix appended to name
 
 
-
 """=============================================================================================================================
     MAIN
 ============================================================================================================================="""
@@ -55,25 +58,24 @@ img_folder = "coat-of-arms_images" # the name of the image source folder
 """ For each of the source images (now 1 per COA), create 3 copies with different levels of contrast """
 filenames = [f for f in listdir(img_folder) if isfile(join(img_folder, f))]
 for fn in filenames:
-    create_new_contrast(img_folder+'/'+fn, 0.4, "-ct") # filename-ct.png: ct = contrast tiny
-    create_new_contrast(img_folder+'/'+fn, 0.7, "-cl") # filename-cl.png: cl = contrast low
-    create_new_contrast(img_folder+'/'+fn, 1.3, "-ch") # filename-ch.png: ch = contrast high
+    create_new_contrast(img_folder+'/'+fn, 0.2, "-ct") # filename-ct.png: ct = contrast tiny
+    create_new_contrast(img_folder+'/'+fn, 0.4, "-cl") # filename-cl.png: cl = contrast low
+    create_new_contrast(img_folder+'/'+fn, 1.5, "-ch") # filename-ch.png: ch = contrast high
 
-""" For each of the source images (now 4 per COA), create 2 copies with different levels of contrast """
+""" For each of the source images (now 4 per COA), create a copy that is blurry """
 filenames = [f for f in listdir(img_folder) if isfile(join(img_folder, f))] # update filenames list
 for fn in filenames:
     create_new_blur(img_folder+'/'+fn, '-b') # filename-cl-b.png: b = blurred
 
-""" For each of the source images (now 8 per COA), create 2  copies with different levels of contrast """
+""" For each of the source images (now 8 per COA), create 3  copies with different levels of exposure """
 filenames = [f for f in listdir(img_folder) if isfile(join(img_folder, f))] # update filenames list
 for fn in filenames:
-    create_new_exposure(img_folder+'/'+fn, 0.4, '-et') # filename-cl-bb-et.png: et = exposure tiny
-    create_new_exposure(img_folder+'/'+fn, 0.7, '-el') # filename-cl-bb-el.png: el = exposure low
-    create_new_exposure(img_folder+'/'+fn, 1.3, '-eh') # filename-cl-bb-eh.png: eh = exposure high
+    create_new_exposure(img_folder+'/'+fn, 0.2, '-et') # filename-cl-bb-et.png: et = exposure tiny
+    create_new_exposure(img_folder+'/'+fn, 0.5, '-el') # filename-cl-bb-el.png: el = exposure low
+    create_new_exposure(img_folder+'/'+fn, 1.5, '-eh') # filename-cl-bb-eh.png: eh = exposure high
 
 """ Now there should be 32 images per COA for 34*32 = 1088 total images """
 filenames = [f for f in listdir(img_folder) if isfile(join(img_folder, f))] # update filenames list
-c = 0
-for fn in filenames: # print all filenames
-    c+=1
-    print(c, fn, "\n") #
+filecount = len(filenames)
+
+print("Script complete.", c-34, "images created, for a total of ", c)
