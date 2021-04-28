@@ -64,7 +64,7 @@ filenames = [f for f in listdir(img_folder) if isfile(join(img_folder, f))] # up
 for fn in filenames:
     create_new_blur(img_folder+'/'+fn, '-b') # filename-cl-b.png: b = blurred
 
-""" For each of the source images (now 8 per COA), create 2 copies with different levels of contrast """
+""" For each of the source images (now 8 per COA), create 2  copies with different levels of contrast """
 filenames = [f for f in listdir(img_folder) if isfile(join(img_folder, f))] # update filenames list
 for fn in filenames:
     create_new_exposure(img_folder+'/'+fn, 0.4, '-et') # filename-cl-bb-et.png: et = exposure tiny
