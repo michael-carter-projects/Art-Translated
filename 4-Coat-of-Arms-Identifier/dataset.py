@@ -163,6 +163,9 @@ def write_filename_class_pairs(image_dest, dataset_fn):
         last_name = curr_name      # update last-name to current-name
     f.close()                       #
 
+""" ============================================================================================================================
+    read the file containing the image data and convert it into numerical data for use with sklearn and keras
+"""
 def retreive_numerical_dataset_from_file(filename):
 
     print("no")

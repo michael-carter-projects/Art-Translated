@@ -10,8 +10,16 @@
 import numpy as np
 import matplotlib.pylab as plt
 
+def plot_image_resize_vs_time():
 
-def plot_hyperparameter_tuning():
+    print("no")
+
+def plot_MLP_hyperparameters():
+
+    print("no")
+
+
+def plot_CNN_hyperparameters():
 
     print("no")
 

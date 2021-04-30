@@ -26,5 +26,21 @@ d.resize_images(image_dest, image_width) # resize all images in dataset to a wid
 
 d.write_filename_class_pairs(image_dest, dataset_fn) # classify training data from source file and write x, y matrix into .csv
 
-#X_train, y_train = d.retreive_dataset_from_file(dataset_fn) # read the written file to two lists
+#mlp_x, mlp_y = d.retreive_dataset_from_file(dataset_fn) # read the written file to two lists
 """ train models using dataset from file ===================================================================================="""
+
+#m.run_MLP_suite()
+
+#m.run_CNN_suite()
+
+""" plot data obtained by running models over different parameters, then plot model performances on in-the-wild images ======"""
+
+#p.plot_image_resize_vs_time()
+
+#p.plot_MLP_hyperparameters()
+
+#p.plot_CNN_hyperparameters()
+
+#p.plot_model_against_model()
+
+#p.plot_in_the_wild_results()
