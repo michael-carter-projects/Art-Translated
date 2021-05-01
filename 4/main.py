@@ -28,23 +28,15 @@ x_raw, y_raw, n_cats = d.retreive_numerical_dataset_from_file(dataset_fn, image_
 
 predict_folder = "coa_prediction"
 predict_base = "coa_prediction_base"
-phases = [1, 2, 3]
+num_phases = 3
 
-results_MLP =[]
-results_MLP.append(m.run_MLP_suite(x_raw, y_raw, 10, n_cats, 1)) # run MLP tests on a train/test split of 9:1,
+#parameters =[{'solver': 'lbfgs', 'alpha': 0.001, 'hidden_layer_sizes': (4, 2), 'avg_accuracy': 0.9722222222222223, 'avg_time': 28.879051685333252},
+#             {'solver': 'sgd',   'alpha': 0.001, 'hidden_layer_sizes': (4, 2), 'avg_accuracy': 0.9744008714596949, 'avg_time': 285.2565641403198},
+#             {'solver': 'adam',  'alpha': 0.001, 'hidden_layer_sizes': (4, 2), 'avg_accuracy': 0.9697712418300654, 'avg_time': 118.85793161392212}]
+parameters = m.run_MLP_suite(x_raw, y_raw, 10, n_cats, 5) # run MLP tests on a train/test split of 9:1, average over 5 runs for each parameter
 
-print("goodest")
-print(results_MLP[0])
-print("good_par")
-print(results_MLP[1])
-print("fastest")
-print(results_MLP[2])
-print("fast_par")
-print(results_MLP[3])
 
-#results_CNN = [] # list[(list[dict], dict, float)]
-
-#phase = 1
+#num_phases = 4
 #c.run_CNN_suite(x_raw, y_raw, 10, n_cats, phase)# run CNN type 0 tests on a train/test split of 9:1
 #results_CNN.append(c.run_CNN_suite(x_raw, y_raw, 10, n_cats, 1)) # run CNN type 1 tests on a train/test split of 9:1
 #results_CNN.append(c.run_CNN_suite(x_raw, y_raw, 10, n_cats, 2)) # run CNN type 2 tests on a train/test split of 9:1
@@ -54,6 +46,8 @@ print(results_MLP[3])
 #c.predict_with_CNN(predict_folder, predict_base, image_width)
 
 """ plot data obtained by running models over different parameters, then plot model performances on in-the-wild images ======"""
+
+p.plot_MLP_hyperparameters(parameters, 0)
 
 #p.plot_MLP_hyperparameters(results_MLP)
 
