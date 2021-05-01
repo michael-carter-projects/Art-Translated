@@ -1,15 +1,17 @@
-"""
- dataset.py
- Author: Michael Carter
- Date Created: 04-10-2021
- Last Modified: 04-28-2021
- This script is used to pre-process the coat of arms images to be used for training.
-"""
+"""=============================================================================================================================
+    dataset.py
+    Author: Michael Carter
+    Date Created: 04-10-2021
+    Last Modified: 04-30-2021
+    This script is used to pre-process the coat of arms images to be used for training.
+============================================================================================================================="""
+
 import os
 from shutil import copyfile
 from os import listdir
 from os.path import isfile, join
 from PIL import Image, ImageEnhance, ImageFilter
+from random import randrange
 
 p = 0 # progress counter for file multiplication
 l = 1054 # number of images to be added to
@@ -139,7 +141,8 @@ def resize_images(image_dest, nw):
 
     for i in range(len(filenames)):
         im = Image.open(join(image_dest, filenames[i])) # open the image
-        resized_im = im.resize((nw, round(im.size[1]/round(im.size[0]/nw)))) # resize every image to "nw" pixels wide
+        # round(im.size[1]/round(im.size[0]/nw))
+        resized_im = im.resize((nw, nw)) # resize every image to "nw" pixels wide & tall
         resized_im.save(join(image_dest, filenames[i]))    # save the cropped image
         printProgressBar(i+1, len(filenames), prefix = 'Resizing multiplied images:', suffix = 'Complete') # print progress
 
@@ -155,31 +158,73 @@ def write_filename_class_pairs(image_dest, dataset_fn):
 
     f = open(dataset_fn, "w+") # open file for writing
 
+    # write every name and it's class as an integer into the file given by dataset_fn  ----------------------------------------
     for fn in filenames:
-        curr_name = fn.split('=')[0]   # store current filename excluding filter suffixes
-        if (curr_name != last_name):  # if we have entered a new class of images
-            y += 1                   # iterate y value
+        curr_name = fn.split('=')[0]                      # store current filename excluding filter suffixes
+        if (curr_name != last_name):                     # if we have entered a new class of images
+            y += 1                                      # iterate y value
         f.write(image_dest+'/'+fn + ',' + str(y)+'\n') # write x, y pair to file
-        last_name = curr_name      # update last-name to current-name
-    f.close()                       #
+        last_name = curr_name                         # update last-name to current-name
+    f.close()                                        # close the file
+
+""" ============================================================================================================================
+    given a 2D list with 3rd dimension of tuples ([num_images], [all_pixels], (each_pixel))
+    return 4D list of lists with xy values =>    ([num_images], [rows], [columns], [each_pixel])
+"""
+def get_lists_from_tuples(x_tuple, image_width):
+
+    x_train = []
+    for i in x_tuple:
+        im = [] # will be 2d list
+        index = 0;
+        jindex = 0;
+        for j in i:
+            if (jindex == 0):
+                new_row = []
+                im.append(new_row)
+            im[index].append(list(j))
+            jindex += 1;
+            if (jindex == image_width):
+                jindex = 0;
+                index += 1;
+        x_train.append(im)
+    return x_train
+
+def randomize_invisible_pixels(x_train):
+    #out = []
+    for image in range(len(x_train)):
+        for row in range(len(x_train[image])):
+            for col in range(len(x_train[image][row])):
+                if (x_train[image][row][col][3] < 50): # if alpha value is lower than 50 (0 = transparent, 255 = opaque)
+                    x_train[image][row][col][0] = randrange(256)    # randomize the values of the red
+                    x_train[image][row][col][1] = randrange(256)   # randomize the values of the blue
+                    x_train[image][row][col][2] = randrange(256)  # randomize the values of the green
+                    x_train[image][row][col][3] = randrange(256) # randomize the values of the alpha
+                #if image == 300:
+                #    out.append(tuple(x_train[image][row][col]))
+
+    #image_out = Image.new('RGBA', (50,50))
+    #image_out.putdata(out)
+    #image_out.save('test_out.png')
+
+    return x_train
 
 """ ============================================================================================================================
     read the file containing the image data and convert it into numerical data for use with sklearn and keras
 """
-def retreive_numerical_dataset_from_file(data_file):
+def retreive_numerical_dataset_from_file(data_file, image_width):
 
-    f = open(data_file, 'r')
-    xyPairs = f.readlines()
+    f = open(data_file, 'r') # open data file for reading
+    xyPairs = f.readlines() # read lines into a list
+    x_tuple = []           # list for storing x values (list of pixel tuples )
+    y_train = []          # list for storing y values (classes 0-33)
 
-    x_train = []
-    y_train = []
-
+    # for every x, y, pair, append x and y to x_train and y to y_train respectively --------------------------------------------
     for xy in xyPairs:
-            image_path = xy.split(',')[0]
-            y = xy.split(',')[1]
-            im = Image.open(image_path, 'r')
-            pixels = list(im.getdata())
-            x_train.append(pixels)
-            y_train.append(y)
+            x_tuple.append(list(Image.open(xy.split(',')[0], 'r').getdata()))  # append pixel values to x list
+            y_train.append(int(xy.split(',')[1].strip('\n')))                 # append read y value to y list
 
-    return x_train, y_train
+    x_train = get_lists_from_tuples(x_tuple, image_width) # re-format 1D list of tuples for each image as 2D list of lists
+    x_train = randomize_invisible_pixels(x_train)
+
+    return x_train, y_train, y_train[len(y_train)-1] # return x and y lists, and number of categories

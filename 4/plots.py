@@ -1,18 +1,14 @@
-"""
+"""=============================================================================================================================
     plots.py
     Author: Michael Carter
     Date Created: 04-29-21
-    Date Modified:
+    Date Modified: 04-30-21
     This file contains functions for plotting our ML model results
-    and plot them
-"""
+============================================================================================================================="""
 
 import numpy as np
 import matplotlib.pylab as plt
 
-def plot_image_resize_vs_time():
-
-    print("no")
 
 def plot_MLP_hyperparameters():
 
