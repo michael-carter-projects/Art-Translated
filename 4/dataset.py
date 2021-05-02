@@ -12,8 +12,9 @@ import os
 from shutil import copyfile
 from os import listdir
 from os.path import isfile, join
-from PIL import Image, ImageEnhance, ImageFilter
 from random import randrange
+
+from PIL import Image, ImageEnhance, ImageFilter
 
 p = 0 # progress counter for file multiplication
 l = 1054 # number of images to be added to

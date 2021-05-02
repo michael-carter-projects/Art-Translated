@@ -16,8 +16,6 @@ from os import listdir
 from os.path import isfile, join
 
 from PIL import Image
-
-from sklearn.neural_network import MLPClassifier
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D

@@ -16,14 +16,12 @@ from time import time
 from os import listdir
 from os.path import isfile, join
 
-import keras as k
 from PIL import Image
 from sklearn.neural_network import MLPClassifier
 
 
 """ ============================================================================================================================
-    Command line progress bar graciously provided by StackOverflow user "Greenstick"
-    https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
+    format data for use with multi-layered perceptron
 """
 def format_MLP(x_raw, y_raw, n_cats):
 
@@ -46,6 +44,9 @@ def format_MLP(x_raw, y_raw, n_cats):
 
     return x_formatted, y_all_34
 
+""" ============================================================================================================================
+    split data for 1 one-vs-all MLP classifier
+"""
 def split_MLP(x_raw, y_raw, test_pct):
 
     x_train = []   # will store x values in training set
