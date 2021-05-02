@@ -50,6 +50,9 @@
     using YYY to run said images through a Multi-Layer Perceptron, a blahblahblah, and a Convolutional Nerual
     Network. If any of them can classify with any usable precision, I may add this to the Movement Detection
     app. It would likely be offered as an extra layer of analysis if a requisite movement is detected.
+    
+    !!! UPDATE ALL OF THIS OUTDATED GARBAGE !!!
+
 
     coat-of-arms_images - file folder containing images sorted by the family associated with the coat of arms
     img_src.txt         - the sources of the original images
