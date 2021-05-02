@@ -7,6 +7,7 @@
 ============================================================================================================================="""
 
 import dataset as d
+from progress_bar import printProgressBar as ppb
 
 import numpy as np
 import random as rand
@@ -14,9 +15,6 @@ from time import time
 from os import listdir
 from os.path import isfile, join
 
-import keras as k
-#import theano as th
-import sklearn as sk
 from PIL import Image
 
 from sklearn.neural_network import MLPClassifier
@@ -59,20 +57,27 @@ def split_format_CNN(x_raw, y_raw, test_pct, n_cats):
 """ ============================================================================================================================
     return a list of dictionaries representing the configurations of parameters with which to create CNN's
 """
-def get_CNN_params():
-    params = [#{"loss": "categorical_crossentropy", "optimizer": "SGD"  },
-              {"loss": "categorical_crossentropy", "optimizer": "adam" }]
-              #{"loss": "kl_divergence", "optimizer": "SGD"  },
-              #{"loss": "kl_divergence", "optimizer": "adam" },
-              #{"loss": "poisson", "optimizer": "SGD"  },
-              #{"loss": "poisson", "optimizer": "adam" },]
+def get_CNN_params(phases):
+    params = [[{"loss": "categorical_crossentropy", "optimizer": "SGD"  },
+               {"loss": "kl_divergence",            "optimizer": "SGD"  },
+               {"loss": "poisson",                  "optimizer": "SGD"  }],
 
-    return params
+              [{"loss": "categorical_crossentropy", "optimizer": "SGD"  },
+               {"loss": "categorical_crossentropy", "optimizer": "adam" }],
+
+              [{"loss": "kl_divergence",            "optimizer": "adam" }]]
+
+    num_params = 0
+    for phase in range(len(params)):
+        if phase in phases:
+            num_params += len(params[phase])
+
+    return params, num_params
 
 """ ============================================================================================================================
     train a single convolutional neural network on x_train, y_train, using params
 """
-def train_CNN(x_train, y_train, params, phase):
+def train_CNN(x_train, y_train, params, phase, nn):
 
     start = time()
 
@@ -82,86 +87,189 @@ def train_CNN(x_train, y_train, params, phase):
 
     cnn = Sequential()
 
-    if phase == 2:
-        cnn.add(Convolution2D(8, kernel_size=3, activation='softmax', input_shape=(50,50,4)))
-        #cnn.add(Convolution2D(8, kernel_size=3, activation='softmax'))
-        cnn.add(Flatten())
-        cnn.add(Dense(35, activation='softmax'))
-
-    elif phase == 3:
-        cnn.add(Convolution2D(16, kernel_size=3, activation='softmax', input_shape=(50,50,4)))
-        #cnn.add(Convolution2D(16, kernel_size=3, activation='softmax'))
-        cnn.add(Flatten())
-        cnn.add(Dense(35, activation='softmax'))
-
-    elif phase == 1:
+    if phase == 0 or phase == 1 or nn == 0:
         cnn.add(Convolution2D(32, kernel_size=3, activation='softmax', input_shape=(50,50,4)))
-        #cnn.add(Convolution2D(32, kernel_size=3, activation='softmax'))
         cnn.add(Flatten())
         cnn.add(Dense(35, activation='softmax'))
+    else:
 
+        if (nn == 1):
+            cnn.add(Convolution2D(32, kernel_size=3, activation='softmax', input_shape=(50,50,4)))
+            cnn.add(Convolution2D(32, kernel_size=3, activation='softmax'))
+            cnn.add(Flatten())
+            cnn.add(Dense(35, activation='softmax'))
 
+        elif (nn == 2):
+            cnn.add(Convolution2D(32, kernel_size=3, activation='softmax', input_shape=(50,50,4)))
+            cnn.add(MaxPooling2D(pool_size=(2,2)))
+            cnn.add(Flatten())
+            cnn.add(Dense(35, activation='softmax'))
 
-    elif phase == 4:
-        cnn.add(Convolution2D(32, kernel_size=3, activation='relu', input_shape=(50,50,4)))
-        cnn.add(Convolution2D(32, kernel_size=3, activation='relu'))
-        cnn.add(MaxPooling2D(pool_size=(2,2)))
-        cnn.add(Dropout(0.25))
+        elif (nn == 3):
+            cnn.add(Convolution2D(32, kernel_size=3, activation='softmax', input_shape=(50,50,4)))
+            cnn.add(Dropout(0.5))
+            cnn.add(Flatten())
+            cnn.add(Dense(35, activation='softmax'))
 
-        cnn.add(Flatten())
-        cnn.add(Dense(128, activation='relu'))
-        cnn.add(Dropout(0.5))
-        cnn.add(Dense(35, activation='softmax'))
+        elif (nn == 4):
+            cnn.add(Convolution2D(32, kernel_size=3, activation='softmax', input_shape=(50,50,4)))
+            cnn.add(Convolution2D(32, kernel_size=3, activation='relu'))
+            cnn.add(MaxPooling2D(pool_size=(2,2)))
+            cnn.add(Dropout(0.5))
+            cnn.add(Flatten())
+            cnn.add(Dense(35, activation='softmax'))
 
+        elif (nn == 5):
+            cnn.add(Convolution2D(32, kernel_size=3, activation='softmax', input_shape=(50,50,4)))
+            cnn.add(MaxPooling2D(pool_size=(2,2)))
+            cnn.add(Dropout(0.5))
+            cnn.add(Flatten())
+            cnn.add(Dense(35, activation='softmax'))
 
     cnn.compile(loss=lossF, optimizer=optim, metrics=['accuracy'])
     cnn.fit(x_train, y_train, batch_size=32, epochs=10, verbose=1)
 
     return (cnn, (time() - start))
 
+
 """ ============================================================================================================================
-    create a CNN for each entry in parameters list and save the one that produces the highest accuracy
+    create a CNN for each entry in parameters list for every phase
 """
-def run_CNN_suite(x_raw, y_raw, test_pct, n_cats, phase):
+def run_CNN_suite_layers(x_raw, y_raw, test_pct, n_cats, iterations, nns):
 
+    all_params_and_results = []
     x_train, y_train, x_test, y_test = split_format_CNN(x_raw, y_raw, test_pct, n_cats) # format training data for CNN
+    cnn_params, num_params = get_CNN_params([2])
+    cnn_params = cnn_params[2][0]
 
-    all_params = get_CNN_params() # stores list of parameter configurations to make CNN's out of
-    models = []                  # stores all CNNs
-    accuracies = []             # stores accuracies for different CNNs
-    best_acc = 0               # stores best accuracy
-    #best_par = {}            # stores parameters of model with best accuracy
+    n = 0 # count required to print progress bar
+    l = len(nns) * iterations # number of times an CNN is trained in total
+    ppb(0, l, prefix = 'Training and testing CNNs: ', suffix = 'Complete', length = 100) # print initial progress bar
 
-    for params in all_params:                                     # train a new CNN model for every
-        model, time = train_CNN(x_train, y_train, params, phase) # store model and time elapsed
+    nn_results = []
+    for nn in nns:
+        nn_results.append(cnn_params.copy())
 
-        models.append(model)                           # append model to list of models
-        results = models[-1].evaluate(x_test, y_test) # evaluate using test data
-        acc = results[1]                             # store accuracy score
+    # loop through every phase from 0-4 ----------------------------------------------------------------------------------------
+    # all_params_and_results appends a dict of parameters and results if phase is in given list, otherwise appends none
+    for nn in nns:
 
-        params['accuracy'] = acc                    # add accuracy key/value pair to dictionary
-        params['time taken'] = time                # add tune key/value pair to dictionary
+        iteration_accs  = [] # stores accuracy results for each iteration
+        iteration_times = [] # stores total execution times for each iteration
 
-        if (acc > best_acc):     #
-            best_acc = acc      # use accuracy to find the best model
-            best_mdl = model   #
-            best_par = params #
-        #print("accuracy: "+str(acc)) # print the accuracy of the model
+        # run all classifiers for given number of iterations -----------------------------------------------------------
+        for j in range(iterations):
 
-    best_mdl.save("models/best_cnn") # save the best model for use later
+            model, time = train_CNN(x_train, y_train, cnn_params, 2, nn) # store model and time elapsed
+            acc = model.evaluate(x_test, y_test)[1] # evaluate using test data
 
-    print("Best model:", best_par)
+            iteration_accs.append(acc)    # store accuracy of current iteration in results list
+            iteration_times.append(time) # store execution time of current iteration in times list
 
-    return all_params, best_par
+            n+=1 # progress bar stuff
+            ppb(n, l, prefix = 'Training and testing CNNs: ', suffix = 'Complete', length = 100)
+
+        nn_results[nn]['avg_accuracy'] = np.mean(iteration_accs) # add accuracy key/value pair to dictionary
+        nn_results[nn]['avg_time'] = np.mean(iteration_times)   # add tune key/value pair to dictionary
+
+        all_params_and_results.append(nn_results[nn]) # add all phase results to list of all results
+
+    return all_params_and_results
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+""" ============================================================================================================================
+    create a CNN for each entry in parameters list for every phase
+"""
+def run_CNN_suite(x_raw, y_raw, test_pct, n_cats, iterations, phases, n_phases):
+
+    all_params_and_results = []
+    x_train, y_train, x_test, y_test = split_format_CNN(x_raw, y_raw, test_pct, n_cats) # format training data for CNN
+    cnn_params, num_params = get_CNN_params(phases)
+
+    n = 0 # count required to print progress bar
+    l = len(phases) * num_params * iterations # number of times an CNN is trained in total
+    ppb(0, l, prefix = 'Training and testing CNNs: ', suffix = 'Complete', length = 100) # print initial progress bar
+
+
+    # loop through every phase from 0-4 ----------------------------------------------------------------------------------------
+    # all_params_and_results appends a dict of parameters and results if phase is in given list, otherwise appends none
+    for phase in range(n_phases):
+
+        if phase in phases: # if the current phase (0-4) is one of the phases provided in main, train MLP accordingly ----------
+
+            phase_params_and_results = [] # will store the parameters and results dictionary associated with current phase
+
+            # for every parameter value, run all 34 1-vs-all classifiers "iterations" times and average results ----------------
+            for i in range(len(cnn_params[phase])):
+
+                iteration_accs  = [] # stores accuracy results for each iteration
+                iteration_times = [] # stores total execution times for each iteration
+
+                # run all classifiers for given number of iterations -----------------------------------------------------------
+                for j in range(iterations):
+
+                    model, time = train_CNN(x_train, y_train, cnn_params[phase][i], phase) # store model and time elapsed
+                    acc = model.evaluate(x_test, y_test)[1] # evaluate using test data
+
+                    iteration_accs.append(acc)    # store accuracy of current iteration in results list
+                    iteration_times.append(time) # store execution time of current iteration in times list
+
+                    n+=1 # progress bar stuff
+                    ppb(n, l, prefix = 'Training and testing CNNs: ', suffix = 'Complete', length = 100)
+
+                cnn_params[phase][i]['avg_accuracy'] = np.mean(iteration_accs) # add accuracy key/value pair to dictionary
+                cnn_params[phase][i]['avg_time'] = np.mean(iteration_times)   # add tune key/value pair to dictionary
+                phase_params_and_results.append(cnn_params[phase][i])        # update results of current phase
+
+            all_params_and_results.append(phase_params_and_results) # add all phase results to list of all results
+
+        else:
+            all_params_and_results.append(None)
+
+    return all_params_and_results
 
 """ ============================================================================================================================
     given a folder of new RGBA images, predict what class they belong to using the best of each model
 """
-def predict_with_CNN(img_folder, base_folder, image_width):
+def train_and_predict_with_best_CNN(img_folder, base_folder, image_width, x_new, y_raw, test_pct, n_cats, n_iterations):
 
-    best_cnn = k.models.load_model("models/best_cnn")
-
-    filepaths = [img_folder+'/'+f for f in listdir(img_folder) if isfile(join(img_folder, f))]
+    filepaths = [img_folder+'/'+f for f in listdir(img_folder) if isfile(join(img_folder, f))] # get prediction image paths
 
     # use functions from dataset.py to preprocess new prediction images --------------------------------------------------------
     d.reset_images(img_folder, base_folder)                         # delete preprocessed images & recopy
@@ -172,5 +280,38 @@ def predict_with_CNN(img_folder, base_folder, image_width):
     image_data = d.get_lists_from_tuples(x_tuple, image_width) # format pixel data properly for prediction
     image_data = np.array(image_data).astype('float32') / 255 # turn image_data into array and normalize
 
-    prediction = best_cnn.predict_classes(image_data) # predict the image's class
-    print(prediction)                                #
+    # awdawwdaa wd
+    x_train, y_train, x_test, y_test = split_format_CNN(x_new, y_raw, test_pct, n_cats) # format training data for CNN
+    cnn_params, num_params = get_CNN_params([2])
+    cnn_params = cnn_params[2][0]
+
+    n = 0 # count required to print progress bar=
+    ppb(0, n_iterations, prefix = 'Training and testing CNNs: ', suffix = 'Complete', length = 100) # print initial progress bar
+
+    best_acc = 0
+    results = {}
+    iteration_accs  = [] # stores accuracy results for each iteration
+    iteration_times = [] # stores total execution times for each iteration
+
+    # run all classifiers for given number of iterations -----------------------------------------------------------
+    for j in range(n_iterations):
+
+        model, time = train_CNN(x_train, y_train, cnn_params, 2, 5) # store model and time elapsed
+        acc = model.evaluate(x_test, y_test)[1] # evaluate using test data
+
+        iteration_accs.append(acc)    # store accuracy of current iteration in results list
+        iteration_times.append(time) # store execution time of current iteration in times list
+
+        if (acc > best_acc):
+            best_cnn = model
+            best_acc = acc
+
+        n+=1 # progress bar stuff
+        ppb(n, n_iterations, prefix = 'Training and testing CNNs: ', suffix = 'Complete', length = 100)
+
+    results['avg_accuracy'] = np.mean(iteration_accs) # add accuracy key/value pair to dictionary
+    results['avg_time'] = np.mean(iteration_times)   # add tune key/value pair to dictionary
+
+    predictions = np.argmax(best_cnn.predict(image_data), axis=-1) # predict the image's class
+
+    return filepaths, results, predictions

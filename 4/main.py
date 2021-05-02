@@ -6,6 +6,7 @@
     This script is used to train all machine learning models, store their results, and plot them
 ============================================================================================================================="""
 
+
 import dataset as d
 import cnn as c
 import mlp as m
@@ -24,35 +25,47 @@ image_width = 50
 #d.write_filename_class_pairs(image_dest, dataset_fn) # classify training data from source file and write x, y matrix into .csv
 x_raw, y_raw, n_cats = d.retreive_numerical_dataset_from_file(dataset_fn, image_width) # read the written file to two lists
 
-""" train models using dataset from file ===================================================================================="""
+""" train models using dataset from file over each phase of hyperparameter tuning ==========================================="""
 
 predict_folder = "coa_prediction"
 predict_base = "coa_prediction_base"
-num_phases = 3
+test_set_pct = 10
+n_iterations = 10
+phases = [0, 1, 2, 3]
+nns = [0, 1, 2, 3, 4]
+n_phases = len(phases)
 
-#parameters =[{'solver': 'lbfgs', 'alpha': 0.001, 'hidden_layer_sizes': (4, 2), 'avg_accuracy': 0.9722222222222223, 'avg_time': 28.879051685333252},
-#             {'solver': 'sgd',   'alpha': 0.001, 'hidden_layer_sizes': (4, 2), 'avg_accuracy': 0.9744008714596949, 'avg_time': 285.2565641403198},
-#             {'solver': 'adam',  'alpha': 0.001, 'hidden_layer_sizes': (4, 2), 'avg_accuracy': 0.9697712418300654, 'avg_time': 118.85793161392212}]
-parameters = m.run_MLP_suite(x_raw, y_raw, 10, n_cats, 5) # run MLP tests on a train/test split of 9:1, average over 5 runs for each parameter
+# train MLP's for every phase at once ------------------------------------------------------------------------------------------
+#mlp_results = m.run_MLP_suite(x_raw, y_raw, test_set_pct, n_cats, n_iterations, phases, n_phases)
+
+# train CNN's for every phase at once ------------------------------------------------------------------------------------------
+#cnn_results = c.run_CNN_suite(x_raw, y_raw, test_set_pct, n_cats, n_iterations, phases, n_phases)
+
+# train CNN's for different configurations of layers ---------------------------------------------------------------------------
+#cnn_results = c.run_CNN_suite_layers(x_raw, y_raw, test_set_pct, n_cats, n_iterations, nns)
 
 
-#num_phases = 4
-#c.run_CNN_suite(x_raw, y_raw, 10, n_cats, phase)# run CNN type 0 tests on a train/test split of 9:1
-#results_CNN.append(c.run_CNN_suite(x_raw, y_raw, 10, n_cats, 1)) # run CNN type 1 tests on a train/test split of 9:1
-#results_CNN.append(c.run_CNN_suite(x_raw, y_raw, 10, n_cats, 2)) # run CNN type 2 tests on a train/test split of 9:1
-#results_CNN.append(c.run_CNN_suite(x_raw, y_raw, 10, n_cats, 3)) # run CNN type 3 tests on a train/test split of 9:1
-#print(results_CNN)
+""" plot data obtained by running models over different parameters =========================================================="""
 
-#c.predict_with_CNN(predict_folder, predict_base, image_width)
+# plot data for all hyperparameter tuning phases of MLP ------------------------------------------------------------------------
+#for phase in phases:
+#    p.plot_MLP_hyperparameters(mlp_results, phase) """
 
-""" plot data obtained by running models over different parameters, then plot model performances on in-the-wild images ======"""
+# plot data for all hyperparameter tuning phases and layer choosing of CNN -----------------------------------------------------
+#for phase in phases:
+#    p.plot_CNN_hyperparameters(cnn_results, phase)
+#p.plot_CNN_layers(cnn_results)
 
-p.plot_MLP_hyperparameters(parameters, 0)
 
-#p.plot_MLP_hyperparameters(results_MLP)
+""" plot/print data obtained by training best models with new dataset ======================================================="""
 
-#p.plot_CNN_hyperparameters(results_CNN)
+n_iterations = 20
 
-#p.plot_model_against_model(results_MLP, results_CNN)
+# for the final portion of the project, randomly filter the data using a random color overlay (tint) and random pixel noise
+x_new = d.create_noise_and_tint(x_raw)
 
-#p.plot_in_the_wild_results()
+filepaths, mlp_results, mlp_predictions = m.train_and_predict_with_best_MLP(predict_folder, predict_base, image_width, x_new, y_raw, test_set_pct, n_cats, n_iterations)
+filepaths, cnn_results, cnn_predictions = c.train_and_predict_with_best_CNN(predict_folder, predict_base, image_width, x_new, y_raw, test_set_pct, n_cats, n_iterations)
+
+p.plot_model_against_model(mlp_results, cnn_results)
+p.print_prediction_names(mlp_predictions, cnn_predictions, filepaths)

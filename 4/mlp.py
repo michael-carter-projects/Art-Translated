@@ -8,6 +8,7 @@
 
 import dataset as d
 import cnn as c
+from progress_bar import printProgressBar as ppb
 
 import numpy as np
 import random as rand
@@ -19,27 +20,6 @@ import keras as k
 from PIL import Image
 from sklearn.neural_network import MLPClassifier
 
-""" ============================================================================================================================
-    Command line progress bar graciously provided by StackOverflow user "Greenstick"
-    https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
-"""
-def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
-    """ @params:
-        iteration   - Required  : current iteration (Int)
-        total       - Required  : total iterations (Int)
-        prefix      - Optional  : prefix string (Str)
-        suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
-        length      - Optional  : character length of bar (Int)
-        fill        - Optional  : bar fill character (Str)
-        printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str) """
-
-    percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
-    filledLength = int(length * iteration // total)
-    bar = fill * filledLength + '-' * (length - filledLength)
-    print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
-    if iteration == total:
-        print()
 
 """ ============================================================================================================================
     Command line progress bar graciously provided by StackOverflow user "Greenstick"
@@ -108,13 +88,19 @@ def get_MLP_params(phases):
                {'solver': 'lbfgs', 'alpha': 0.01, 'hidden_layer_sizes': (4, 2)},
                {'solver': 'lbfgs', 'alpha':  0.1, 'hidden_layer_sizes': (4, 2)}],
 
-              [{'solver': 'lbfgs', 'alpha': 1e-7, 'hidden_layer_sizes': (4, 2)},
-               {'solver': 'lbfgs', 'alpha': 1e-6, 'hidden_layer_sizes': (4, 2)},
-               {'solver': 'lbfgs', 'alpha': 1e-5, 'hidden_layer_sizes': (4, 2)},
+              [{'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (1, 2)},
+               {'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (2, 2)},
+               {'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (3, 2)},
                {'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (4, 2)},
-               {'solver': 'lbfgs', 'alpha': 1e-3, 'hidden_layer_sizes': (4, 2)},
-               {'solver': 'lbfgs', 'alpha': 0.01, 'hidden_layer_sizes': (4, 2)},
-               {'solver': 'lbfgs', 'alpha':  0.1, 'hidden_layer_sizes': (4, 2)}]]
+               {'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (5, 2)}],
+
+              [{'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (1, 1)},
+               {'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (1, 2)},
+               {'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (1, 3)},
+               {'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (1, 4)},
+               {'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (1, 5)}],
+
+              [{'solver': 'lbfgs', 'alpha': 1e-4, 'hidden_layer_sizes': (1, 3)}]]
 
     num_params = 0
     for phase in range(len(params)):
@@ -143,54 +129,68 @@ def train_MLP(x_train, y_train, params):
 """ ============================================================================================================================
     create an MLP for each entry in parameters list and save the one that produces the highest accuracy
 """
-def run_MLP_suite(x_raw, y_raw, test_pct, n_cats, iterations, phases=[0]):
+def run_MLP_suite(x_raw, y_raw, test_pct, n_cats, iterations, phases, n_phases):
 
     all_params_and_results = []
     x_formatted, y_all_34 = format_MLP(x_raw, y_raw, n_cats) # format data to use 34 classifiers
     mlp_params, num_params = get_MLP_params(phases)
 
     l = len(phases) * num_params * n_cats * iterations # number of times an MLP is trained in total
+    ppb(0, l, prefix = 'Training and testing MLPs: ', suffix = 'Complete', length = 100) # print initial progress bar
+    n = 0 # count required to print progress bar
 
-    printProgressBar(0, l, prefix = 'Training and testing MLPs: ', suffix = 'Complete', length = 100) # print initial progress bar
+    # loop through every phase from 0-4 ----------------------------------------------------------------------------------------
+    # all_params_and_results appends a dict of parameters and results if phase is in given list, otherwise appends none
+    for phase in range(n_phases):
 
+        if phase in phases: # if the current phase (0-4) is one of the phases provided in main, train MLP accordingly ----------
 
-    # for phase in range(1, num_phases+1) # loop starts here
+            phase_params_and_results = [] # will store the parameters and results dictionary associated with current phase
 
-    n = 0
-    best_acc = 0 # stores best accuracy
-    best_time = 100000000 # stores best time
+            # for every parameter value, run all 34 1-vs-all classifiers "iterations" times and average results ----------------
+            for i in range(len(mlp_params[phase])):
 
-    for i in range(len(mlp_params[0])):
+                iteration_accs  = [] # stores accuracy results for each iteration
+                iteration_times = [] # stores total execution times for each iteration
 
-        results = [] # stores accuracy results for each
-        times = [] # stores total time
+                # run all classifiers for given number of iterations -----------------------------------------------------------
+                for j in range(iterations):
 
-        for j in range(iterations):
+                    it_acc  = 0 # used to find mean accuracy of current iteration
+                    it_time = 0 # used to sum total execution time of current iteration
 
-            for y_train in y_all_34:
+                     # run all 34 1-vs-all classifiers -------------------------------------------------------------------------
+                    for y_train in y_all_34:
 
-                x_train, y_train, x_test, y_test = split_MLP(x_formatted, y_train, test_pct)
+                        x_train, y_train, x_test, y_test = split_MLP(x_formatted, y_train, test_pct) # split data for MLP
 
-                model, time = train_MLP(x_train, y_train, mlp_params[0][i]) # train a model and store time elapsed
-                acc = model.score(x_test, y_test) #
+                        model, time = train_MLP(x_train, y_train, mlp_params[phase][i]) # train model & store training time
+                        acc = model.score(x_test, y_test)                              # store accuracy of current model
 
-                results.append(acc) # store results in results list
-                times.append(time) # store elapsed times in times list
+                        it_acc += acc / n_cats # update accuracy of current iteration with weight 1/n_categories to find mean
+                        it_time += time       # update execution time of current iteration
 
-                n+=1
-                printProgressBar(n, l, prefix = 'Training and testing MLPs: ', suffix = 'Complete', length = 100) # print initial progress bar
+                        n+=1 # progress bar stuff
+                        ppb(n, l, prefix = 'Training and testing MLPs: ', suffix = 'Complete', length = 100)
 
-        mlp_params[0][i]['avg_accuracy'] = np.mean(results)     # add accuracy key/value pair to dictionary
-        mlp_params[0][i]['avg_time'] = np.mean(times)  # add tune key/value pair to dictionary
+                    iteration_accs.append(it_acc)    # store accuracy of current iteration in results list
+                    iteration_times.append(it_time) # store execution time of current iteration in times list
 
-        all_params_and_results.append(mlp_params[i]) # update results
+                mlp_params[phase][i]['avg_accuracy'] = np.mean(iteration_accs) # add accuracy key/value pair to dictionary
+                mlp_params[phase][i]['avg_time'] = np.mean(iteration_times)   # add tune key/value pair to dictionary
+                phase_params_and_results.append(mlp_params[phase][i])        # update results of current phase
+
+            all_params_and_results.append(phase_params_and_results) # add all phase results to list of all results
+
+        else:
+            all_params_and_results.append(None)
 
     return all_params_and_results
 
 """ ============================================================================================================================
     given a folder of new RGBA images, predict what class they belong to using the best of each model
 """
-def predict_with_MLP(img_folder, base_folder, image_width, best_mlp):
+def train_and_predict_with_best_MLP(img_folder, base_folder, image_width, x_new, y_raw, test_pct, n_cats, n_iterations):
 
     filepaths = [img_folder+'/'+f for f in listdir(img_folder) if isfile(join(img_folder, f))]
 
@@ -203,5 +203,65 @@ def predict_with_MLP(img_folder, base_folder, image_width, best_mlp):
     image_data = d.get_lists_from_tuples(x_tuple, image_width) # format pixel data properly for prediction
     image_data = np.array(image_data).astype('float32') / 255 # turn image_data into array and normalize
 
-    prediction = best_mlp.predict(image_data) # predict the image's class
-    print(prediction)                        #
+    # flatten image data for use with MLP prediction
+    flat_image_data = []
+    for i in range(len(image_data)):
+        flat_image = []
+        for j in range(len(image_data[i])):
+            for k in range(len(image_data[i][j])):
+                for l in range(len(image_data[i][j][k])):
+                    flat_image.append(image_data[i][j][k][l])
+        flat_image_data.append(flat_image)
+    flat_image_data = np.array(flat_image_data)
+
+    # awdawwdaa wd
+    x_formatted, y_all_34 = format_MLP(x_new, y_raw, n_cats) # format data to use 34 classifiers
+    mlp_params, num_params = get_MLP_params([2])
+    mlp_params = mlp_params[4][0]
+
+    n = 0 # count required to print progress bar=
+    l = n_iterations*n_cats
+    ppb(0, l, prefix = 'Training and testing MLPs: ', suffix = 'Complete', length = 100) # print initial progress bar
+
+    best_acc = 0
+    results = {}
+    iteration_accs  = [] # stores accuracy results for each iteration
+    iteration_times = [] # stores total execution times for each iteration
+
+    # run all classifiers for given number of iterations -----------------------------------------------------------
+    for j in range(n_iterations):
+
+        it_acc  = 0 # used to find mean accuracy of current iteration
+        it_time = 0 # used to sum total execution time of current iteration
+        models_34 = []
+
+         # run all 34 1-vs-all classifiers -------------------------------------------------------------------------
+        for y_train in y_all_34:
+
+            x_train, y_train, x_test, y_test = split_MLP(x_formatted, y_train, test_pct) # split data for MLP
+
+            model, time = train_MLP(x_train, y_train, mlp_params) # train model & store training time
+            acc = model.score(x_test, y_test)                              # store accuracy of current model
+            models_34.append(model)
+
+            it_acc += acc / n_cats # update accuracy of current iteration with weight 1/n_categories to find mean
+            it_time += time       # update execution time of current iteration
+
+            n+=1 # progress bar stuff
+            ppb(n, l, prefix = 'Training and testing MLPs: ', suffix = 'Complete', length = 100)
+
+        iteration_accs.append(it_acc)    # store accuracy of current iteration in results list
+        iteration_times.append(it_time) # store execution time of current iteration in times list
+
+        if (acc > best_acc):
+            best_mlp = models_34
+            best_acc = acc
+
+    results['avg_accuracy'] = np.mean(iteration_accs) # add accuracy key/value pair to dictionary
+    results['avg_time'] = np.mean(iteration_times)   # add tune key/value pair to dictionary
+
+    predictions =[]
+    for model in models_34:
+        predictions.append(model.predict(flat_image_data))
+
+    return filepaths, results, predictions
