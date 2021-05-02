@@ -2,14 +2,16 @@
     plots.py
     Author: Michael Carter
     Date Created: 04-29-21
-    Date Modified: 04-30-21
+    Date Modified: 05-01-21
     This file contains functions for plotting our ML model results
 ============================================================================================================================="""
 
 import numpy as np
 import matplotlib.pylab as plt
 
-
+""" ============================================================================================================================
+    Plot results of a given phase of hyperparameter tuning for MLP
+"""
 def plot_MLP_hyperparameters(parameters, phase):
 
     if  phase == 0:
@@ -112,7 +114,9 @@ def plot_MLP_hyperparameters(parameters, phase):
         plt.savefig('plots/MLP-hly-times.png')
 
 
-
+""" ============================================================================================================================
+    Plot results of a given phase of hyperparameter tuning for CNN
+"""
 def plot_CNN_hyperparameters(parameters, phase):
 
     if  phase == 0:
@@ -190,7 +194,9 @@ def plot_CNN_hyperparameters(parameters, phase):
         plt.savefig('plots/CNN-optimizer-times.png')
 
 
-
+""" ============================================================================================================================
+    Plot results of a given phase of layer selection for CNN
+"""
 def plot_CNN_layers(parameters):
 
     nns = [0, 1, 2, 3, 4]
@@ -265,7 +271,9 @@ def plot_model_against_model(mlp_results, cnn_results):
     ax.legend(loc='best')                              # include legend in plot
     plt.savefig('plots/MLP-vs-CLP-times.png')
 
-
+""" ============================================================================================================================
+    Plotthe filenames associated with the predicitons returned by both best models
+"""
 def print_prediction_names(mlp_predictions, cnn_predictions, filepaths):
 
     for file in range(len(filepaths)):

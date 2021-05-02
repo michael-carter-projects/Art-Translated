@@ -2,7 +2,7 @@
     dataset.py
     Author: Michael Carter
     Date Created: 04-10-2021
-    Last Modified: 04-30-2021
+    Date Modified: 05-01-21
     This script is used to pre-process the coat of arms images to be used for training.
 ============================================================================================================================="""
 

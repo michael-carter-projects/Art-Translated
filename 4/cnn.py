@@ -2,7 +2,7 @@
     cnn.py
     Author: Michael Carter
     Date Created: 04-29-21
-    Date Modified: 04-30-21
+    Date Modified: 05-01-21
     This file contains functions for training our image data with a Keras Convolutional Neural Network
 ============================================================================================================================="""
 
