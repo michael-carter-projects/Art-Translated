@@ -4,7 +4,7 @@
 
 **Repository Directory:**
 
-**1-Proof-of-Concept**
+**1:** Proof-of-Concept
 
     The purpose of this program is to show that a cloud-deployed Google AutoML model can be used to predict
     the art movement associated with a given image of a painting. The user is asked to choose a file from
@@ -20,7 +20,7 @@
     movements_results_w_image_v2.py - gets the movement data and displays the image analyzed (macOS)
     api_caller_t3.py - script that passes an image to the AutoML model (t3 for short, NOT CURRENT)
 
-**2-WikiArt-Image-Download**
+**2:** WikiArt Image Scraping
 
     The purpose of this program is to collect images to use as training data in Google AutoML for the purposes
     outlined above. It does this by scraping images from WikiArt by movement. The images need to be sorted by
@@ -31,7 +31,7 @@
     wikiart-script.py - downloads, names, and sorts images
     wikiart-output.png - screenshot of console output
 
-**3-AutoML-CSV-Write**
+**3:** Write CSV for AutoML
 
     This program is used as a map between the dataset collected in Part 1 and Google AutoML. Given the file
     directory of the training images, this script creates the .csv file containing the training data (with a
@@ -42,7 +42,7 @@
 
     automl_training_data.csv - the file that was used to train the latest AutoML model.
 
-**4-Coat-of-Arms-Idenitifier**
+**4:** Coat of Arms Identification
 
     This is a more hands-on machine learning project that will attempt to determine the best machine
     learning model to classify an image of a coat of arms. I will first be turning 35 images into XXX images
@@ -50,7 +50,7 @@
     using YYY to run said images through a Multi-Layer Perceptron, a blahblahblah, and a Convolutional Nerual
     Network. If any of them can classify with any usable precision, I may add this to the Movement Detection
     app. It would likely be offered as an extra layer of analysis if a requisite movement is detected.
-    
+
     !!! UPDATE ALL OF THIS OUTDATED GARBAGE !!!
 
 
@@ -58,7 +58,7 @@
     img_src.txt         - the sources of the original images
     pp.py               - pre-processing script that takes each image and runs it through the different filters
 
-**5-Movement-Detector-App**
+**5:** React Native Movement Detection App
 
     This is the beginning of a cross-platform app that will hopefully use a local .tflite model created by
     AutoML to predict the movement of an image provided by the user either through the camera roll or by
