@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-camera-app",
-    "slug": "expo-camera-app",
+    "name": "art-movement-detector",
+    "slug": "art-movement-detector",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
