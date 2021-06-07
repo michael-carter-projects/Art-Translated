@@ -1,25 +1,22 @@
+import {StatusBar} from 'expo-status-bar'
 import React from 'react'
-import * as tf from '@tensorflow/tfjs';
-import '@tensorflow/tfjs-react-native';
+import {StyleSheet, Text, View} from 'react-native'
 
-export class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isTfReady: false,
-    };
-  }
+import HomeCamera   from './components/HomeCamera'
+import PhotoPreview from './components/PhotoPreview'
+import MovementInfo from './components/MovementInfo'
+import History      from './components/History'
 
-  async componentDidMount() {
-    // Wait for tf to be ready.
-    await tf.ready();
-    // Signal to the app that tensorflow.js can now be used.
-    this.setState({
-      isTfReady: true,
-    });
-  }
+import { createAppContainer   } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
-  render() {
-    //
-  }
-}
+const RootStack = createStackNavigator({
+  HomeCamera:   { screen: HomeCamera   },
+  PhotoPreview: { screen: PhotoPreview },
+  MovementInfo: { screen: MovementInfo },
+  History:      { screen: History      }
+});
+
+const App = createAppContainer(RootStack);
+
+export default App;

@@ -2,36 +2,32 @@ import React, { useState, useEffect }  from 'react';
 import { StyleSheet, View,Image } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import Svg, {Rect} from 'react-native-svg';
-
 import * as tf from '@tensorflow/tfjs';
-//import * as tfautoml from '@tensorflow/tfjs-automl';
 import { fetch, bundleResourceIO } from '@tensorflow/tfjs-react-native';
-import * as mobilenet from '@tensorflow-models/mobilenet'
-
+import * as blazeface from '@tensorflow-models/blazeface';
 import * as jpeg from 'jpeg-js'
-
-
 export default function App() {
-    const [imageLink, setImageLink] = useState("https://raw.githubusercontent.com/ohyicong/masksdetection/master/dataset/without_mask/142.jpg")
-    const [isEnabled, setIsEnabled] = useState(true)
-    const [mvmtDetector, setMvmtDetector] = useState("")
-
+    const [imageLink,setImageLink] = useState("https://raw.githubusercontent.com/ohyicong/masksdetection/master/dataset/without_mask/142.jpg")
+    const [isEnabled,setIsEnabled] = useState(true)
+    const [faces,setFaces]=useState([])
+    const [faceDetector,setFaceDetector]=useState("")
+    const [maskDetector,setMaskDetector]=useState("")
     useEffect(() => {
       async function loadModel(){
         console.log("[+] Application started")
+        //Wait for tensorflow module to be ready
         const tfReady = await tf.ready();
-
-        console.log("[+] Loading movement detection model")
-        //const modelJson = await require("./assets/mvmt_model/model.json");
-        //const modelWeight = await require("./assets/mvmt_model/group1-shard.bin");
-        //const mvmtDetector = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeight));
-        //const mvmtDetector = await mobilenet.load()
-
-        const mvmtDetector = await tf.automl.loadImageClassification("./assets/mvmt_model/model.json");
-        setMvmtDetector(mvmtDetector);
-
-
-
+        console.log("[+] Loading custom mask detection model")
+        //Replce model.json and group1-shard.bin with your own custom model
+        const modelJson = await require("./assets/model/model.json");
+        const modelWeight = await require("./assets/model/group1-shard.bin");
+        const maskDetector = await tf.loadLayersModel(bundleResourceIO(modelJson,modelWeight));
+        console.log("[+] Loading pre-trained face detection model")
+        //Blazeface is a face detection model provided by Google
+        const faceDetector =  await blazeface.load();
+        //Assign model to variable
+        setMaskDetector(maskDetector)
+        setFaceDetector(faceDetector)
         console.log("[+] Model Loaded")
       }
       loadModel()
@@ -51,27 +47,53 @@ export default function App() {
       }
       return tf.tensor3d(buffer, [height, width, 3]);
     }
-    const predictMovement = async() => {
-      try {
-        console.log("[+] Retrieving image from link :" + imageLink);
+    const getFaces = async() => {
+      try{
+        console.log("[+] Retrieving image from link :"+imageLink)
+
         const response = await fetch(imageLink, {}, { isBinary: true });
+        console.log("1 ass ==========================================================================");
+        console.log(response)
         const rawImageData = await response.arrayBuffer();
-        // decodeJpeg ??
+        console.log("2 ass ==========================================================================");
+        console.log(rawImageData)
         const imageTensor = imageToTensor(rawImageData).resizeBilinear([224,224]);
+        console.log("red ass ==========================================================================");
+        console.log(imageTensor);
+        console.log("blue ass ==========================================================================");
 
-        console.log("3");
-        //console.log(mvmtDetector);
 
-        const result = await mvmtDetector.classify(image);
-      //  const result = await mvmtDetector.predict(imageTensor).data();
 
-        console.log("!!!!");
-        console.log(result);
 
-        console.log("[+] Prediction Completed");
-      }
-      catch {
-        console.log("[-] Unable to load image");
+
+
+        const faces = await faceDetector.estimateFaces(imageTensor, false);
+        var tempArray=[]
+        //Loop through the available faces, check if the person is wearing a mask.
+        for (let i=0;i<faces.length;i++){
+          let color = "red"
+          let width = parseInt((faces[i].bottomRight[1] - faces[i].topLeft[1]))
+          let height = parseInt((faces[i].bottomRight[0] - faces[i].topLeft[0]))
+          let faceTensor=imageTensor.slice([parseInt(faces[i].topLeft[1]),parseInt(faces[i].topLeft[0]),0],[width,height,3])
+          faceTensor = faceTensor.resizeBilinear([224,224]).reshape([1,224,224,3])
+          let result = await maskDetector.predict(faceTensor).data()
+
+          console.log(result)
+
+          //if result[0]>result[1], the person is wearing a mask
+          if(result[0]>result[1]){
+            color="green"
+          }
+          tempArray.push({
+            id:i,
+            location:faces[i],
+            color:color
+          })
+        }
+        setFaces(tempArray)
+        console.log("[+] Prediction Completed")
+      }catch{
+        console.log("[-] Unable to load image")
       }
 
     }
@@ -103,10 +125,28 @@ export default function App() {
           }}
           PlaceholderContent={<View>No Image Found</View>}
         />
+        <Svg height="224" width="224" style={{marginTop:-224}}>
+          {
+            faces.map((face)=>{
+              return (
+                <Rect
+                  key={face.id}
+                  x={face.location.topLeft[0]}
+                  y={face.location.topLeft[1]}
+                  width={(face.location.bottomRight[0] - face.location.topLeft[0])}
+                  height={(face.location.bottomRight[1] - face.location.topLeft[1])}
+                  stroke={face.color}
+                  strokeWidth="3"
+                  fill=""
+                />
+              )
+            })
+          }
+        </Svg>
       </View>
         <Button
           title="Predict"
-          onPress={()=>{predictMovement()}}
+          onPress={()=>{getFaces()}}
           disabled={!isEnabled}
         />
     </View>
