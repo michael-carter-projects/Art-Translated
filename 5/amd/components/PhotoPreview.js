@@ -15,7 +15,7 @@ export default class PhotoPreview extends React.Component
   render()
   {
     // MAKE A PREDICTION AND STORE AS GLOBAL VARIABLE ==========================================================================
-    async function predictMovement(uri, nav)
+    async function predictMovementAsync(uri, nav)
     {
         console.log("    Retrieving image and converting to tensors...");
         const response = await fetch(uri, {}, { isBinary: true });
@@ -24,6 +24,8 @@ export default class PhotoPreview extends React.Component
 
         console.log("    Making prediction...")
         global.prediction = await global.movementDetector.classify(imageTensor.resizeBilinear([224,224]));
+
+        console.log(global.prediction)
 
         nav.navigate('MovementInfo');
 
@@ -97,10 +99,10 @@ export default class PhotoPreview extends React.Component
               backgroundColor={'#323264'}
               backgroundDarker={'#161632'}
               borderRadius={80}
-              textSize={20}
+              textSize={18}
               fontFamily={'System'}
-              onPress={() => predictMovement(photo.uri, this.props.navigation)}
-            >Predict movement
+              onPress={() => predictMovementAsync(photo.uri, this.props.navigation)}
+            >PREDICT MOVEMENT
             </AwesomeButton>
             <View height={10}/>
 
@@ -110,10 +112,10 @@ export default class PhotoPreview extends React.Component
                   backgroundColor={'#993232'}
                   backgroundDarker={'#501616'}
                   borderRadius={80}
-                  textSize={20}
+                  textSize={18}
                   fontFamily={'System'}
                   onPress={ () => this.props.navigation.navigate('HomeCamera') }
-              >Re-take photo
+              >RETAKE PHOTO
               </AwesomeButton>
             ) : (
               <AwesomeButton
@@ -121,10 +123,10 @@ export default class PhotoPreview extends React.Component
                   backgroundColor={'#993232'}
                   backgroundDarker={'#501616'}
                   borderRadius={80}
-                  textSize={20}
+                  textSize={18}
                   fontFamily={'System'}
                   onPress={ () => selectImageAsync(this.props.navigation) }
-                >Re-select image
+                >RESELECT IMAGE
                 </AwesomeButton>
               )}
             </View>

@@ -4,6 +4,8 @@ import React from 'react'
 import { StyleSheet, Text, View} from 'react-native'
 import { Button, Card, Icon, ListItem } from 'react-native-elements'
 
+var descriptions = [false, false, false];
+
 export default class MovementInfo extends React.Component
 {
   render()
@@ -30,10 +32,9 @@ export default class MovementInfo extends React.Component
 
     }
 
+    //const prediction = this.props.navigation.getParam('pred');
 
-    const prediction = this.props.navigation.getParam('pred')
-
-    const top3 = [getMovementInfo(0), getMovementInfo(1)] // etcetera
+    var top3 = [ getMovementInfo(0), getMovementInfo(1) ]; // etcetera
 
     return (
       <View style={styles.container}>
@@ -48,14 +49,22 @@ export default class MovementInfo extends React.Component
           <Card.Image source={ require("./assets/images/madonna.jpg") }>
           </Card.Image>
 
-          <Text style={{marginBottom: 10, marginLeft: 160}}>
-          {"                               "}
-          </Text>
+          { descriptions[0] ? (
+            <Text style={{marginBottom: 10, marginLeft: 160}}>
+              This is the description of {top3[0].name}. Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah Blah blah blah blah blah
+            </Text>
+          ) : (
+            <Text style={{marginBottom: 10, marginLeft: 160}}>
+            {"                               "}
+            </Text>
+          )}
+
           <Button
             icon={<Icon name='arrow-drop-down' color='#ffffff' />}
             buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-            title=' SEE DESCRIPTION' />
-
+            title=' SEE DESCRIPTION'
+            onPress={ () => { descriptions[0] = true; console.log(descriptions); this.props.navigation.navigate("MovementInfo"); } }
+          />
         </Card>
 
         <Card>
