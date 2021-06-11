@@ -16,8 +16,11 @@ const RootStack = createStackNavigator({
   HomeCamera:   { screen: HomeCamera   },
   PhotoPreview: { screen: PhotoPreview },
   MovementInfo: { screen: MovementInfo },
-  History:      { screen: History      }
-});
+  History:      { screen: History      }},
+  {
+        initialRoute: HomeCamera
+  }
+);
 
 const App = createAppContainer(RootStack);
 
