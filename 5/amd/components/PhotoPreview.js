@@ -9,55 +9,61 @@ import * as tf from '@tensorflow/tfjs';
 import { fetch, decodeJpeg } from '@tensorflow/tfjs-react-native';
 import * as jpeg from 'jpeg-js'
 
-// MAKE A PREDICTION AND STORE AS GLOBAL VARIABLE ==============================================================================
-async function predictMovement(uri, nav)
+
+export default class PhotoPreview extends React.Component
 {
-    console.log("[+] Retrieving image and converting to tensors...");
-    const response = await fetch(uri, {}, { isBinary: true });
-    const imageData = await response.arrayBuffer();
-    const imageTensor = imageToTensor(imageData);
+  render()
+  {
+    // MAKE A PREDICTION AND STORE AS GLOBAL VARIABLE ==========================================================================
+    async function predictMovement(uri, nav)
+    {
+        console.log("    Retrieving image and converting to tensors...");
+        const response = await fetch(uri, {}, { isBinary: true });
+        const imageData = await response.arrayBuffer();
+        const imageTensor = imageToTensor(imageData);
 
-    console.log("[+] Making prediction...")
-    global.prediction = await global.movementDetector.classify(imageTensor.resizeBilinear([224,224]));
-    nav.navigate('MovementInfo');
+        console.log("    Making prediction...")
+        global.prediction = await global.movementDetector.classify(imageTensor.resizeBilinear([224,224]));
 
-    console.log("[+] Prediction Complete \n");
-}
+        nav.navigate('MovementInfo');
 
-// CONVERT RAW IMAGE DATA TO TENSORS ===========================================================================================
-function imageToTensor(rawImageData)
-{
-  const { width, height, data } = jpeg.decode(rawImageData, true);
-  const buffer = new Uint8Array(width * height * 3);
-  let offset = 0;
-  for (let i = 0; i < buffer.length; i += 3) {
-    buffer[i] = data[offset];
-    buffer[i + 1] = data[offset + 1];
-    buffer[i + 2] = data[offset + 2];
-    offset += 4;
-  }
-  return tf.tensor3d(buffer, [height, width, 3]);
-}
+        console.log("[+] Prediction Complete \n");
+    }
 
+    // CONVERT RAW IMAGE DATA TO TENSORS =======================================================================================
+    function imageToTensor(rawImageData)
+    {
+      const { width, height, data } = jpeg.decode(rawImageData, true);
+      const buffer = new Uint8Array(width * height * 3);
+      let offset = 0;
+      for (let i = 0; i < buffer.length; i += 3) {
+        buffer[i] = data[offset];
+        buffer[i + 1] = data[offset + 1];
+        buffer[i + 2] = data[offset + 2];
+        offset += 4;
+      }
+      return tf.tensor3d(buffer, [height, width, 3]);
+    }
 
-export default class PhotoPreview extends React.Component {
-  render() {
-    const photo = this.props.navigation.getParam('img')
-    const backToCamera = this.props.navigation.getParam('cam')
-
-    const __selectImage = async () => {
+    // ALLOWS USER TO SELECT IMAGE FROM CAMERA ROLL ============================================================================
+    async function selectImageAsync(nav)
+    {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
       });
-      console.log(result);
 
       if (!result.cancelled) {
-        this.props.navigation.navigate('PhotoPreview', {img: result, cam: false})
+        nav.navigate('PhotoPreview', {img: result, cam: false})
       }
-    };
+    }
+
+
+    // ON SCREEN ===============================================================================================================
+    const photo = this.props.navigation.getParam('img')
+    const backToCamera = this.props.navigation.getParam('cam')
 
     return (
       <View
@@ -117,7 +123,7 @@ export default class PhotoPreview extends React.Component {
                   borderRadius={80}
                   textSize={20}
                   fontFamily={'System'}
-                  onPress={__selectImage}
+                  onPress={ () => selectImageAsync(this.props.navigation) }
                 >Re-select image
                 </AwesomeButton>
               )}
@@ -129,6 +135,7 @@ export default class PhotoPreview extends React.Component {
   }
 }
 
+// STYLES FOR VARIOUS ELEMENTS =================================================================================================
 const BASE_SIZE = 110
 
 const styles = StyleSheet.create({

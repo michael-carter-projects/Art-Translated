@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "automl-test",
-    "slug": "automl-test",
+    "name": "art-movement-detector",
+    "slug": "art-movement-detector",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#fff000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
