@@ -1,0 +1,439 @@
+{
+  name: "Movement and Styles",
+  dates: "Period_Start ABCD_Start - Period_End ABCD_End",
+  style: "Style (ML) same as Technique",
+  commentary: "Critical Commentary & Comments",
+  themes: "Purpose, Themes, Emotions",
+  start_reason: "Why it Started",
+  end_reason: "Why it Ended.",
+},
+
+{
+  name: "Abstract Expressionism",
+  dates: "1945 AD - 1965 AD",
+  style: "Technically, an important predecessor is surrealism, with its emphasis on spontaneous, automatic, or subconscious creation. In distinction to the emotional energy and gestural surface marks of abstract expressionists such as Jackson Pollock and Willem de Kooning, the Color Field painters initially appeared to be cool and austere, effacing the individual mark in favor of large, flat areas of color, which these artists considered to be the essential nature of visual abstraction, along with the actual shape of the canvas, which later in the 1960s Frank Stella in particular achieved in unusual ways with combinations of curved and straight edges. However Color Field painting has proven to be both sensual and deeply expressive albeit in a different way from gestural abstract expressionism. Abstract expressionist paintings share certain characteristics, including the use of large canvases, an "all-over" approach, in which the whole canvas is treated with equal importance (as opposed to the center being of more interest than the edges). The canvas as the arena became a credo of Action painting, while the integrity of the picture plane became a credo of the Color field painters. Drip paintings – read as vast fields of built-up linear elements often reading as vast complexes of similar valued paint skeins that read as all over fields of color and drawing. Staining fluid oil paint and house paint into raw canvas. Used intense stained fields of color, often letting the paint run and drip, under and around his familiar lexicon of organic and biomorphic shapes and delicate lines. Hard-edge painting is painting in which abrupt transitions are found between color areas. Color areas are often of one unvarying color. Anti-figurative. Non-objective style.",
+  commentary: ""what was to go on the canvas was not a picture but an event"",
+  themes: "Spontaneous, automatic, subconscious creation, emotional intensity, self-denial, rebellious, anarchic, highly idiosyncratic, nihilistic, essence, violent, grotesque, expression of ideas concerning the spiritual, the unconscious, and the mind. Apolitical.",
+  start_reason: "WWII: the political climate after World War II did not long tolerate the social protests of these painters. The McCarthy era after World War II was a time of artistic censorship in the United States, but if the subject matter were totally abstract then it would be seen as apolitical. Apolitical: a time of artistic censorship in the United States, but if the subject matter were totally abstract then it would be seen as apolitical, and therefore safe. ",
+  end_reason: "null",
+},
+
+{
+  name: "Academic Classicism",
+  dates: "1865 AD - 1920 AD",
+  style: "Many paintings by academic artists are simple nature allegories with titles like Dawn, Dusk, Seeing, and Tasting, where these ideas are personified by a single nude figure, composed in such a way as to bring out the essence of the idea. The trend in art was also towards greater idealism, which is contrary to realism, in that the figures depicted were made simpler and more abstract—idealized—in order to be able to represent the ideals they stood in for. This would involve both generalizing forms seen in nature, and subordinating them to the unity and theme of the artwork. Drawings and paintings of the nude, called "académies", were the basic building blocks of academic art. Nased on idealistic clichés and representing mythical and legendary motives while contemporary social concerns were being ignored.  Objects depicted looked smooth, slick, and idealized—showing no real texture. Finished and idealized with perfect detail. Platonic forms, or ideals, behind ordinary depictions one would glimpse something abstract, some eternal truth. Beauty is truth, truth beauty. A full and complete idea.",
+  commentary: ""The only was for us to become great and possibly inimitable is to imitate the ancients." Only based on idealistic clichés and representing mythical and legendary motives while contemporary social concerns were being ignored.  "False surface" of paintings—the objects depicted looked smooth, slick, and idealized—showing no real texture. Too finished and idealized. Sentimental, clichéd, conservative, non-innovative, bourgeois, and "styleless". Manufactured false emotion through contrivances and tricks. Old-fashioned with the allegorical nudes and theatrically posed figures seemly bizarre and dreamlike.",
+  themes: "History, Technical expertise, Beauty, impressive execution of subject. Platonic forms, or ideals, behind ordinary depictions one would glimpse something abstract, some eternal truth. Beauty is truth, truth beauty. A full and complete idea.",
+  start_reason: "Nationalism. Advance cultural standings of nation-states. Increase skill of country artisans. Political control of the arts. ",
+  end_reason: "null",
+},
+
+{
+  name: "Ancient Greek",
+  dates: "1000 AD - 323 BC",
+  style: "Vase painting: figures depicted with strong outlines, with thin lines within the outlines. Black-figure and red-figure painting, the other colour forming the background in each case. Other colours were very limited, normally to small areas of white and larger ones of a different purplish-red. White ground technique allowed more freedom in depiction, but did not wear well and was mostly made for burial. The range of pottery colours which could be used on pots was restricted by the technology of firing: black, white, red, and yellow were the most common. In the three earlier periods, the pots were left their natural light colour, and were decorated with slip that turned black in the kiln. Greek pottery was decorated with abstract designs, in the former usually elegant and large, with plenty of unpainted space, but in the Geometric often densely covering most of the surface, as in the large pots by the Dipylon Master, who worked around 750. He and other potters around his time began to introduce very stylised silhouette figures of humans and animals, especially horses. These often represent funeral processions, or battles, presumably representing those fought by the deceased.  Animals, many either mythical or not native to Greece (like the sphinx and lion respectively) were adapted from the Near East, accompanied by decorative motifs, such as the lotus and palmette. These were shown much larger than the previous figures. The Wild Goat Style is a regional variant, very often showing goats. Human figures were not so influenced from the East, but also became larger and more detailed. Pottery used the fully mature black-figure technique, with added red and white details and incising for outlines and details. The red-figure technique, invented in about 530 BC, reversed this tradition, with the pots being painted black and the figures painted in red. Red-figure vases slowly replaced the black-figure style. Sometimes larger vessels were engraved as well as painted. Tripods were frequently decorated with figural protomes, in the shape of griffins, sphinxes and other fantastic creatures. Greek society did not permit the public display of female nudity, such as sculpture, until the 4th century BC. Statues depicted:  ideal—beauty, piety, honor or sacrifice. Statuses were always depictions of young men, ranging in age from adolescence to early maturity, even when placed on the graves of (presumably) elderly citizens; social stature of the person commissioning the statue were indicated by size rather than artistic innovations. Greek sculptures were mostly made of two types of material. Stone, especially marble or other high-quality limestones was used most frequently and carved by hand with metal tools. Stone sculptures could be free-standing fully carved in the round (statues), or only partially carved reliefs still attached to a background plaque, for example in architectural friezes or grave stelai. Statues were usually made in the lost wax technique. Chryselephantine, or gold-and-ivory, statues were the cult-images in temples and were regarded as the highest form of sculpture, they were normally over-lifesize, built around a wooden frame, with thin carved slabs of ivory representing the flesh, and sheets of gold leaf, probably over wood, representing the garments, armour, hair, and other details. In some cases, glass paste, glass, and precious and semi-precious stones were used for detail such as eyes, jewellery, and weaponry. Other large acrolithic statues used stone for the flesh parts, and wood for the rest, and marble statues sometimes had stucco hairstyles. Most sculpture was painted (see below), and much wore real jewellery and had inlaid eyes and other elements in different materials. Terracotta was occasionally employed, for large statuary. Depiction of real people. Monument statuary were in cemeteries depicting  "ideal" types—the mourning mother, the dutiful son—increasingly depicting real people, typically showing the departed taking his dignified leave from the family.  Greek architecture, technically very simple, established a harmonious style. The multi-figure group of statues was a Hellenistic innovation. Extravagantly contorted body poses, and intense expressions in the faces. All these statues depict Classical themes, but their treatment is far more sensuous and emotional than the austere taste of the Classical period would have allowed or its technical skills permitted. Colorfully painted statuary, architecture.",
+  commentary: ""we admire the work of art but despise the maker of it" - Plutarch",
+  themes: "Funeral processions, battles, erotic, heterosexuality, male homosexuality, religious offerings, religious ritual, ideal beauty, piety, honor, sacrifice, cult-images, Veneration",
+  start_reason: "Radical political developments, prosperity; philosophy, literature",
+  end_reason: "null",
+},
+
+{
+  name: "Geometric",
+  dates: "900 BC - 700 BC",
+  style: "Initially made of wood. Bronze, Terra cotta, Ivories. Decorative motifs: zigzag, the triangle, the meander and the swastika. The first human figures appeared around 770 BC on the handles of vases. The human forms are easily distinguished because they do not overlap with one another, making the painted black forms discernible from one another against the color of the clay body.[13] The male was depicted with a triangular torso, an ovoid head with a blob for a nose and long cylindrical thighs and calves. Female figures were also abstract. Their long hair was depicted as a series of lines, as were their breasts, which appeared as strokes under the armpit. Vases in the Geometric style are characterized by several horizontal bands about the circumference covering the entire vase. Between these lines the geometric artist used a number of other decorative motifs such as the zigzag, the triangle, the meander and the swastika. Besides abstract elements, painters of this era introduced stylized depictions of humans and animals which marks a significant departure from the earlier Protogeometric Art. Linear designs were the principal motif used in this period. The meander pattern was often placed in bands and used to frame the now larger panels of decoration. The areas most used for decoration by potters on shapes such as the amphorae and lekythoi were the neck and belly, which not only offered the greatest liberty for decoration but also emphasized the taller dimensions of the vessels. The first human figures appeared around 770 BC on the handles of vases. The human forms are easily distinguished because they do not overlap with one another, making the painted black forms discernible from one another against the color of the clay body.[13] The male was depicted with a triangular torso, an ovoid head with a blob for a nose and long cylindrical thighs and calves. Female figures were also abstract. Their long hair was depicted as a series of lines, as were their breasts, which appeared as strokes under the armpit. Two techniques of this time period include red figure pottery and black figure pottery. The black figure pottery started around 700 B.C., and it remained the dominant style until its successor, red figure pottery, was invented around 530 B.C.[16] The switch from black figure pottery to red figure pottery was made due to the enhanced detail that red figured pottery allowed its artists.",
+  commentary: "null",
+  themes: "Veneration, Burials, Funerals, Symposiums",
+  start_reason: "Decoration",
+  end_reason: "null",
+},
+
+{
+  name: "Archaic",
+  dates: "700 BC - 480 BC",
+  style: "Most of these coinages were very small and were mostly only used within the community that issued them, but there was usages of the "turtles" of Aegina (from 530 or 520 BC) and the "owls" of Athens (from 515 BC). Some coinage used the symbol or image of an important deity in the city or visual puns on the city's name, but in many cases their meaning is obscure and may not have been chosen for any special reason. In the visual arts, the archaic period is characterised by a shift towards representational and naturalistic styles. It was the period in which monumental sculpture was introduced to Greece, and in which Greek pottery styles went through great changes, from the repeating patterns of the late geometric period to the earliest red-figure vases. The early part of the archaic period saw distinctive orientalizing influences, both in pottery and in sculpture. Life-size human sculpture in hard stone began in Greece in the archaic period. The best-known archaic sculpture are the kouros and kore, near life-size frontal statues of a young man or woman. Daedalic style made an appearance in Greek sculpture. This style consisted most noticeably of a geometric pattern of female subjects' hair framing their face. On male sculptures they were often posed with one foot in front, as if in motion. The period saw a shift in the decoration of Greek pottery from abstract to figurative styles. During the Greek Dark Ages, following the fall of the Mycenaean civilisation, Greek pottery decoration had been based around increasingly elaborate geometrical patterns. Human figures first appeared on Greek pots in Crete in the early part of the ninth century BC, but did not become common on mainland Greek pottery until the middle of the eighth century BC. The eighth century saw the development of the orientalizing style, which signalled a shift away from the earlier geometric style. At the beginning of the seventh century BC, vase painters in Corinth began to develop the black-figure style. At the same time, potters began to use incisions in the clay of vases in order to draw outlines and interior detailing. This adoption of incision, probably taken from eastern metalwork, allowed potters to show fine details of their decorations. As the archaic period drew to a close, red-figure pottery was invented in Athens, with the first examples being produced about 525 BC, probably by the Andokides painter. The invention of the red-figure technique in Athens came at around the same time as the development of other techniques such as the white ground technique and Six's technique. In statuary the three types of figures prevailed—the standing nude male youth (kouros, plural kouroi), the standing draped girl (kore, plural korai), and the seated woman. All emphasize and generalize the essential features of the human figure and show an increasingly accurate comprehension of human anatomy. More of the musculature and skeletal structure is visible in this statue than in earlier works. The standing, draped girls have a wide range of expression, as in the sculptures in the Acropolis Museum of Athens. Their drapery is carved and painted with the delicacy and meticulousness common in the details of sculpture of this period. These were always depictions of young men, ranging in age from adolescence to early maturity, even when placed on the graves of (presumably) elderly citizens. Kouroi were all stylistically similar. Graduations in the social stature of the person commissioning the statue were indicated by size rather than artistic innovations.",
+  commentary: "Less important and historically interesting than the classical period.",
+  themes: "Secular, Sacred, Veneration, beauty, piety, honor or sacrifice",
+  start_reason: "Massive increase Greek population, Politics, Democracy, Establishment of Greek city-states, Intellectual revolution of the Classical period,  liturature, economics. Ancient Egyptian stone sculpture, Reverance for human form. Developments in international relations, warfare, culture.",
+  end_reason: "null",
+},
+
+{
+  name: "Art Deco",
+  dates: "1915 AD - 1940 AD",
+  style: "Metallic colors, Geometric Designs. From its outset, Art Deco was influenced by the bold geometric forms of Cubism and the Vienna Secession; the bright colors of Fauvism and of the Ballets Russes; the updated craftsmanship of the furniture of the eras of Louis Philippe I and Louis XVI; and the exotic styles of China and Japan, India, Persia, ancient Egypt and Maya art. It featured rare and expensive materials, such as ebony and ivory, and exquisite craftsmanship. The Chrysler Building and other skyscrapers of New York built during the 1920s and 1930s are monuments of the Art Deco style. In the 1930s, during the Great Depression, Art Deco became more subdued. New materials arrived, including chrome plating, stainless steel, and plastic. A sleeker form of the style, called Streamline Moderne, appeared in the 1930s; it featured curving forms and smooth, polished surfaces.[4] Art Deco is one of the first truly international styles, but its dominance ended with the beginning of World War II and the rise of the strictly functional and unadorned styles of modern architecture and the International Style of architecture that followed. Art Deco style, featuring geometric volumes, symmetry, straight lines, concrete covered with marble plaques, finely-sculpted ornament, and lavish interiors, including mosaic friezes. Art Deco was an explosion of colors, featuring bright and often clashing hues, frequently in floral designs, presented in furniture upholstery, carpets, screens, wallpaper and fabrics. Use of ebony and ivory. Luxury and modernity. Combined very expensive materials and exquisite craftsmanship put into modernistic forms. Nothing was cheap about Art Deco: pieces of furniture included ivory and silver inlays, and pieces of Art Deco jewelry combined diamonds with platinum, jade, and other precious materials. Simple geometric shapes like triangles and squares are the basis of all compositional arrangements. ",
+  commentary: "...practical objects such as furniture should not have any decoration at all..."Modern decoration has no decoration".",
+  themes: "Luxury, glamour, exuberance, and faith in social and technological progress. Modernity.",
+  start_reason: "Reaction against Art Nouveau. Inspired by Vienna Succession, Cubism, Nabis, Odilon Redon",
+  end_reason: "Beginning of WWII. Rise of the strictly functional and unadorned styles of modernism.",
+},
+
+{
+  name: "Art Nouveau",
+  dates: "1890 AD - 1920 AD",
+  style: "Floral, Vegetal, Plant, Vines, Geometric Stylistic Elements, Flowing",
+  commentary: "null",
+  themes: "null",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Baroque",
+  dates: "1600 AD - 1750 AD",
+  style: "Intense and warm colours, particularly made use of the primary colours red, blue and yellow, frequently putting all three in close proximity. They avoided the even lighting of Renaissance painting and used strong contrasts of light and darkness on certain parts of the picture to direct attention to the central actions or figures. In their composition, they avoided the tranquil scenes of Renaissance paintings, and chose the moments of the greatest movement and drama. Unlike the tranquil faces of Renaissance paintings, the faces in Baroque paintings clearly expressed their emotions. They often used asymmetry, with action occurring away from the centre of the picture, and created axes that were neither vertical nor horizontal, but slanting to the left or right, giving a sense of instability and movement. They enhanced this impression of movement by having the costumes of the personages blown by the wind, or moved by their own gestures. The overall impressions were movement, emotion and drama. Another essential element of baroque painting was allegory; every painting told a story and had a message, often encrypted in symbols and allegorical characters, which an educated viewer was expected to know and read. Emotional effects of color, overall harmony of the painting. Simplicity, precision, realism, and an emotional stimulus to piety. Religious subject matter. His realistic approach to the human figure, painted directly from life and dramatically spotlit against a dark background,. Elaborate effects to stir up religious passions. A single, powerful effect. Contrast, movement, exuberant detail, deep colour, grandeur and surprise to achieve a sense of awe. excess of ornamentation. Crowded, dense, overlapping, loaded, in order to provoke shock effects. New motifs: artouche, trophies and weapons, baskets of fruit or flowers, and others, made in marquetry, stucco, or carved. Absurdly complex. magic, complexity, confusion, and excess. Stucco materials, twisted columns, 3D figures, frames, angels, domes. Twisted column in the interior of churches is signature Baroque providing a sense of motion, dramatic new way of reflecting light. Cartouches are plaques carved of marble or stone, usually oval and with a rounded surface, which carried images or text in gilded letters, and were placed as interior decoration or above the doorways of buildings, delivering messages to those below. They showed a wide variety of invention, and were found in all types of buildings, from cathedrals and palaces to small chapels. Trompe-l'œil effects. Quadratura, or paintings in trompe-l'oeil, which literally "fooled the eye". These were usually painted on the stucco of ceilings or upper walls and balustrades, and gave the impression to those on the ground looking up were that they were seeing the heavens populated with crowds of angels, saints and other heavenly figures, set against painted skies and imaginary architecture. Baroque sculpture was inspired by ancient Roman statuary, particularly by the famous statue of Laocoön. Neo-Baroque objectts: Horns of plenty, festoons, baby angels, female or male mascarons, oval cartouches, acanthus leaves, classical columns, caryatids, pediments.",
+  commentary: ""Bizarre and uselessly complicated.", "Borrominini in architecture, Bernini in sculpture, Pietro da Cortona in painting...are a plague on good taste, which infected a large number of artists.", "...morally corrupt.","...excessive ornamentation or complexity of line..."",
+  themes: "Religious themes, religious passion, with direct and emotional involvement, Catholicism, Awe, Surprise, Grandeur, emotional stimulus to piety, popularity, emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith.",
+  start_reason: "Communicated post-1542 Catholic church doctrine. Countered the simplicity and austerity of Protestant architecture. Needed less strict rules but more popular appeal and declared that the arts communicating religious themes with direct and emotional involvement.",
+  end_reason: "null",
+},
+
+{
+  name: "Byzantine",
+  dates: "500 AD - 1450 AD",
+  style: "Stormy and rigid. Evolved from the Christianized Greek culture of the Eastern Roman Empire; content from both Christianity and classical Greek mythology were artistically expressed through Hellenistic modes of style and iconography. Like their ancient Greek predecessors, "were never satisfied with a play of forms alone, but stimulated by an innate rationalism, endowed forms with life by associating them with a meaningful content." Although the art produced in the Byzantine Empire was marked by periodic revivals of a classical aesthetic, it was above all marked by the development of a new aesthetic defined by its salient "abstract", or anti-naturalistic character. If classical art was marked by the attempt to create representations that mimicked reality as closely as possible, Byzantine art seems to have abandoned this attempt in favor of a more symbolic approach. Abstract or unnaturalistic",
+  commentary: "Giorgio Vasari attributed move from realistic art to a decline in artistic skills and standards, which had in turn been revived by his contemporaries in the Italian Renaissance.  "our own appreciation of Byzantine art stems largely from the fact that this art is not naturalistic; yet the Byzantines themselves, judging by their extant statements, regarded it as being highly naturalistic and as being directly in the tradition of Phidias, Apelles, and Zeuxis."",
+  themes: "Religious themes, religious passion. Emotional stimulus to piety, popularity, emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices. Illustrate paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith.",
+  start_reason: "Evolved from Christianized Greek culture, of the Eastern Roman Empire",
+  end_reason: "Fall of Constantinople to the Ottoman Turks in 1453",
+},
+
+{
+  name: "Classical",
+  dates: "500 BC - 323 BC",
+  style: "sculpture was composed almost entirely of marble or bronze. Poses became more naturalistic (see the Charioteer of Delphi for an example of the transition to more naturalistic sculpture), and the technical skill of Greek sculptors in depicting the human form in a variety of poses greatly increased. From about 500 BC statues began to depict real people. Funeral statuary evolved from the rigid and impersonal kouros of the Archaic period to the highly personal family groups, they increasingly depicted real people, typically showing the departed taking his dignified leave from his family. They are among the most intimate and affecting remains of the ancient Greeks",
+  commentary: "null",
+  themes: "Heroism, Gods, Funeral, Secular, Sacred, Veneration, beauty, piety, honor or sacrifice",
+  start_reason: "Introduction of democracy, end of the aristocratic culture associated with the kouroi. Challenge of fitting style to architectural spaces. Reverance for Human form.",
+  end_reason: "null",
+},
+
+{
+  name: "Cubism",
+  dates: "1905 AD - 1920 AD",
+  style: "Objects are analyzed, broken up and reassembled in an abstracted form—instead of depicting objects from a single viewpoint, the artist depicts the subject from a multitude of viewpoints to represent the subject in a greater context. Reducing everything, places and a figures and houses, to geometric schemas, to cubes. Simplification of form and deconstruction of perspective. Partial abstraction. Total Abstraction. Observing a subject from different points in space and time simultaneously, i.e., the act of moving around an object to seize it from several successive angles fused into a single image (multiple viewpoints, mobile perspective, simultaneity or multiplicity), is a generally recognized device used by the Cubists. Strong emphasis on large overlapping geometric planes and flat surface activity. Use of multiple perspective and complex planar faceting for expressive effect while preserving the eloquence of subjects.",
+  commentary: ""What do they mean? Have those responsible for them taken leave of their senses? Is it art or madness? Who knows?"",
+  themes: "Deconstruction, abstraction, expressive and allusive abstraction dedicated to complex emotional and sexual themes.",
+  start_reason: "A new way of seeing for the modern age. Revitalise boring traditions (e.g. perspective) of Western art.",
+  end_reason: "null",
+},
+
+{
+  name: "Dada",
+  dates: "1915 AD - 1950 AD",
+  style: "Sculpture, Painting, Prints, Mixed Media, Sound media, Collage, Sound poetry, cut-up writing, visual arts, literature, poetry, art manifestos, art theory, theatre, graphic design, readymades, assemblage, Photomontage, Cut-up",
+  commentary: ""Anti-art."; "Dada philosophy is the sickest, most paralyzing and most destructive thing that has ever originated from the brain of man.";   If art was to appeal to sensibilities, Dada was intended to offend. "Dada philosophy is the sickest, most paralyzing and most destructive thing that has ever originated from the brain of man." -  American Art News ;  "reaction to what many of these artists saw as nothing more than an insane spectacle of collective homicide."; A savior, a monster, which would lay waste to everything in its path... [It was] a systematic work of destruction and demoralization... In the end it became nothing but an act of sacrilege."; Dada is the groundwork to abstract art and sound poetry, a starting point for performance art, a prelude to postmodernism, an influence on pop art, a celebration of antiart to be later embraced for anarcho-political uses in the 1960s and the movement that laid the foundation for Surrealism.",
+  themes: "Nonsense, irrationality, anti-bourgeois, protest, peace, anti-war, anti-nationalism, radical far-left thought. Anti art. Anti colonialism. Believed that the 'reason' and 'logic' of bourgeois capitalist society had led people into war. Protest"against this world of mutual destruction.". Opposite of everything which art stood for.  Ignored aesthetics. If art was to appeal to sensibilities, Dada was intended to offend. Addressed a postwar economic and moral crisis. Rejected reason and logic, prizing nonsense, irrationality and intuition. Shock, scandel. Art and culture are considered a type of fetishization where the objects of consumption (including organized systems of thought like philosophy and morality) are chosen, much like a preference for cake or cherries, to fill a void. Rejecting "retinal art".",
+  start_reason: "Rejected the logic, reason, and aestheticism of modern capitalist society. Reaction to violence, destruction of WWI. Anti-Art sentiment. detachment from the constraints of reality. Detachment from reality. Rrejection of the tight correlation between words and meaning. Rejected colonialism.",
+  end_reason: "null",
+},
+
+{
+  name: "Early Renaissance",
+  dates: "1350 AD - 1500 AD",
+  style: "Ideal beauty. Realistic use of colors and light. Ethereal, foggy backgrounds. Romantized landscapes. An abundance of sharply outlined characters suddenly appears, robust, clear-cut personalities; lawless nature belonging just as much in the gallery of criminals as in that of great men. Character, individuality, power and energy are the passwords of the Renaissance age.  This new humanity, all these rugged and manly figures which the age had created, had also to appear in painting. In contrast to the former preference for beauty of an angelic and tender type, the problem now was to depict energetic and powerful beings; and to replace shy and feminine, though bearded, men in the pictures of the older masters by angular, harsh determined and daring types. The figures which has formerly hovered like spirits above the earth had now to stand firmly upon their own feet and become part of their earthly home. structure and position of  the figures, as in their expression, a general and uniform type of beauty prevailed. Rudimentary and uncompromising representation of individual qualities. This may  best explain all the strange physiognomies witch suddenly made their appearance in art; course men of the people with uncouth, overworked figures; peasants, with bones of bronze and pointed weather beaten features; half starved old beggars with sagging flesh and tottering bodies; neglected fellows with bald heads, stubbly beards, and long muscular arms. In place of the former dainty pose, every line is now sinew. Their firm, energetic attitude reflects the entire sprit of the rugged age. Expressive possibilities of the human anatomy. Lighting, linear and atmospheric perspective, anatomy, foreshortening and characterisation. The use of proportion – The first major treatment of the painting as a window into space appeared in the work of Giotto di Bondone, at the beginning of the 14th century. True linear perspective was formalized later, by Filippo Brunelleschi and Leon Battista Alberti. In addition to giving a more realistic presentation of art, it moved Renaissance painters into composing more paintings. Foreshortening – The term foreshortening refers to the artistic effect of shortening lines in a drawing so as to create an illusion of depth. Sfumato – The term sfumato was coined by Italian Renaissance artist Leonardo da Vinci and refers to a fine art painting technique of blurring or softening of sharp outlines by subtle and gradual blending of one tone into another through the use of thin glazes to give the illusion of depth or three-dimensionality. This stems from the Italian word sfumare meaning to evaporate or to fade out. The Latin origin is fumare, to smoke. Chiaroscuro – The term chiaroscuro refers to the fine art painting modeling effect of using a strong contrast between light and dark to give the illusion of depth or three-dimensionality. This comes from the Italian words meaning light (chiaro) and dark (scuro), a technique which came into wide use in the Baroque period. Use of: glazing, impasto.",
+  commentary: "null",
+  themes: "Individualism, humanism, Classics, Classical Orators and philosophers, prominance of the individual. Intellectual and spiritual awakening. Every person's life had value and dignity, Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A moral narrative.",
+  start_reason: "Expanded on religious subject matter to more real, human subjects. Discovey of classic liturature, sculpture.",
+  end_reason: "null",
+},
+
+{
+  name: "Egyptian",
+  dates: "3000 BC - 100 AD",
+  style: "Drawings on Papyrus, Glazed Pottery, Jewelry, Ivories, Tombs, Monuments, Architecural Ornamentation, sarcophagus",
+  commentary: "null",
+  themes: "Afterlife, religious, ideology, idealized, unrealistic view of the world,  cosmic purpose of maintaining order.",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Expressionism",
+  dates: "1901 AD - 1950 AD",
+  style: "Subjective perspective. Radically distorted for emotional effect to evoke moods or ideas. Expressed meaning of emotional experience rather than physical reality.",
+  commentary: "null",
+  themes: "Distorted reality for emotional effect to evoke moods or ideas. Expressing the meaning of emotional experience rather than physical reality.",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Fauvism",
+  dates: "1904 AD - 1908 AD",
+  style: "Primitive and less naturalistic. Pure, brilliant colour aggressively applied straight from the paint tubes to create a sense of an explosion. Unnatural color selection. Brown is purple, green is pink. Wild brush work and strident colors, subject simplification and abstraction. Unconstrained brushwork. African and Oceanic art influences. Expressive potency of pure color. Flat, bright colors, eclectic style, mixed techniques. Fauvist style: golden yellows, incandescent blues, thick impasto and larger brushstrokes. Rejection of  traditional three-dimensional space and instead use flat areas or patches of colour to create a new pictorial space.",
+  commentary: ""A pot of paint has been flung in the face of the public."  Louis Vauxcelles disparaged the painters as "fauves" (wild beasts). An "orgy of pure tones". "A pot of paint has been flung in the face of the public". Critics were horrified by its flatness, bright colors, eclectic style and mixed technique.",
+  themes: "Disturb complacency.",
+  start_reason: "Disturb art history complacency.",
+  end_reason: "null",
+},
+
+{
+  name: "Ferrara School,",
+  dates: "1450 AD - 1560 AD",
+  style: "Bodies and emaciated faces are characteristic and the ecstatic and painful expressions.",
+  commentary: "null",
+  themes: "null",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Florentine",
+  dates: "1267 AD - 1627 AD",
+  style: "Naturalistic. Forming figures of unprecedented naturalism.There was a severity and austerity about the Florentine art, not too sensuous and luxurious, but rather exact and intellectual. Lustreless fresco, architectural composition, towering or sweeping lines, rather sharp color as compared with the Venetians, and theological, classical, even literary and allegorical subjects. Line and composition were means of expressing abstract thought better than color. Naturalism. During the first half of the 15th century, the achieving of the effect of realistic space in a painting by the employment of linear perspective was a major preoccupation of many painters, as well as the architects Brunelleschi and Alberti who both theorised about the subject. Giotto used tonality to create form. Taddeo Gaddi in his nocturnal scene in the Baroncelli Chapel demonstrated how light could be used to create drama. Paolo Uccello, a hundred years later, experimented with the dramatic effect of light in some of his almost monochrome frescoes. From about 1450, with the arrival in Italy of the Flemish painter Rogier van der Weyden and possibly earlier, artists were introduced to the medium of oil paint. Whereas both tempera and fresco lent themselves to the depiction of pattern, neither presented a successful way to represent natural textures realistically. The highly flexibly medium of oils, which could be made opaque or transparent, and allowed alteration and additions for days after it had been laid down, opened a new world of possibility to Italian artists. Realism: "...the glass vase alone was enough to excite attention. But the most influential aspect of the triptych was the extremely natural and lifelike quality of the three shepherds with stubbly beards, workworn hands and expressions ranging from adoration to wonder to incomprehension. "",
+  commentary: "null",
+  themes: "Humanism. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A moral narrative.",
+  start_reason: "Advance from Gothic style. Exploration of perspective. Unusal concentration of talent. Secular patronage. Focus on the man not the theology, devine (Humanism).  Heightened enlightenment. Flemish oil painting technique. Reawakening to the ideals and achievements of classical Roman culture. .",
+  end_reason: "New styles, new geograhic areas, new techniques. Top artists attracted to Rome. ",
+},
+
+{
+  name: "Futurism",
+  dates: "1907 AD - 1944 AD",
+  style: "Figurative, Figures in Motion, Speed, movement, glorified science, technology, youth, violence, vehicles, car, airplane, the industrial city,  glorified modernity",
+  commentary: "null",
+  themes: "null",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Gothic",
+  dates: "1150 AD - 1580 AD",
+  style: "The earliest Gothic art was monumental sculpture, on the walls of Cathedrals and abbeys. Saints' lives were often depicted. Images of the Virgin Mary changed from the Byzantine iconic form to a more human and affectionate mother, cuddling her infant, swaying from her hip, and showing the refined manners of a well-born aristocratic courtly lady. More focus on Saints.  Gothic ornamental detailing is often introduced before much change is seen in the style of figures or compositions themselves. Then figures become more animated in pose and facial expression, tend to be smaller in relation to the background of scenes, and are arranged more freely in the pictorial space, where there is room. Use of compounds of silver, painted on glass which was then fired, allowed a number of variations of colour, centred on yellows, to be used with clear glass in a single piece. By the end of the period designs increasingly used large pieces of glass which were painted, with yellows as the dominant colours, and relatively few smaller pieces of glass in other colours. Heavy use of gold and goldleaf. The use of spatial indicators such as building elements and natural features such as trees and clouds also denote the French Gothic style of illumination. A new minute realism in oil painting was combined with subtle and complex theological allusions, expressed precisely through the highly detailed settings of religious scenes. Use of polyptychs, multiple panels of painted subjects,  in oil. Donor portraits smaller than the Virgin or saints depicted were used. Heavy use of sculpture. The facades of large churches, especially around doors, continued to have large tympanums, but also rows of sculpted figures spreading around them. Statues show an elegant but exaggerated columnar elongation, some show a more naturalistic style and increasing detachment from the wall behind, and some awareness of the classical tradition. some  figures are almost in the round. Life-size tomb effigies in stone or alabaster became popular for the wealthy, and grand multi-level tombs evolved. Architectural elements are: The rib vault, flying buttress, and pointed (Gothic) arch, Stained-glass window, more windows for light, use of stone, ",
+  commentary: "The word "Gothic" for art was initially used as a synonym for "Barbaric", and was therefore used pejoratively. The new 'barbarian' styles filtering down from north of the Alps posed a similar threat to the classical revival promoted by the early Renaissance. "monstrous and barbarous" "disorder"- Vasari. "pointed arches of northern architecture were an echo of the primitive huts" - Raphael.",
+  themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Hellenistic",
+  dates: "323 BC - 30 BC",
+  style: "The statue, originally single but by the Hellenistic period often in groups was the dominant form, though reliefs, often so "high" that they were almost free-standing, were also important. During this period sculpture became more naturalistic, and also expressive; the interest in depicting extremes of emotion being sometimes pushed to extremes. Genre subjects of common people, women, children, animals and domestic scenes became acceptable subjects for sculpture, which was commissioned by wealthy families for the adornment of their homes and gardens; the Boy with Thorn is an example. Realistic portraits of men and women of all ages were produced, and sculptors no longer felt obliged to depict people as ideals of beauty or physical perfection. The multi-figure group of statues was a Hellenistic innovation. Extravagantly contorted body poses, and intense expressions in the faces. Statues depict Classical themes, but their treatment is far more sensuous and emotional than the austere taste of the Classical period would have allowed or its technical skills permitted. Hellenistic sculpture was also marked by an increase in scale, which culminated in the Colossus of Rhodes. It was the time of gigantism with large works and scale. The Corinthian order (column style) was used for the first time on a full-scale. The multi-figure group of statues was a Hellenistic innovation, probably of the 3rd century, taking the epic battles of earlier temple pediment reliefs off their walls, and placing them as life-size groups of statues. Their style is often called "baroque", with extravagantly contorted body poses, and intense expressions in the faces. Pergamene Baroque. The sculptors, imitating the preceding centuries, portray painful moments rendered expressive with three-dimensional compositions, often V-shaped, and anatomical hyper-realism. Increased use of landscape. Landscapes are representative of familiar naturalistic figures while also displaying mythological and sacro-idyllic elements. This style that emerged most prevalently in Hellenistic art combines sacred and profane elements, creating a dreamlike setting. Sacro-idyllic influences demonstrate fantastical narratives with a color scheme and commonplace components. Hellenistic backgrounds can also be seen in works throughout Pompeii, Cyrene, Alexandria. Floral features and branches can be found on walls and ceilings strewn in a disordered yet conventional manner, mirroring a late Greek style. In addition, "Cubiculum" paintings found in Villa Boscoreale include vegetation and a rocky setting in the background of detailed paintings of grand architecture. Three main qualities unique to Hellenistic painting style were three-dimensional perspective, the use of light and shade to render form, and trompe l’oeil realism. Secco techniques and fresco techniques. Pebble Mosaics consisted of placing small white and black pebbles of no specific shape, in a circular or rectangular panel to illustrate scenes of mythology. The white pebbles -in slightly different shades- were placed on a black or blue background to create the image. The black pebbles served to outline the image. Pebble Mosaics show early use of terra-cotta and lead wire to create a greater definition of contours and details to the images in the mosaics. Tanagra figurines, from Tanagra in Boeotia and other centers, full of lively colours, most often represent elegant women in scenes full of charm. Grotesques which contrast violently with the canons of "Greek beauty":  deformed bodies in tortuous poses – hunchbacks, epileptics, hydrocephalics, obese women.",
+  commentary: "Pliny the Elder, described the sculpture of the  previous classical period notes: "then art disappeared".",
+  themes: "Natural, Real, Secular, Sacred, Veneration, beauty, piety, honor or sacrifice",
+  start_reason: "Influence from other geographic regions. Conquest. Reverance for Human form.",
+  end_reason: "null",
+},
+
+{
+  name: "High Renaissance",
+  dates: "1450 AD - 1530 AD",
+  style: "Sumptuous, elaborate, expressive, and exhalted wealthy and powerful people.  Like kings they were depicted in elaborate settings swaddled in furs and silks. Figures had this suppleness and elegance of pose, and to clothed with artistically arranged draperies. Ideal beauty. Realistic use of colors and light. Ethereal, foggy backgrounds. Romantized landscapes. An abundance of sharply outlined characters suddenly appears, robust, clear-cut personalities; lawless nature belonging just as much in the gallery of criminals as in that of great men. Character, individuality, power and energy are the passwords of the Renaissance age.  This new humanity, all these rugged and manly figures which the age had created, had also to appear in painting. In contrast to the former preference for beauty of an angelic and tender type, the problem now was to depict energetic and powerful beings; and to replace shy and feminine, though bearded, men in the pictures of the older masters by angular, harsh determined and daring types. The figures which has formerly hovered like spirits above the earth had now to stand firmly upon their own feet and become part of their earthly home. structure and position of  the figures, as in their expression, a general and uniform type of beauty prevailed. Rudimentary and uncompromising representation of individual qualities. This may  best explain all the strange physiognomies witch suddenly made their appearance in art; course men of the people with uncouth, overworked figures; peasants, with bones of bronze and pointed weather beaten features; half starved old beggars with sagging flesh and tottering bodies; neglected fellows with bald heads, stubbly beards, and long muscular arms. In place of the former dainty pose, every line is now sinew. Their firm, energetic attitude reflects the entire sprit of the rugged age. Expressive possibilities of the human anatomy. Lighting, linear and atmospheric perspective, anatomy, foreshortening and characterisation. The use of proportion – The first major treatment of the painting as a window into space appeared in the work of Giotto di Bondone, at the beginning of the 14th century. True linear perspective was formalized later, by Filippo Brunelleschi and Leon Battista Alberti. In addition to giving a more realistic presentation of art, it moved Renaissance painters into composing more paintings. Foreshortening – The term foreshortening refers to the artistic effect of shortening lines in a drawing so as to create an illusion of depth. Sfumato – The term sfumato was coined by Italian Renaissance artist Leonardo da Vinci and refers to a fine art painting technique of blurring or softening of sharp outlines by subtle and gradual blending of one tone into another through the use of thin glazes to give the illusion of depth or three-dimensionality. This stems from the Italian word sfumare meaning to evaporate or to fade out. The Latin origin is fumare, to smoke. Chiaroscuro – The term chiaroscuro refers to the fine art painting modeling effect of using a strong contrast between light and dark to give the illusion of depth or three-dimensionality. This comes from the Italian words meaning light (chiaro) and dark (scuro), a technique which came into wide use in the Baroque period. Use of: glazing, impasto.",
+  commentary: ""The besotted taste of Gothic monuments, / These odious monsters of ignorant centuries, / Which the torrents of barbary spewed forth.",  "The Italians, having before their eyes the treasures of ancient statuary, were able to acquire the purity and correctness of the drawing quickly. They have learned to give their figures this suppleness and elegance of pose, and to clothe them with artistically arranged draperies. The Germans, on the contrary, had only one model: nature. Also if their poses have some stiffness, so their heads are almost all portraits, they great charm and delicious naiveté in expression. In a way, they are closer to the truth." - Albert Durer.",
+  themes: "Individualism, humanism, Classics, Classical Orators and philosophers, prominance of the individual. Intellectual and spiritual awakening. Every persons life had value and dignity. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A moral narrative.",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "History Painting",
+  dates: "1450 AD - 1875 AD",
+  style: "Real Historical Moments, Moment in a narrative story, subjects from history, COA, Flags, Uniforms, Armor, Classical Imagery",
+  commentary: ""...he who becomes an imitator of God in representing human figures, is much more excellent than all the others..."",
+  themes: "Political, Propaganda, Educational, Commerative",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Hudson River School",
+  dates: "1825 AD - 1880 AD",
+  style: "Realistic, detailed, and sometimes idealized.",
+  commentary: "NULL",
+  themes: "Anti-Industrialization, Nature as Expression of God, ",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Impressionism",
+  dates: "1860 AD - 1895 AD",
+  style: "Outdoor settings. Characterized by relatively small, thin, yet visible brush strokes, open composition, emphasis on accurate depiction of light in its changing qualities (often accentuating the effects of the passage of time), ordinary subject matter, inclusion of movement as a crucial element of human perception and experience, and unusual visual angles. Violated the rules of academic painting. They constructed their pictures from freely brushed colours that took precedence over lines and contours. Capturing the momentary and transient effects of sunlight by painting outdoors or en plein air. They portrayed overall visual effects instead of details, and used short "broken" brush strokes of mixed and pure unmixed colour—not blended smoothly or shaded, as was customary—to achieve an effect of intense colour vibration. Art of immediacy and movement, of candid poses and compositions, of the play of light expressed in a bright and varied use of colour. Recreating the sensation in the eye that views the subject, rather than delineating the details of the subject, and by creating a welter of techniques and forms. Pursuit of an art of spontaneity, sunlight, and colour. Short, thick strokes of paint quickly capture the essence of the subject, rather than its details. The paint is often applied impasto. Colours are applied side by side with as little mixing as possible, a technique that exploits the principle of simultaneous contrast to make the colour appear more vivid to the viewer. Greys and dark tones are produced by mixing complementary colours. Pure impressionism avoids the use of black paint. Wet paint is placed into wet paint without waiting for successive applications to dry, producing softer edges and intermingling of colour. Impressionist paintings do not exploit the transparency of thin paint films (glazes), which earlier artists manipulated carefully to produce effects. The impressionist painting surface is typically opaque. The paint is applied to a white or light-coloured ground. Previously, painters often used dark grey or strongly coloured grounds. The play of natural light is emphasized. Close attention is paid to the reflection of colours from object to object. Painters often worked in the evening to produce effets de soir—the shadowy effects of evening or twilight. In paintings made en plein air (outdoors), shadows are boldly painted with the blue of the sky as it is reflected onto surfaces, giving a sense of freshness previously not represented in painting. (Blue shadows on snow inspired the technique.). further developing into an art form its very subjectivity in the conception of the image, the very subjectivity that photography eliminated".[31] The Impressionists sought to express their perceptions of nature, rather than create exact representations. This allowed artists to depict subjectively what they saw with their "tacit imperatives of taste and conscience".[32] Photography encouraged painters to exploit aspects of the painting medium, like colour, which photography then lacked: "The Impressionists were the first to consciously offer a subjective alternative to the photograph". Bold blocks of colour and composition on a strong diagonal slant showing the influence of Japanese prints.",
+  commentary: ""...Wallpaper in its embryonic state is more finished than that seascape.". Louis Leroy to coined the term in a satirical review published in the Parisian newspaper Le Charivari.",
+  themes: "null",
+  start_reason: "Rebelled against Acacdemic conforming paintings. Too polished and detailed. Idealistic. Emphasized still-lifes,  landscapes and daily life.",
+  end_reason: "null",
+},
+
+{
+  name: "Mannerism",
+  dates: "1510 AD - 1600 AD",
+  style: "Exaggerates proportion, balance, and ideal beauty, often resulting in compositions that are asymmetrical or unnaturally elegant. privileges compositional tension and instability rather than the balance and clarity of earlier Renaissance painting. Exquisite attention to surface and detail: porcelain-skinned figures recline in an even, tempered light, acknowledging the viewer with a cool glance. works exemplifying this trend are often called 'cold' or 'aloof.' This is typical of the so-called "stylish style" or Maniera in its maturity. Elongation of figures: often Mannerist work featured the elongation of the human figure – occasionally this contributed to the bizarre imagery of some Mannerist art. Distortion of perspective: in paintings, the distortion of perspective explored the ideals for creating a perfect space. However, the idea of perfection sometimes alluded to the creation of unique imagery. One way in which distortion was explored was through the technique of foreshortening. At times, when extreme distortion was utilized, it would render the image nearly impossible to decipher. Black backgrounds: Mannerist artists often utilized flat black backgrounds to present a full contrast of contours in order to create dramatic scenes. Black backgrounds also contributed to a creating sense of fantasy within the subject matter. Use of darkness and light: many Mannerists were interested in capturing the essence of the night sky through the use of intentional illumination, often creating a sense of fanatical scenes. Notably, special attention was paid to torch and moonlight to create dramatic scenes. Sculptural forms: Mannerism was greatly influenced by sculpture, which gained popularity in the sixteenth century. As a result, Mannerist artists often based their depictions of human bodies in reference to sculptures and prints. This allowed Mannerist artists to focus on creating dimension. Clarity of line: the attention that was paid to clean outlines of figures was prominent within Mannerism and differed largely from the Baroque and High Renaissance.The outlines of figures often allowed for more attention to detail. Composition and space: Mannerist artists rejected the ideals of the Renaissance, notably the technique of one-point perspective. Instead, there was an emphasis on atmospheric effects and distortion of perspective. The use of space in Mannerist works instead privileged crowded compositions with various forms and figures or scant compositions with emphasis on black backgrounds. Mannerist movement: the interest in the study of human movement often lead to Mannerist artists rendering a unique type of movement linked to serpentine positions. These positions often anticipate the movements of future positions because of their often-unstable motions figures. In addition, this technique attributes to the artist's experimentation of form. Painted frames: in some Mannerist works, painted frames were utilized to blend in with the background of paintings and at times, contribute to the overall composition of the artwork. This is at times prevalent when there is special attention paid to ornate detailing. Atmospheric effects: many Mannerists utilized the technique of sfumato, known as, "the rendering of soft and hazy contours or surfaces"[33] in their paintings for rendering the streaming of light. Mannerist colour: a unique aspect of Mannerism was in addition to the experimentation of form, composition, and light, much of the same curiosity was applied to color. Many artworks toyed with pure and intense hues of blues, green, pinks, and yellows, which at times detract from the overall design of artworks, and at other times, compliment it. Additionally, when rending skin tone, artists would often concentrate on create overly creaming and light complexions and often utilize undertones of blue. Sculptures used figura serpentinata, often of two intertwined figures, that were interesting from all angles.",
+  commentary: "la maniera was a derogatory term for the perceived decline of art after Raphael",
+  themes: "Cool, detached.",
+  start_reason: "To advance from the Renaissance style. ",
+  end_reason: "null",
+},
+
+{
+  name: "Nabis",
+  dates: "1890 AD - 1898 AD",
+  style: ""a flat surface covered with colors assembled in a certain order". Japanese woodblock print. Japonism. Reduced the elements of a painting to an interplay of shapes and colours. Favored browns, beiges and blues.",
+  commentary: ""a flat surface covered with colors assembled in a certain order". "Art is no longer a visual sensation that we gather, like a photograph, as it were, of nature. No, it is a creation of our spirit, for which nature is only the occasion."",
+  themes: "Emotions comes from the sufficiency of the lines and the colors to explain themselves. Everything is contained in the beauty of the work. Rejected the materialism of the new industrial age. Opposed Naturalism. "Art is no longer a visual sensation that we gather, like a photograph, as it were, of nature. No, it is a creation of our spirit, for which nature is only the occasion." They rejected Impressionism’s emphasis on ephemeral effects and concentrated on reducing the elements of a painting to an interplay of shapes and colours. Bonnard asserted"You reason color more than you reason drawing... Color has a logic as severe as form."",
+  start_reason: "Art was not a depiction of nature, but a synthesis of metaphors and symbols created by the artist. Wanted to ttransform the foundations of art. Opposed Naturalism movement. "Art is no longer a visual sensation that we gather, like a photograph, as it were, of nature. No, it is a creation of our spirit, for which nature is only the occasion." Rejected Impressionism’s emphasis on ephemeral effects and concentrated on reducing the elements of a painting to an interplay of shapes and colours. Fun loving, avant-garde, Whimsical.",
+  end_reason: "null",
+},
+
+{
+  name: "Neoclassicism",
+  dates: "1740 AD - 1835 AD",
+  style: "Severe and unemotional, Grandeur of ancient Greece and Rome.Rigid. Homoeroticism of Greco-Roman art, erotic male sculptures. Neoclassical art is characterized by its classical form and structure, clarity, and to an degree, realism. More than just a classical revival, Neo-Classicism was directly connected to contemporary political events. Neo-Classical artists at first wanted to supplant the eroticism and frivolity of the Rococo style with a style that was orderly and serious in character.  French Neoclassism painters emphasis's patriotism, as well as a sense of civility and honorableness. The movement was particularly connected with the beliefs of the French Revolution and was seen as anti-aristocratic. The fantasy-based aristocratic art of the Rococo era seemed an insult upon the rights of men and was vilified by critics and the general public.  In an age of sweeping revolution and transformation Neoclassicism became the art of change. Very simple line drawing, figures mostly in profile.",
+  commentary: ""insipid" and "almost entirely uninteresting to us", Rococo frivolity and Baroque movement had been stripped away but many artists struggled to put anything in their place,",
+  themes: "Severe, unemotional, rigid, Greek, Roman, Classical Thought. Homoeroticism, erotic males. Neoclassical art is characterized by its classical form and structure, clarity, and to an degree, realism. Connected to contemporary political events. Orderly and serious in character.  Patriotism, civility and honorableness. Revolutionary, anti-aristocratic. Change. Celebrate ideal forms of its beauty. Noble simplicity and calm grandeur. Republican virtues.",
+  start_reason: "Reaction to the overbred frivality, eroticism of Rococo style and the emotional charged Baroque style. A general revival of interest in classical thought.Connected to contemporary political events. A style that was orderly and serious in character. The art of revolution and change such as the French Revolution. Popularity of the Grand Tour to Italy.",
+  end_reason: "null",
+},
+
+{
+  name: "Northern Renaissance",
+  dates: "1350 AD - 1600 AD",
+  style: "Realistic at times to grotesqueness. Little troubled with fine poetic frenzies. Use of: glazing, impasto. Complicated iconography. The detailed realism. Gothic elements, influence. Wood panels. Shapes lose their contours the further away they are, and that the intensity of the colour decreases and assumes a bluish hue. For the landscape views which lent depth to their interiors, they invented aerial and colour perspective. Focus on detailed everyday themes.",
+  commentary: ""The Italians, having before their eyes the treasures of ancient statuary, were able to acquire the purity and correctness of the drawing quickly. They have learned to give their figures this suppleness and elegance of pose, and to clothe them with artistically arranged draperies. The Germans, on the contrary, had only one model: nature. Also if their poses have some stiffness, so their heads are almost all portraits, they great charm and delicious naiveté in expression. In a way, they are closer to the truth." - Albert Durer.",
+  themes: "Domestic scenes, satire, philosophical, humour, merchants at work, peasants in the fields and play, fantastical landscapes, dogs, cats, birds, children, household goods, nature, anatomy, perspective, architecture, accessories, actual life of the present, the life to come, secular society. Emphasis: devotional piety, spirituality, and living a simple life. Sturdy, honest, coarse, sufficient unto themselves, and caring little for what other people did. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A moral narrative.",
+  start_reason: "The political and religious situation of the region. The chaos and upheaval of the church meant that there was no single artistic nucleus. Italian trade, printing. Expanded on religious subject matter to more real, human subjects. Discovey of classic liturature, sculpture. Translation of the Bible. ",
+  end_reason: "null",
+},
+
+{
+  name: "Pointillism",
+  dates: "1885 AD - 1903 AD",
+  style: "Tiny dots of primary-colors are used to generate secondary colors and an image. Contrary and of similar elements of tone, of color and of line, conditioned by the dominate key, and under the influence of a particular light, in gay, calm, or sad combinations. Juxtaposed small dots of pure color together to maximize luminosity. The dots appeared to intermingle and blend in the spectator's eye. The majority of Pointillism is done in oil paint. Anything may be used in its place, but oils are preferred for their thickness and tendency not to run or bleed.",
+  commentary: "The term "Pointillism" was coined by art critics in the late 1880s to ridicule the works of these artists, but is now used without its earlier mocking connotation. Some say they see poetry in my paintings; I see only science.",
+  themes: "Science of color, Application of color theory",
+  start_reason: "Apply the science of color to art.",
+  end_reason: "null",
+},
+
+{
+  name: "Post Impressionism",
+  dates: "1882 AD - 1915 AD",
+  style: "Individuality, pure color, organization and form.  Geometric forms, Paris, arbitrary colour, esoteric, Synthetist style, landscapes, Parisian cafe Culture, 19th-century, Paris, soleil levant,  open composition, impasto, vibrant, effets de soir, natural light, en plein air, boating, leisure activities, Landscapes, modernization, synthetic pigments, industrialization, physics of colour, broader strokes, fleeting impression of colour and light, bright, vibrant, flowers, figures. Vivid colours, thick application of paint, real-life subject matter, geometric forms, distort form for expressive effect, unnatural, arbitrary colour. Reducing objects to their basic shapes while retaining the saturated colours of Impressionism. ",
+  commentary: ""the term 'Post-Impressionism' is not a very precise one, though a very convenient one." The schools give recipes, but they do not beget works that make people exclaim: " How beautiful that is!”",
+  themes: "Asthetic beauty. Individuality, convey feelings, state of mind.",
+  start_reason: "Reaction against Impressionists' concern for the naturalistic depiction of light and colour, rejecting triviality of subject matter and the loss of structure.",
+  end_reason: "null",
+},
+
+{
+  name: "Pre-Raphaelite_Brotherhood",
+  dates: "1840 AD - 1855 AD",
+  style: "The group continued to accept the concepts of history painting and mimesis, imitation of nature, as central to the purpose of art. Genuine ideas to express, study Nature attentively, so as to know how to express it, sympathise with what is direct and serious and heartfelt in previous art, to the exclusion of what is conventional and self-parading and learned by rote; and produce thoroughly good pictures and statues. medieval culture. The Pre-Raphaelite Brotherhood was greatly influenced by nature and its members used great detail to show the natural world using bright and sharp-focus techniques on a white canvas. In attempts to revive the brilliance of colour found in Quattrocento art, Hunt and Millais developed a technique of painting in thin glazes of pigment over a wet white ground in the hope that the colours would retain jewel-like transparency and clarity. Their emphasis on brilliance of colour was a reaction to the excessive use of bitumen by earlier British artists, such as Reynolds, David Wilkie and Benjamin Robert Haydon. Bitumen produces unstable areas of muddy darkness, an effect the Pre-Raphaelites despised. Relistic and detailed flowers, plants. Rejection of conventional methods of composition. Dreamy, yearning images of women. Feelings and emotions are emphasized",
+  commentary: "" Their faith seems to consist in an absolute contempt for perspective and the known laws of light and shade, an aversion to beauty in every shape, and a singular devotion to the minute accidents of their subjects, including, or rather seeking out, every excess of sharpness and deformity." The medievalism was backward-looking and its extreme devotion to detail was ugly and jarring to the eye. Millais made the Holy Family look like alcoholics and slum-dwellers, adopting contorted and absurd "medieval" poses - Charles Dickens. Popular sentimentality. Sentimental and concocted "artistic bric-a-brac".",
+  themes: "Genuine ideas to express, Nature, direct, serious, heartfelt in previous art, to the exclusion of what is conventional and self-parading and learned by rote; and most indispensable of all, to produce thoroughly good pictures and statues. Stressed detail and melodrama. Noble emotions. Feelings and emotions are emphasized.",
+  start_reason: "Rejecting Classical poses and elegant compositions of Raphael in particular were thought a corrupting influence on the academic teaching of art, hence the name "Pre-Raphaelite". Rejecting art concept of "the ideal."",
+  end_reason: "null",
+},
+
+{
+  name: "Realism / Realist / Naturalism",
+  dates: "1850 AD - null AD",
+  style: "Generally the attempt to represent subject matter truthfully, without artificiality and avoiding artistic conventions, or implausible, exotic, and supernatural elements. The accurate depiction of lifeforms, perspective, and the details of light and colour. But realist or naturalist works of art may, as well or instead of illusionist realism, be "realist" in their subject-matter, and emphasize the mundane, ugly or sordid. Realism is the precise, detailed and accurate representation in art of the visual appearance of scenes and objects. depicted with great skill and care. But subjects could be unreal (e.g. Angels with realistic wings). Realists used unprettified detail depicting the existence of ordinary contemporary life. Realism or naturalism as a style meaning the honest, unidealizing depiction of the subject, can be used in depicting any type of subject, without any commitment to treating the typical or everyday. In the 19th century "Naturalism" or the "Naturalist school" was somewhat artificially erected as a term representing a breakaway sub-movement of Realism, that attempted (not wholly successfully) to distinguish itself from its parent by its avoidance of politics and social issues, and liked to proclaim a quasi-scientific basis, playing on the sense of "naturalist" as a student of Natural history, as the biological sciences were then generally known. ",
+  commentary: "null",
+  themes: "social or political awareness, mundane, ugly, sordid, social realism, kitchen sink realism.",
+  start_reason: "Rejected Romanticism, History Painting",
+  end_reason: "null",
+},
+
+{
+  name: "Rococo",
+  dates: "1710 AD - 1790 AD",
+  style: "Pastel colors; spontaneous brush strokes, dancing lights, subtle surface tonalities and a soft, elegant and charming approach to subject matter. The partial abandonment of symmetry, everything being composed of graceful lines and curves, similar to the Art Nouveau ones. The huge quantity of asymmetrical curves and C-shaped volutes. The very wide use of flowers in ornamentation, an example being festoons made of flowers. Chinese and Japanese motifs. Warm pastel colours (whitish-yellow, cream-coloured, pearl greys, very light blues)",
+  commentary: ""ridiculous jumble of shells, dragons, reeds, palm-trees and plants", "out of style and old-fashioned." It was used in 1828 for decoration "which belonged to the style of the 18th century, overloaded with twisting ornaments."  Fantasy-based aristocratic art of the Rococo era.  An insult upon the rights of men.",
+  themes: "Erotic, Mildly Erotic, Romantic, Frivolous, Aristocratic",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Roman",
+  dates: "450 BC - 550 BC",
+  style: "Classical",
+  commentary: "null",
+  themes: "Physical beauty.",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Romanesque",
+  dates: "950 AD - 1250 AD",
+  style: "Lavishly decorated manuscripts of this period were bibles and psalters. Columns: often carved with complete scenes with several figures. High relief was the dominant sculptural mode of the period.  Colours were very striking, and mostly primary. In the 21st century: these colours can only be seen in their original brightness in stained glass, and a few well-preserved manuscripts. Architectural reliefs. Manuscript illumination. Both figurative and non-figurative sculpture is the spiral. One of the sources may be Ionic capitals. Scrolling vines were a common motif. Scrolling vine motifs.  Engaged and entwined animals, often used to superb effect in capitals and sometimes on a column itself. Much of the treatment of paired, confronted and entwined animals in Romanesque decoration has similar Insular origins, as do animals whose bodies tail into purely decorative shapes. Native Irish and Viking styles which would be slowly extinguished and replaced by mainstream Romanesque style in the early 13th century. Often the sculpture is alarming in form and in subject matter. These works are found on capitals, corbels and bosses, or entwined in the foliage on door mouldings. They represent forms that are not easily recognizable today. Common motifs include Sheela na Gig, fearsome demons, ouroboros or dragons swallowing their tails, and many other mythical creatures with obscure meaning. Spirals and paired motifs originally had special significance in oral tradition that has been lost or rejected by modern scholars. The purpose of the sculptural schemes was to convey a message that the Christian believer should recognize wrongdoing, repent and be redeemed. A feature of some Romanesque churches is the extensive sculptural scheme which covers the area surrounding the portal. Elaborate scheme of sculpture set within the broad niches created by the arcading of the facade. Elaborate pictorial scheme in low relief surrounds the door. Relief sculpture.",
+  commentary: "null",
+  themes: "Morality, Christian believer should recognize wrongdoing, repent and be redeemed, Redemption, Sin",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Romanticism",
+  dates: "1750 AD - 1860 AD",
+  style: "Unrefined outlines, unrestrained brushstrokes, and the emphasis on color over form makes the painterly style the choice of the Romantics. Visible brushstrokes, which lend themselves to an energy and immediacy to the painting. Ethereal and foggy Backgrounds. 3D drawing and representation. ",
+  commentary: "“Romanticism is precisely situated neither in choice of subject nor in exact truth, but in a way of feeling,”",
+  themes: "Individualistic, exotic, beautiful and emotionally wrought. Passion, sensitivity, and imagination. Emotion, individualism, Glorification of all the past, Glorification of nature, medieval rather than the classical.  Intense emotion as an authentic source of aesthetic experience, placing new emphasis on such emotions as apprehension, horror and terror, and awe—especially that experienced in confronting the new aesthetic categories of the sublimity and beauty of nature. Revived medievalism Authentically medieval in an attempt to escape population growth, early urban sprawl, and industrialism.  Achievements of "heroic" individualists and artists.  Promoted individual imagination. Realism was offered as a polar opposite to Romanticism. Strong belief and interest in the importance of nature. Effect of nature upon the artist when he is surrounded by it, preferably alone. Distrustful of the human world, close connection with nature was mentally and morally healthy. Uses personal voice of the artist. A new and restless spirit, seeking violently to burst through old and cramping forms. A nervous preoccupation with perpetually changing inner states of consciousness, a longing for the unbounded and the indefinable, for perpetual movement and change, an effort to return to the forgotten sources of life, a passionate effort at self-assertion both individual and collective, a search after means of expressing an unappeasable yearning for unattainable goals". Horror, passion, and awe, when experienced in the face of nature’s sublime landscape, offered an artistic antidote to the perceived disconnect from spirituality occurring as the theory of evolution took hold around the world. This nostalgia inspired the Romantics to shift the spotlight onto the individual’s imagination and his or her interpretation of the world. Patriotism, nationalism, struggle for independence",
+  start_reason: "Reaction against a restrained Classicism and Neoclassicism. Rejections of Industrial Revolution, the aristocratic social and political norms of the Age of Enlightenment, and the scientific rationalization of nature—all components of modernity. Rejection of modernity. Escaping of population growth, early urban sprawl, and industrialism. Rejecting excessive emphasis on the cerebral and instead arguing for heightened emotion.",
+  end_reason: "null",
+},
+
+{
+  name: "Sienese School",
+  dates: "1150 AD - 1550 AD",
+  style: "Gothic, gold, gilding, Byzantium influences. Throughout the Middle Ages, Italian art was largely traditional, sticking to the techniques and style established by the Byzantine Church. Sienese artists for the most part, left Byzantine conventions behind and were leading the way towards the Renaissance, although some Byzantine flavor lingered in Sienese painting. As they imparted to their pictures a orderly and elegant element and a splendor of color and gilding that recall Byzantine art, so also their work reflects the wealth of  ecstatic feeling that had come into their world through St. Francis. Youthful, lovely, and graceful. The prevailing characteristic being slender, supple grace. It seems as if the stone vaults of the churches had suddenly become transparent, and the eyes gazed upwards towards heaven, where tender ethereal beings, singing and praising the Highest, lived in eternal youth and lovingly gazed down upon mankind. This Mary is no longer severe and dignified, but mild and gracious, as if she has had  pity upon the longing soul of the believer; for a soft dreamy melancholy transfigures her features.  Her relation to the Child also is changed; she is no longer the involuntary mother of God, but a tender mother. Duccio explored in his own art a new world of emotion and passion, but with a lyricism and sensitivity to color that became the foundation of Sienese painting. 13th and 14th century Sienese paintings are incredibly mystical, and completely enchanting. Sienese School artists were innovative and  produced works of great beauty and wonder.  The style is distinct and clearly different from the more solemn Early Renaissance art produced in Florence.  The unique  style was  influenced by French Gothic and inspired by oriental and Byzantine elements. The brothers Pietro and Ambrogio Lorenzetti were "responsible for a crucial development in Sienese art, moving from the tradition inherited from Duccio towards a Gothic style, incorporating the innovations in Florence introduced by Giotto and Arnolfo di Cambio". Unlike Florentine art, Sienese art opted for a more decorative style and rich colors, with "thinner, elegant, and courtly figures". It also has "a mystical streak...characterized by a common focus on miraculous events, with less attention to proportions, distortions of time and place, and often dreamlike coloration". Sienese painters did not paint portraits, allegories, or classical myths.",
+  commentary: "null",
+  themes: "Ecstaic religious feeling",
+  start_reason: "Evolution, reaction to Byzantine Art. Inspired by teachings of St. Francis.",
+  end_reason: "Economic, political decline of Siena by the 16th century. Its eventual subjugation by Florence.",
+},
+
+{
+  name: "Surrealism",
+  dates: "1924 AD - ? AD",
+  style: "Unnerving, illogical scenes, sometimes with photographic precision, creating strange creatures from everyday objects, and developing painting techniques that allowed the unconscious to express itself. Resolves previously contradictory conditions of dream and reality into an absolute reality, a super-reality", or surreality. Works of surrealism feature the element of surprise, unexpected juxtapositions and non sequitur; however, many surrealist artists and writers regard their work as an expression of the philosophical movement first and foremost, with the works themselves being an artifact. Leader Breton was explicit in his assertion that Surrealism was, above all, a revolutionary movement. At the time, the movement was associated with political causes such as communism and anarchism.",
+  commentary: "null",
+  themes: "Unnerving, illogical, strange unconscious expression, Dream, Unreality, Sureality. Disorienting, hallucinatory quality of a dream; fantastic. Surprise, Unexpected Juxtapositions, non sequiturs. Revolutionary.",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Symbolism",
+  dates: "1860 AD - 1910 AD",
+  style: "More a philosophy than an actual style of art.",
+  commentary: "null",
+  themes: "Contemplative refuge from the world of strife and will. Mysticism, Otherworldliness, Mortality. A sense of the malign power of sexuality. Rejects the reality of life. ",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Tonalism",
+  dates: "1880 AD - 1920 AD",
+  style: "Tonalism was an artistic style that emerged in the 1880s when American artists began to paint landscape forms with an overall tone of colored atmosphere or mist. Between 1880 and 1915, dark, neutral hues such as gray, brown or blue, often dominated compositions by artists associated with the style. Moods, shadows.",
+  commentary: "null",
+  themes: "Mood, Shadows",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Venetian",
+  dates: "1430 AD - 1768 AD",
+  style: "Primacy of colour over line. Colorful. Used gold backgrounds and ground after being abandoned by the rest of Europe (e.g. San Marco).  Skillful and sumptuous use of colour. Emphasised landscaping within pictures. ",
+  commentary: "null",
+  themes: "Erotic, sensual, poetic, and pleasure-seeking.",
+  start_reason: "null",
+  end_reason: "null",
+},
+
+{
+  name: "Victorian Classicism",
+  dates: "1837 AD - 1903 AD",
+  style: "Accuracy and attention to detail, and that the role of art was to reflect the world, not to idealise it.",
+  commentary: "null",
+  themes: "Reflect the world. Accuracy. Reality.",
+  start_reason: "null",
+  end_reason: "null",
+}

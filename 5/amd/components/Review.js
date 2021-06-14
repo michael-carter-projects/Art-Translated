@@ -22,7 +22,7 @@ async function predictMovementAsync(uri, nav)
 
     console.log(global.prediction)
 
-    nav.navigate('MovementInfo');
+    nav.navigate('Predictions');
 
     console.log("[+] Prediction Complete \n");
 }
@@ -52,14 +52,14 @@ async function selectImageAsync(nav)
                                                         });
   if (!photo.cancelled)
   {
-    nav.navigate('PhotoPreview', {img: photo, cam: false});
+    nav.navigate('Review', {img: photo, cam: false});
   }
 }
 
 
 // ON SCREEN ===============================================================================================================
 
-function PhotoPreview ({route, navigation})
+function Review ({route, navigation})
 {
   const photo = navigation.state.params.img;
   const backToCamera = navigation.state.params.cam;
@@ -111,14 +111,14 @@ function PhotoPreview ({route, navigation})
                 borderRadius={80}
                 textSize={18}
                 fontFamily={'System'}
-                onPress={ () => navigation.navigate('HomeCamera') }
+                onPress={ () => navigation.navigate('Home') }
             >RETAKE PHOTO
             </AwesomeButton>
           ) : (
             <AwesomeButton
                 stretch
-                backgroundColor={'#993232'}
-                backgroundDarker={'#501616'}
+                backgroundColor={'#525284'}
+                backgroundDarker={'#363652'}
                 borderRadius={80}
                 textSize={18}
                 fontFamily={'System'}
@@ -133,7 +133,7 @@ function PhotoPreview ({route, navigation})
   );
 }
 
-PhotoPreview.navigationOptions = navigation => ({
+Review.navigationOptions = navigation => ({
   title: "Review",
   headerStyle: {
     backgroundColor: '#333333', //'#444444',
@@ -158,4 +158,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default PhotoPreview;
+export default Review;

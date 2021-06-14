@@ -38,7 +38,7 @@ async function takePictureAsync(nav)
 {
   if (!camera) return
   const photo = await camera.takePictureAsync();
-  nav.navigate('PhotoPreview', {img: photo, cam: true});
+  nav.navigate('Review', {img: photo, cam: true});
 }
 
 // ALLOWS USER TO SELECT IMAGE FROM CAMERA ROLL ============================================================================
@@ -50,7 +50,7 @@ async function selectImageAsync(nav)
                                                           quality: 1,
                                                         });
   if (!photo.cancelled) {
-    nav.navigate('PhotoPreview', {img: photo, cam: false});
+    nav.navigate('Review', {img: photo, cam: false});
   }
 }
 
@@ -63,7 +63,7 @@ Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 
 // =========================================================================================================================
 // ON SCREEN ===============================================================================================================
-function HomeCamera ({navigation})
+function Home ({navigation})
 {
   return (
     <Camera
@@ -136,7 +136,7 @@ function HomeCamera ({navigation})
   );
 }
 
-HomeCamera.navigationOptions = navigation => ({
+Home.navigationOptions = navigation => ({
   title: "Art Movement Image Classifer",
   headerStyle: {
     backgroundColor: '#333333', //'#444444',
@@ -200,4 +200,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeCamera;
+export default Home;
