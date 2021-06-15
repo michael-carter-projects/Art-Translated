@@ -2,9 +2,10 @@ import {StatusBar} from 'expo-status-bar';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import Home   from './components/Home';
-import Review from './components/Review';
+import Home        from './components/Home';
+import Review      from './components/Review';
 import Predictions from './components/Predictions';
+import Movement    from './components/Movement'
 import History     from './components/History';
 
 import { createAppContainer   } from 'react-navigation';

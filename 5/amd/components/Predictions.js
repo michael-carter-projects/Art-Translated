@@ -34,7 +34,9 @@ function Predictions ({route, navigation})
 {
   const photo = navigation.state.params.img;
 
-  var top2 = [ getMovementInfo(0), getMovementInfo(1) ];
+  const top2 = [ getMovementInfo(0), getMovementInfo(1) ];
+
+  console.log(top2)
 
   return (
     <View style={styles.container}>
@@ -65,7 +67,7 @@ function Predictions ({route, navigation})
         borderRadius={15}
         textSize={18}
         fontFamily={'System'}
-        onPress={ () => navigation.navigate('Movement', {movemeentInfo: top2[0]})}
+        onPress={ () => navigation.navigate('Movement', {infoMap: top2[0].map})}
       >
       <View style={styles.resultbutton1}>
         <Text style={styles.button}>Prediction: { top2[0].map.name }</Text>
@@ -85,7 +87,7 @@ function Predictions ({route, navigation})
         borderRadius={15}
         textSize={18}
         fontFamily={'System'}
-        onPress={ () => navigation.navigate('Movement', {movemeentInfo: top2[1]})}
+        onPress={ () => navigation.navigate('Movement', {infoMap: top2[1].map})}
       >
         <View style={styles.resultbutton2}>
           <Text style={styles.button}>Prediction: { top2[1].map.name }</Text>
