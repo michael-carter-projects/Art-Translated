@@ -2,11 +2,11 @@ global.movementDetector = null;
 global.image = null;
 global.prediction = [
   {
-    label: "N/A",
+    label: null,
     prob: 0,
   },
   {
-    label: "N/A",
+    label: null,
     prob: 0,
   },
 ];
@@ -25,7 +25,7 @@ global.movementMap = [
   },
   {
     key:  "renaissance",
-    name: "Renaissance (Early/High)",
+    name: "Renaissance",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1450 AD - 1530 AD",
     style: "[DESCRIPTIONS ARE ONLY HIGH RENAISSANCE!!!] Sumptuous, elaborate, expressive, and exhalted wealthy and powerful people.  Like kings they were depicted in elaborate settings swaddled in furs and silks. Figures had this suppleness and elegance of pose, and to clothed with artistically arranged draperies. Ideal beauty. Realistic use of colors and light. Ethereal, foggy backgrounds. Romantized landscapes. An abundance of sharply outlined characters suddenly appears, robust, clear-cut personalities; lawless nature belonging just as much in the gallery of criminals as in that of great men. Character, individuality, power and energy are the passwords of the Renaissance age.  This new humanity, all these rugged and manly figures which the age had created, had also to appear in painting. In contrast to the former preference for beauty of an angelic and tender type, the problem now was to depict energetic and powerful beings; and to replace shy and feminine, though bearded, men in the pictures of the older masters by angular, harsh determined and daring types. The figures which has formerly hovered like spirits above the earth had now to stand firmly upon their own feet and become part of their earthly home. structure and position of  the figures, as in their expression, a general and uniform type of beauty prevailed. Rudimentary and uncompromising representation of individual qualities. This may  best explain all the strange physiognomies witch suddenly made their appearance in art; course men of the people with uncouth, overworked figures; peasants, with bones of bronze and pointed weather beaten features; half starved old beggars with sagging flesh and tottering bodies; neglected fellows with bald heads, stubbly beards, and long muscular arms. In place of the former dainty pose, every line is now sinew. Their firm, energetic attitude reflects the entire sprit of the rugged age. Expressive possibilities of the human anatomy. Lighting, linear and atmospheric perspective, anatomy, foreshortening and characterisation. The use of proportion – The first major treatment of the painting as a window into space appeared in the work of Giotto di Bondone, at the beginning of the 14th century. True linear perspective was formalized later, by Filippo Brunelleschi and Leon Battista Alberti. In addition to giving a more realistic presentation of art, it moved Renaissance painters into composing more paintings. Foreshortening – The term foreshortening refers to the artistic effect of shortening lines in a drawing so as to create an illusion of depth. Sfumato – The term sfumato was coined by Italian Renaissance artist Leonardo da Vinci and refers to a fine art painting technique of blurring or softening of sharp outlines by subtle and gradual blending of one tone into another through the use of thin glazes to give the illusion of depth or three-dimensionality. This stems from the Italian word sfumare meaning to evaporate or to fade out. The Latin origin is fumare, to smoke. Chiaroscuro – The term chiaroscuro refers to the fine art painting modeling effect of using a strong contrast between light and dark to give the illusion of depth or three-dimensionality. This comes from the Italian words meaning light (chiaro) and dark (scuro), a technique which came into wide use in the Baroque period. Use of: glazing, impasto.",

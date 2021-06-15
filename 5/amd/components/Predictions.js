@@ -1,10 +1,18 @@
 import { StatusBar } from 'expo-status-bar'
 
 import React from 'react'
-import { StyleSheet, Text, View, Image} from 'react-native'
+import { StyleSheet, Text, View, Image, ImageBackground} from 'react-native'
 import { Button, Card, Icon, ListItem } from 'react-native-elements'
 import AwesomeButton from "react-native-really-awesome-button";
 
+function padding(a, b, c, d) {
+  return {
+    paddingTop: a,
+    paddingRight: b ? b : a,
+    paddingBottom: c ? c : a,
+    paddingLeft: d ? d : (b ? b : a)
+  }
+}
 
 function getMovementInfo(index) {
 
@@ -13,60 +21,78 @@ function getMovementInfo(index) {
 
   for (var i = 0; i < global.numMovements; i++) {
     if (global.movementMap[i].key === key.replace(/['"]+/g, '')) {
-      return global.movementMap[i];
+      return {
+        map:  global.movementMap[i],
+        prob: (parseFloat(num)*100).toFixed(2)
+      }
     }
   }
 }
 
 
-function Predictions ({navigation})
+function Predictions ({route, navigation})
 {
+  const photo = navigation.state.params.img;
 
-  var top3 = [ getMovementInfo(0), getMovementInfo(1) ]; // etcetera
-
-  console.log(top3)
+  var top2 = [ getMovementInfo(0), getMovementInfo(1) ];
 
   return (
     <View style={styles.container}>
 
-      <Text style={{fontSize: 20}}>{" "}</Text>
-
-      <AwesomeButton
-          height={300}
-          width={350}
-          backgroundColor={'#323264'}
-          backgroundDarker={'#161632'}
-          borderRadius={20}
+        <AwesomeButton
+          disabled
+          height={330}
+          width={330}
+          backgroundDarker={'#222222'}
+          borderRadius={15}
           textSize={18}
           fontFamily={'System'}
         >
+        <ImageBackground source={{uri: photo && photo.uri}} style = {{flex: 1}}>
+          <View style={{height: 330, width: 330, ...padding(0, 15, 0, 15)}}></View>
+        </ImageBackground>
 
-        <View style={styles.resultbutton1}>
-          <Text style={styles.button}> Movement: { top3[0].name }</Text>
-          <Text style={styles.button}> Probability: { top3[0].prob }%</Text>
-          <Text style={styles.button}> SEE DETAILS</Text>
-        </View>
+
       </AwesomeButton>
 
-      <Text style={{fontSize: 20}}>{" "}</Text>
+      <View {...padding(15, 0, 0, 0)}></View>
 
       <AwesomeButton
-          height={300}
-          width={350}
-          backgroundColor={'#525284'}
-          backgroundDarker={'#363652'}
-          borderRadius={20}
-          textSize={18}
-          fontFamily={'System'}
-        >
+        height={120}
+        width={330}
+        backgroundColor={'#323264'}
+        backgroundDarker={'#161632'}
+        borderRadius={15}
+        textSize={18}
+        fontFamily={'System'}
+        onPress={ () => navigation.navigate('Movement', {movemeentInfo: top2[0]})}
+      >
+      <View style={styles.resultbutton1}>
+        <Text style={styles.button}>Prediction: { top2[0].map.name }</Text>
+        <Text style={styles.buttonasd}>Probability: { top2[0].prob }%</Text>
+        <Text style={styles.button}>SEE DETAILS <Icon name="arrow-forward" color="#ffffff"></Icon> </Text>
+      </View>
 
+    </AwesomeButton>
+
+      <View {...padding(15, 0, 0, 0)}></View>
+
+      <AwesomeButton
+        height={120}
+        width={330}
+        backgroundColor={'#525284'}
+        backgroundDarker={'#363652'}
+        borderRadius={15}
+        textSize={18}
+        fontFamily={'System'}
+        onPress={ () => navigation.navigate('Movement', {movemeentInfo: top2[1]})}
+      >
         <View style={styles.resultbutton2}>
-          <Text style={styles.button}> Movement: { top3[1].name }</Text>
-          <Text style={styles.button}> Probability: { top3[1].prob }%</Text>
-          <Text style={styles.button}> SEE DETAILS</Text>
+          <Text style={styles.button}>Prediction: { top2[1].map.name }</Text>
+          <Text style={styles.buttonasd}>Probability: { top2[1].prob }%</Text>
+          <Text style={styles.button}>SEE DETAILS <Icon name="arrow-forward" color="#ffffff"></Icon> </Text>
         </View>
       </AwesomeButton>
-
 
       <StatusBar style="light" />
     </View>
@@ -76,33 +102,41 @@ function Predictions ({navigation})
 Predictions.navigationOptions = navigation => ({
   title: "Predictions",
   headerStyle: {
-    backgroundColor: '#333333', //'#444444',
+    backgroundColor: '#333333',
   },
   headerTintColor: '#fff',
 });
 
 const styles = StyleSheet.create({
   container: {
+    ...padding(30, 0, 0, 0),
     flex: 1,
     backgroundColor: '#444444',
     alignItems: 'center',
     justifyContent: 'center'
   },
   resultbutton1: {
+    ...padding(15, 0, 0, 30),
     flex: 1,
     backgroundColor: '#323264',
-    alignItems: 'center',
+    textAlign: 'left',
     justifyContent: 'center'
   },
   resultbutton2: {
+    ...padding(15, 0, 0, 30),
     flex: 1,
     backgroundColor: '#525284',
-    alignItems: 'center',
+    textAlign: 'left',
     justifyContent: 'center'
   },
   button: {
     fontSize: 20,
-    alignItems: 'baseline',
+    fontFamily: 'System',
+    color: '#fff'
+  },
+  buttonasd: {
+    fontSize: 20,
+    paddingBottom: 10,
     fontFamily: 'System',
     color: '#fff'
   },

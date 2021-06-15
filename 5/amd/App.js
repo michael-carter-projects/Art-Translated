@@ -16,6 +16,7 @@ const RootStack = createStackNavigator({
   Home:        { screen: Home        },
   Review:      { screen: Review      },
   Predictions: { screen: Predictions },
+  Movement:    { screen: Movement    },
   History:     { screen: History     }},
   {
         initialRoute: Home

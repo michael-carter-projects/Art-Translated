@@ -10,10 +10,10 @@ import { fetch, decodeJpeg } from '@tensorflow/tfjs-react-native';
 import * as jpeg from 'jpeg-js'
 
 // MAKE A PREDICTION AND STORE AS GLOBAL VARIABLE ==========================================================================
-async function predictMovementAsync(uri, nav)
+async function predictMovementAsync(photo, nav)
 {
     console.log("    Retrieving image and converting to tensors...");
-    const response = await fetch(uri, {}, { isBinary: true });
+    const response = await fetch(photo.uri, {}, { isBinary: true });
     const imageData = await response.arrayBuffer();
     const imageTensor = imageToTensor(imageData);
 
@@ -22,7 +22,7 @@ async function predictMovementAsync(uri, nav)
 
     console.log(global.prediction)
 
-    nav.navigate('Predictions');
+    nav.navigate('Predictions', {img: photo});
 
     console.log("[+] Prediction Complete \n");
 }
@@ -95,10 +95,10 @@ function Review ({route, navigation})
             stretch
             backgroundColor={'#323264'}
             backgroundDarker={'#161632'}
-            borderRadius={80}
+            borderRadius={15}
             textSize={18}
             fontFamily={'System'}
-            onPress={() => predictMovementAsync(photo.uri, navigation)}
+            onPress={() => predictMovementAsync(photo, navigation)}
           >PREDICT MOVEMENT
           </AwesomeButton>
           <View height={10}/>
@@ -108,7 +108,7 @@ function Review ({route, navigation})
                 stretch
                 backgroundColor={'#525284'}
                 backgroundDarker={'#363652'}
-                borderRadius={80}
+                borderRadius={15}
                 textSize={18}
                 fontFamily={'System'}
                 onPress={ () => navigation.navigate('Home') }
@@ -119,7 +119,7 @@ function Review ({route, navigation})
                 stretch
                 backgroundColor={'#525284'}
                 backgroundDarker={'#363652'}
-                borderRadius={80}
+                borderRadius={15}
                 textSize={18}
                 fontFamily={'System'}
                 onPress={ () => selectImageAsync(navigation) }
