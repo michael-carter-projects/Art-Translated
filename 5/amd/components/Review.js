@@ -59,7 +59,7 @@ async function selectImageAsync(nav)
 
 // ON SCREEN ===============================================================================================================
 
-function Review ({route, navigation})
+function Review ({navigation})
 {
   const photo = navigation.state.params.img;
   const backToCamera = navigation.state.params.cam;
