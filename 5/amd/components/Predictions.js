@@ -40,7 +40,7 @@ function getMovementInfo(index) {
 
 function Predictions ({navigation})
 {
-  const photo = navigation.state.params.img;
+  const uri = navigation.state.params.image;
 
   const res1 = getMovementInfo(0);
   const res2 = getMovementInfo(1);
@@ -52,12 +52,13 @@ function Predictions ({navigation})
   return (
     <ScrollView style={{backgroundColor:'#444444'}}>
       <View style={styles.outer_view}>
+        <View height={25}/>
 
         <View style={outer_rounded_box('#aaaaaa')}>
-            <Image source={{uri: photo && photo.uri}} style={styles.image}/>
+            <Image source={{uri: uri}} style={styles.image}/>
         </View>
 
-        <View {...padding(15, 0, 0, 0)}></View>
+        <View height={25}/>
 
         <AwesomeButton
           height={120}
@@ -77,7 +78,7 @@ function Predictions ({navigation})
 
       </AwesomeButton>
 
-        <View {...padding(15, 0, 0, 0)}></View>
+        <View height={25}/>
 
         <AwesomeButton
           height={120}
@@ -96,8 +97,8 @@ function Predictions ({navigation})
           </View>
         </AwesomeButton>
 
-        <StatusBar style="light" />
       </View>
+      <StatusBar style="light" />
     </ScrollView>
   );
 }
@@ -116,6 +117,7 @@ const image_side = win.width*0.8;
 const styles = StyleSheet.create({
   outer_view: {
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#444444',
     flex: 1,
     paddingLeft:   15,
@@ -124,10 +126,9 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   image: {
-      flex: 1,
       alignSelf: 'stretch',
       width: image_side,
-      height: 0,
+      height: image_side,
       borderTopLeftRadius:     15,
       borderTopRightRadius:    15,
       borderBottomLeftRadius:  15,

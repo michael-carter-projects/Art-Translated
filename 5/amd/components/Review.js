@@ -1,8 +1,9 @@
-import {StatusBar} from 'expo-status-bar';
+import { StatusBar } from 'expo-status-bar';
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 import React, { useState, useEffect } from 'react';
-import {StyleSheet, Text, View, Button, TouchableOpacity, ImageBackground, Image, Input} from 'react-native';
+import { Dimensions, Image, ImageBackground, StyleSheet, Text, View } from 'react-native';
 import AwesomeButton from "react-native-really-awesome-button";
 
 import * as tf from '@tensorflow/tfjs';
@@ -10,49 +11,37 @@ import { fetch, decodeJpeg } from '@tensorflow/tfjs-react-native';
 import * as jpeg from 'jpeg-js'
 
 // MAKE A PREDICTION AND STORE AS GLOBAL VARIABLE ==========================================================================
-async function predictMovementAsync(photo, nav)
+async function predictMovementAsync(uri, nav)
 {
-    console.log("    Retrieving image and converting to tensors...");
-    const response = await fetch(photo.uri, {}, { isBinary: true });
-    const imageData = await response.arrayBuffer();
-    const imageTensor = imageToTensor(imageData);
+    //console.log("    Retrieving image and converting to tensors...");
+    const imgB64 = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+    }); // instant
+    const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer; // 1 second
+    const raw = new Uint8Array(imgBuffer); // 1 second
+    const imageTensor = decodeJpeg(raw); // 15 seconds!!!
 
-    console.log("    Making prediction...")
+    //console.log("    Making prediction...")
     global.prediction = await global.movementDetector.classify(imageTensor.resizeBilinear([224,224]));
 
-    console.log(global.prediction)
-
-    nav.navigate('Predictions', {img: photo});
+    nav.navigate('Predictions', {image: uri});
 
     console.log("[+] Prediction Complete \n");
 }
 
-// CONVERT RAW IMAGE DATA TO TENSORS =======================================================================================
-function imageToTensor(rawImageData)
-{
-  const { width, height, data } = jpeg.decode(rawImageData, true);
-  const buffer = new Uint8Array(width * height * 3);
-  let offset = 0;
-  for (let i = 0; i < buffer.length; i += 3) {
-    buffer[i] = data[offset];
-    buffer[i + 1] = data[offset + 1];
-    buffer[i + 2] = data[offset + 2];
-    offset += 4;
-  }
-  return tf.tensor3d(buffer, [height, width, 3]);
-}
 
 // ALLOWS USER TO SELECT IMAGE FROM CAMERA ROLL ============================================================================
 async function selectImageAsync(nav)
 {
-  let photo = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All,
-                                                          allowsEditing: true,
-                                                          aspect: [4, 3],
-                                                          quality: 1,
-                                                        });
+  let photo = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.All,
+    allowsEditing: true,
+    aspect: [4, 3],
+    quality: 1,
+  });
   if (!photo.cancelled)
   {
-    nav.navigate('Review', {img: photo, cam: false});
+    nav.navigate('Review', {image: photo, cam: false});
   }
 }
 
@@ -61,73 +50,66 @@ async function selectImageAsync(nav)
 
 function Review ({navigation})
 {
-  const photo = navigation.state.params.img;
+  const { uri, width, height, base64 } = navigation.state.params.image;
   const backToCamera = navigation.state.params.cam;
 
   return (
-    <View
-      style={{
-        backgroundColor: 'transparent',
-        flex: 1,
-        width: '100%',
-        height: '100%'
-      }}
-    >
-      <ImageBackground
-        source={{uri: photo && photo.uri}}
+    <View style={styles.outer_view}>
+
+      <View height={45}/>
+
+      <View style={styles.photo_outline}>
+        <Image source={{uri: uri}} style={styles.image}/>
+      </View>
+
+      <View
         style={{
-          flex: 1
+          position: 'absolute',
+          bottom: 0,
+          flexDirection: 'column',
+          flex: 1,
+          width: '100%',
+          padding: 50,
+          justifyContent: 'space-between'
         }}
       >
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            flexDirection: 'column',
-            flex: 1,
-            width: '100%',
-            padding: 50,
-            justifyContent: 'space-between'
-          }}
-        >
-          <AwesomeButton
-            progress
-            stretch
-            backgroundColor={'#323264'}
-            backgroundDarker={'#161632'}
-            borderRadius={15}
-            textSize={18}
-            fontFamily={'System'}
-            onPress={() => predictMovementAsync(photo, navigation)}
-          >PREDICT MOVEMENT
-          </AwesomeButton>
-          <View height={10}/>
+        <AwesomeButton
+          progress
+          stretch
+          backgroundColor={'#323264'}
+          backgroundDarker={'#161632'}
+          borderRadius={15}
+          textSize={18}
+          fontFamily={'System'}
+          onPress={() => predictMovementAsync(uri, navigation)}
+        >PREDICT MOVEMENT
+        </AwesomeButton>
+        <View height={10}/>
 
-          { backToCamera ? (
-            <AwesomeButton
-                stretch
-                backgroundColor={'#525284'}
-                backgroundDarker={'#363652'}
-                borderRadius={15}
-                textSize={18}
-                fontFamily={'System'}
-                onPress={ () => navigation.navigate('Home') }
-            >RETAKE PHOTO
+        { backToCamera ? (
+          <AwesomeButton
+              stretch
+              backgroundColor={'#525284'}
+              backgroundDarker={'#363652'}
+              borderRadius={15}
+              textSize={18}
+              fontFamily={'System'}
+              onPress={ () => navigation.navigate('Home') }
+          >RETAKE PHOTO
+          </AwesomeButton>
+        ) : (
+          <AwesomeButton
+              stretch
+              backgroundColor={'#525284'}
+              backgroundDarker={'#363652'}
+              borderRadius={15}
+              textSize={18}
+              fontFamily={'System'}
+              onPress={ () => selectImageAsync(navigation) }
+            >RESELECT IMAGE
             </AwesomeButton>
-          ) : (
-            <AwesomeButton
-                stretch
-                backgroundColor={'#525284'}
-                backgroundDarker={'#363652'}
-                borderRadius={15}
-                textSize={18}
-                fontFamily={'System'}
-                onPress={ () => selectImageAsync(navigation) }
-              >RESELECT IMAGE
-              </AwesomeButton>
-            )}
-          </View>
-        </ImageBackground>
+        )}
+      </View>
       <StatusBar style="light" />
     </View>
   );
@@ -143,19 +125,36 @@ Review.navigationOptions = navigation => ({
 
 // STYLES FOR VARIOUS ELEMENTS =================================================================================================
 const BASE_SIZE = 110
+const win = Dimensions.get('window');
+const image_side = win.width*0.9;
 
 const styles = StyleSheet.create({
-  container: {
+  outer_view: {
+    alignItems: 'center',
+    backgroundColor: '#444444',
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
-  photo_options_container:{
-    width: BASE_SIZE,
-    height: BASE_SIZE,
-    alignItems: 'center',
-  }
+  photo_outline: {
+    width: image_side,
+    height: image_side,
+    backgroundColor: 'rgba(170, 170, 170, 1)',
+    borderColor: 'rgba(170, 170, 170, 1)',
+    borderWidth: 10,
+    borderTopLeftRadius:     25,
+    borderTopRightRadius:    25,
+    borderBottomLeftRadius:  25,
+    borderBottomRightRadius: 25
+  },
+  image: {
+      alignSelf: 'stretch',
+      width:  image_side-20,
+      height: image_side-20,
+      borderTopLeftRadius:     15,
+      borderTopRightRadius:    15,
+      borderBottomLeftRadius:  15,
+      borderBottomRightRadius: 15
+  },
 })
+
 
 export default Review;

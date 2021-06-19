@@ -1,23 +1,22 @@
 import {StatusBar} from 'expo-status-bar'
-import React from 'react'
-import {StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native'
-import {Camera} from 'expo-camera'
+import { Camera } from 'expo-camera'
 import * as ImagePicker from 'expo-image-picker';
 import * as Constants   from 'expo-constants';
-let camera: Camera
+import * as ImageManipulator from 'expo-image-manipulator';
+
+import React from 'react'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native'
 
 import * as tf from '@tensorflow/tfjs';
 import * as automl from '@tensorflow/tfjs-automl';
 import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
+let camera: Camera // can't remember what this does
 
 // LOADS THE MOVEMENT DETECTION MODEL AND STORES AS GLOBAL VARIABLE ========================================================
 async function getMovementDetectorAsync()
 {
-    console.log("[+] Application started")
     const tfReady = await tf.ready();
-
-    console.log("    Loading movement detection model...")
     const modelJson = await require("./assets/model/model.json");
     const modelWeight = await require("./assets/model/group1-shard.bin");
     const model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeight));
@@ -38,21 +37,32 @@ async function takePictureAsync(nav)
 {
   if (!camera) return
   const photo = await camera.takePictureAsync();
-  nav.navigate('Review', {img: photo, cam: true});
+
+  const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
+    photo.uri,
+    [{crop: {originX:200, originY:320, width:1800, height:1800}}, {resize: {width:500}}],
+    {base64: true}
+  );
+
+  nav.navigate('Review', {image: { uri, width, height, base64 }, cam: true});
+  console.log("[+] Photo captured")
 }
 
 // ALLOWS USER TO SELECT IMAGE FROM CAMERA ROLL ============================================================================
 async function selectImageAsync(nav)
 {
-  let photo = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All,
-                                                          allowsEditing: true,
-                                                          aspect: [4, 3],
-                                                          quality: 1,
-                                                        });
+  let photo = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.All,
+    allowsEditing: true,
+    aspect: [4, 3],
+    quality: 1,
+  });
   if (!photo.cancelled) {
-    nav.navigate('Review', {img: photo, cam: false});
+    nav.navigate('Review', {image: photo, cam: false});
+    console.log("[+] Image selected")
   }
 }
+
 
 // =========================================================================================================================
 // ON STARTUP ==============================================================================================================
@@ -67,20 +77,15 @@ function Home ({navigation})
 {
   return (
     <Camera
-      style={{flex: 1,width:"100%"}}
+      style={{flex: 1, width:"100%", alignItems: 'center'}}
       ref={(r) => { camera = r }}
     >
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          flexDirection: 'row',
-          flex: 1,
-          width: '100%',
-          padding: 20,
-          justifyContent: 'space-between'
-        }}
-      >
+      <View height={45}/>
+
+      <View style={styles.photo_outline}/>
+
+      <View style={styles.button_panel}>
+
         <View
           style={{
             alignSelf: 'center',
@@ -94,11 +99,12 @@ function Home ({navigation})
               fadeDuration={0}
               style={{ top: 20, width: 70, height: 70 }}
             />
-            <TouchableOpacity style={styles.gallery_button}
+            <TouchableOpacity style={styles.nav_button}
               onPress={ () => selectImageAsync(navigation) }
             />
           </View>
         </View>
+
         <View
           style={{
             alignSelf: 'center',
@@ -113,6 +119,7 @@ function Home ({navigation})
             />
           </View>
         </View>
+
         <View
           style={{
             alignSelf: 'center',
@@ -126,12 +133,13 @@ function Home ({navigation})
               fadeDuration={0}
               style={{ top: 30, width: 50, height: 52 }}
             />
-            <TouchableOpacity style={styles.history_button}
+            <TouchableOpacity style={styles.nav_button}
               onPress={ () => navigation.navigate('History') }
             />
           </View>
         </View>
       </View>
+      <StatusBar style="light" />
     </Camera>
   );
 }
@@ -139,7 +147,7 @@ function Home ({navigation})
 Home.navigationOptions = navigation => ({
   title: "Art Movement Image Classifer",
   headerStyle: {
-    backgroundColor: '#333333', //'#444444',
+    backgroundColor: '#333333',
   },
   headerTintColor: '#fff',
 });
@@ -147,13 +155,29 @@ Home.navigationOptions = navigation => ({
 
 // STYLES FOR VARIOUS ELEMENTS =================================================================================================
 const BASE_SIZE=110
+const win = Dimensions.get('window');
+const image_side = win.width*0.9;
 
 const styles = StyleSheet.create({
-  container: {
+  photo_outline: {
+    width: image_side,
+    height: image_side,
+    borderColor: 'rgba(0, 0, 0, 0.5)',
+    borderWidth: 10,
+    borderTopLeftRadius:     25,
+    borderTopRightRadius:    25,
+    borderBottomLeftRadius:  25,
+    borderBottomRightRadius: 25
+  },
+  button_panel: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
     flex: 1,
-    backgroundColor: '#555',
-    alignItems: 'center',
-    justifyContent: 'center'
+    width: '100%',
+    padding: 20,
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)'
   },
   circlesContainer:{
         width: BASE_SIZE,
@@ -180,16 +204,7 @@ const styles = StyleSheet.create({
       borderRadius: BASE_SIZE*0.6/2,
       backgroundColor: '#FFFFFF'
   },
-  gallery_button:{
-      top:BASE_SIZE*0.2,
-      left:BASE_SIZE*0.2,
-      position: 'absolute',
-      width:BASE_SIZE*0.6,
-      height:BASE_SIZE*0.6, // 60% of the base size
-      borderRadius: BASE_SIZE*0.6/2,
-      backgroundColor: 'rgba(0, 0, 0, 0)'
-  },
-  history_button:{
+  nav_button: {
       top:BASE_SIZE*0.2,
       left:BASE_SIZE*0.2,
       position: 'absolute',
