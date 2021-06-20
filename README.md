@@ -15,10 +15,10 @@
     !!! This script uses an outdated ML model and may not run on Windows !!!
     !!! FIX BOTH THINGS (consider re-ordering repo?)                     !!!
 
-    poc_main.py - the main file that runs the menu
-    model_tests.py - script that tests every image in /test-images. called by main
+    poc_main.py                     - the main file that runs the menu
+    model_tests.py                  - script that tests every image in /test-images. called by main
     movements_results_w_image_v2.py - gets the movement data and displays the image analyzed (macOS)
-    api_caller_t3.py - script that passes an image to the AutoML model (t3 for short, NOT CURRENT)
+    api_caller_t3.py                - script that passes image to AutoML model (t3 for short, NOT CURRENT)
 
 **2:** WikiArt Image Scraping
 
