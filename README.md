@@ -49,13 +49,13 @@
     images into 1088 images by running each of them through multiple permutations of filters using Python
     Pillow, including exposure/contrast adjustments and blur effects. Then I applied my own randomized color
     filter to each image as well as each pixel in each image in an effort to increase the variability in the
-    data. Finally I used a Multi-Layer Perceptron and a few different Convolutional Neural Networks to determine
-    which performed the best over a random train/test split of my dataset and which performed the best when
-    classifying real images of coat of arms. The conclusion of the project was that with artificially varied
-    images, both MLPs and CNNs were able to produce astonishing accuracy when classifying images that were
-    part of my dataset, but neither were able to make useful predictions given real photographs of coats of
-    arms. The general lesson here is that a model's training data must reflect as much as possible that which
-    the model ultimately aims to classify. Want to classify real photographs? Train with real photographs.
+    data. Finally I used a Multi-Layer Perceptron and a few different Convolutional Neural Networks to deter-
+    mine which performed the best over a random train/test split of my dataset and which performed the best
+    when classifying real images of coat of arms. The conclusion of the project was that with artificially
+    varied images, both MLPs and CNNs were able to produce astonishing accuracy when classifying images that
+    were part of my dataset, but neither were able to make useful predictions given real photographs of coats
+    of arms. The general lesson here is that a model's training data must reflect as much as possible that
+    which the model ultimately aims to classify.
 
     coa_prediction           - testing images resized for prediction
     coa_prediction_base      - original images for testing
