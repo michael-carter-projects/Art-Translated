@@ -1,5 +1,5 @@
 # Art-Translated Movement Classification
-[Python] This repo contains various code I have written as I use Google AutoML Vision (see **2** and **3**) and React Native (see **5**) to make a cross-platform mobile app that can predict the art movement associated with a given image (from camera or gallery) and display information about said movement (and offline at that). The app may soon be incorporated into a larger app called "Art Translated" that is being developed by another team (also led by my boss).
+[Python] This repo contains various code I have written as I use Google AutoML Vision (see **2** and **3**) and React Native (see **5**) to make a cross-platform mobile app that can predict the art movement associated with a given image (from camera or gallery) and display information about said movement (all offline). The app may soon be incorporated into a larger app called "Art Translated" that is being developed by another team (also led by my boss).
 
 
 **Repository Directory:**
