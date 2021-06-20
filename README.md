@@ -87,5 +87,5 @@
     amd/components                - folder that contains the .js files responsible for each page of the app
     amd/components/Home.js        - renders the home screen (camera)
     amd/components/Review.js      - renders review screen (predict? or retake?) (may remove screen)
-    amd/components/Predictions.js - renders prediction buttons (nav to )
-    amd/components/Details.js -
+    amd/components/Predictions.js - renders prediction buttons (nav to details)
+    amd/components/Details.js     - renders movement details
