@@ -28,7 +28,7 @@
     Running this script once downloaded, sorted by movement, and named over 50,000 images. (As a bonus the
     script encodes the filenames in a way the Google Cloud likes. I say bonus but this was 100% necessary.)
 
-    wikiart-script.py - downloads, names, and sorts images
+    wikiart-script.py  - downloads, names, and sorts images
     wikiart-output.png - screenshot of console output
 
 **3:** Write CSV for AutoML
@@ -38,7 +38,7 @@
     80:10:10 train:validation:test split) that AutoML needs to actually train a model.
 
     automl_script_symbols.py - the script that writes the .csv (symbols because the .csv only contains
-    training data for movements that contain symbols)
+                               training data for movements that contain symbols)
     automl_training_data.csv - the file that was used to train the latest AutoML model.
 
 **4:** Coat of Arms Classification
