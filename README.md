@@ -1,5 +1,5 @@
-# Art-Translated Movement Detection
-[Python] This repo contains various code I have written as I attempt to use Google AutoML Vision to train a model that predicts the art movement associated with a given piece of art. At the very least, I hope to incoporate this model locally (as a .tflite) into a cross-platform app, but depending on the usefulness of the prediciton model, it may be incorporated into a larger app called "Art Translated" that is being developed by another team.
+# Art-Translated Movement Classification
+[Python] This repo contains various code I have written as I attempt to use Google AutoML Vision to train a model that predicts the art movement associated with a given piece of art and display information about said movement. The model can currently be used locally in a cross-platform app I made with React-Native (see **5**), but it may soon be incorporated into a larger app called "Art Translated" that is being developed by another team (also led by my boss).
 
 
 **Repository Directory:**
