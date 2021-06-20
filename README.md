@@ -12,9 +12,6 @@
     and the results will be returned as a string. The movement with the highest score is mapped to database
     entries which contain the name and brief description of the movement given.
 
-    !!! This script uses an outdated ML model and may not run on Windows !!!
-    !!! FIX BOTH THINGS (consider re-ordering repo?)                     !!!
-
     poc_main.py                     - the main file that runs the menu
     model_tests.py                  - script that tests every image in /test-images. called by main
     movements_results_w_image_v2.py - gets the movement data and displays the image analyzed (macOS)
