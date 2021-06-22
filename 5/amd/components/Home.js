@@ -11,6 +11,7 @@ import * as tf from '@tensorflow/tfjs';
 import * as automl from '@tensorflow/tfjs-automl';
 import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
+
 let camera: Camera // can't remember what this does
 
 // LOADS THE MOVEMENT DETECTION MODEL AND STORES AS GLOBAL VARIABLE ========================================================

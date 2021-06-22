@@ -21,23 +21,6 @@ function getMovementInfo(index) {
   }
 }
 
-/*
-<AwesomeButton
-  disabled
-  height={330}
-  width={330}
-  backgroundDarker={'#222222'}
-  borderRadius={15}
-  textSize={18}
-  fontFamily={'System'}
->
-<ImageBackground source={{uri: photo && photo.uri}} style = {{flex: 1}}>
-  <View style={{height: 330, width: 330, ...padding(0, 15, 0, 15)}}></View>
-</ImageBackground>
-
-
-</AwesomeButton>*/
-
 function Predictions ({navigation})
 {
   const uri = navigation.state.params.image;

@@ -13,16 +13,14 @@ import * as jpeg from 'jpeg-js'
 // MAKE A PREDICTION AND STORE AS GLOBAL VARIABLE ==========================================================================
 async function predictMovementAsync(uri, nav)
 {
-    //console.log("    Retrieving image and converting to tensors...");
     const imgB64 = await FileSystem.readAsStringAsync(uri, {
         encoding: FileSystem.EncodingType.Base64,
-    }); // instant
-    const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer; // 1 second
-    const raw = new Uint8Array(imgBuffer); // 1 second
-    const imageTensor = decodeJpeg(raw); // 15 seconds!!!
+    });
+    const imgBuffer = tf.util.encodeString(imgB64, 'base64').buffer;
+    const imgRaw = new Uint8Array(imgBuffer);
+    const imgTensor = decodeJpeg(imgRaw);
 
-    //console.log("    Making prediction...")
-    global.prediction = await global.movementDetector.classify(imageTensor.resizeBilinear([224,224]));
+    global.prediction = await global.movementDetector.classify(imgTensor.resizeBilinear([224,224]));
 
     nav.navigate('Predictions', {image: uri});
 
