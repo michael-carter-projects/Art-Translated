@@ -19,7 +19,7 @@ async function getMovementDetectorAsync()
     const tfReady = await tf.ready();
     const modelJson = await require("./assets/model/model.json");
     const modelWeight = await require("./assets/model/group1-shard.bin");
-    const model = await tf.loadGraphModel(bundleResourceIO(modelJson, modelWeight));
+    const model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeight));
     const dict = ["mannerism-late-renaissance",
                   "renaissance",
                   "baroque",

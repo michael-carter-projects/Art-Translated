@@ -8,12 +8,10 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.4",
-    "@material-ui/icons": "^4.11.2",
     "@react-native-community/async-storage": "^1.12.1",
     "@tensorflow/tfjs": "^2.6.0",
-    "@tensorflow/tfjs-automl": "^1.2.0",
-    "@tensorflow/tfjs-converter": "~3.3.0",
+    "@tensorflow/tfjs-automl": "1.2.0",
+    "@tensorflow/tfjs-converter": "^3.7.0",
     "@tensorflow/tfjs-react-native": "^0.4.0",
     "expo": "~39.0.2",
     "expo-camera": "~9.0.0",
