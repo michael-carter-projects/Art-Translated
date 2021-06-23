@@ -1,14 +1,13 @@
-import {StatusBar} from 'expo-status-bar'
-import { Camera } from 'expo-camera'
-import * as ImagePicker from 'expo-image-picker';
-import * as Constants   from 'expo-constants';
+import { StatusBar }         from 'expo-status-bar'
+import { Camera }            from 'expo-camera'
+import * as ImagePicker      from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 
-import React from 'react'
+import   React                                                        from 'react'
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native'
 
-import * as tf from '@tensorflow/tfjs';
-import * as automl from '@tensorflow/tfjs-automl';
+import * as tf              from '@tensorflow/tfjs';
+import * as automl          from '@tensorflow/tfjs-automl';
 import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
 
@@ -30,6 +29,7 @@ async function getMovementDetectorAsync()
                   "rococo",
                   "gothic"];
     global.movementDetector = new automl.ImageClassificationModel(model, dict);
+
     console.log("[+] Movement detection model loaded")
 }
 
