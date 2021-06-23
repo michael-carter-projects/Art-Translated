@@ -1778,16 +1778,6 @@
     hoist-non-react-statics "^3.3.2"
     react-native-safe-area-view "^0.14.9"
 
-"@tensorflow-models/blazeface@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@tensorflow-models/blazeface/-/blazeface-0.0.5.tgz#6261fcc5de61a283ea409b69f6a851f44a809826"
-  integrity sha512-bIMJDV2CD8rr7v9OrIDdDZVh9sbk0EhlZdHaDFpgWUw3Lp21wUN7GSifOJVE5hV2ngmpzM+J12OH8bG1GZoDag==
-
-"@tensorflow-models/mobilenet@^2.0.4":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@tensorflow-models/mobilenet/-/mobilenet-2.1.0.tgz#58583f0793a7091eda370aa441d09d94b808aeb1"
-  integrity sha512-JjqT9ijHDFA2FEpUGWg7H2lQ0GrMuE2VmiCRBYmUew6b4JKht8LXDjG5HxZh95YH6c/25sZWTpGeHbquloH+hw==
-
 "@tensorflow/tfjs-automl@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@tensorflow/tfjs-automl/-/tfjs-automl-1.2.0.tgz#f03478e43d5236864fe277c4142c06fbd3769945"
@@ -2652,7 +2642,7 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
 
-clsx@^1.0.4, clsx@^1.1.1:
+clsx@^1.0.4:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
