@@ -8,7 +8,6 @@ import AwesomeButton from "react-native-really-awesome-button";
 
 import * as tf from '@tensorflow/tfjs';
 import { fetch, decodeJpeg } from '@tensorflow/tfjs-react-native';
-import * as jpeg from 'jpeg-js'
 
 // MAKE A PREDICTION AND STORE AS GLOBAL VARIABLE ==========================================================================
 async function predictMovementAsync(uri, nav)

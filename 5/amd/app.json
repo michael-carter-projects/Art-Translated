@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "art-movement-detector",
-    "slug": "art-movement-detector",
-    "version": "1.0.0",
+    "name": "art-movement-classifier",
+    "slug": "art-movement-classifier",
+    "version": "0.9.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
