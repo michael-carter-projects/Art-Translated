@@ -19,7 +19,9 @@ async function predictMovementAsync(uri, nav)
     const imgRaw = new Uint8Array(imgBuffer);
     const imgTensor = decodeJpeg(imgRaw);
 
-    global.prediction = await global.movementDetector.classify(imgTensor.resizeBilinear([224,224]));
+    global.prediction = await global.movementDetector.classify(imgTensor);
+
+    console.log(global.prediction);
 
     nav.navigate('Predictions', {image: uri});
 

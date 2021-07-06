@@ -21,9 +21,27 @@ function getMovementInfo(index) {
   }
 }
 
+/*
+function getSortedPredictions() {
+
+  var preds = global.predicitons
+
+  preds.sort(function(a, b) {
+    return a.prob > b.prob;
+  });
+
+  return preds;
+}*/
+
+
 function Predictions ({navigation})
 {
   const uri = navigation.state.params.image;
+
+  //const sorted = getSortedPredictions();
+
+  //console.log(sorted)
+
 
   const res1 = getMovementInfo(0);
   const res2 = getMovementInfo(1);

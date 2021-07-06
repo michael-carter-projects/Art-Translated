@@ -18,8 +18,11 @@ async function getMovementDetectorAsync()
 {
     const tfReady = await tf.ready();
     const modelJson = await require("./assets/model/model.json");
+
+    //console.log(modelJson);
+
     const modelWeight = await require("./assets/model/group1-shard.bin");
-    const model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeight));
+    const model = await tf.loadGraphModel(bundleResourceIO(modelJson, modelWeight));
     const dict = ["mannerism-late-renaissance",
                   "renaissance",
                   "baroque",
@@ -83,7 +86,9 @@ function Home ({navigation})
     >
       <View height={45}/>
 
-      <View style={styles.photo_outline}/>
+      <View style={styles.photo_outline_outer}>
+        <View style={styles.photo_outline}/>
+      </View>
 
       <View style={styles.button_panel}>
 
@@ -160,10 +165,20 @@ const win = Dimensions.get('window');
 const image_side = win.width*0.9;
 
 const styles = StyleSheet.create({
+  photo_outline_outer: {
+    width: image_side+10,
+    height: image_side+10,
+    borderColor: 'rgba(255, 255, 255, 1)',
+    borderWidth: 5,
+    borderTopLeftRadius:     30,
+    borderTopRightRadius:    30,
+    borderBottomLeftRadius:  30,
+    borderBottomRightRadius: 30
+  },
   photo_outline: {
     width: image_side,
     height: image_side,
-    borderColor: 'rgba(0, 0, 0, 0.5)',
+    borderColor: 'rgba(150, 150, 240, 0.8)',
     borderWidth: 10,
     borderTopLeftRadius:     25,
     borderTopRightRadius:    25,
