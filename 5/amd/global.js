@@ -101,9 +101,11 @@ global.movementMap = [
     end_reason: "null",
   }
 ];
-global.buttonDark1 = '#'
-global.buttonDark2 = '#'
-global.buttonMid1 = '#'
-global.buttonMid2 = '#'
-global.buttonLite1 = '#'
-global.buttonLite2 = '#'
+global.colors = ({
+  dark1: '#161632',
+  dark2: '#080816',
+  med1:  '#323264',
+  med2:  '#161632',
+  lite1: '#525284',
+  lite2: '#363652',
+});

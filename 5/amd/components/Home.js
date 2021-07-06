@@ -1,15 +1,14 @@
- import { StatusBar }         from 'expo-status-bar'
+import { StatusBar }         from 'expo-status-bar'
 import { Camera }            from 'expo-camera'
 import * as ImagePicker      from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 
-import   React                                                        from 'react'
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native'
+import   React                                                         from 'react'
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 import * as tf              from '@tensorflow/tfjs';
 import * as automl          from '@tensorflow/tfjs-automl';
 import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
-
 
 let camera: Camera // can't remember what this does
 
@@ -92,13 +91,7 @@ function Home ({navigation})
 
       <View style={styles.button_panel}>
 
-        <View
-          style={{
-            alignSelf: 'center',
-            flex: 1,
-            alignItems: 'center'
-          }}
-        >
+        <View style={{flex: 1, alignItems: 'center'}} >
           <View style={styles.circlesContainer}>
             <Image
               source={require('../icons/icon_gallery.gif')}
@@ -111,13 +104,7 @@ function Home ({navigation})
           </View>
         </View>
 
-        <View
-          style={{
-            alignSelf: 'center',
-            flex: 1,
-            alignItems: 'center'
-          }}
-        >
+        <View style={{flex: 1, alignItems: 'center'}} >
           <View style={styles.circlesContainer}>
             <View style={styles.take_pic_button_outer_ring} />
             <TouchableOpacity style={styles.take_pic_button}
@@ -126,13 +113,7 @@ function Home ({navigation})
           </View>
         </View>
 
-        <View
-          style={{
-            alignSelf: 'center',
-            flex: 1,
-            alignItems: 'center'
-          }}
-        >
+        <View style={{flex: 1, alignItems: 'center'}} >
           <View style={styles.circlesContainer}>
             <Image
               source={require('../icons/icon_history.gif')}
@@ -178,7 +159,7 @@ const styles = StyleSheet.create({
   photo_outline: {
     width: image_side,
     height: image_side,
-    borderColor: 'rgba(150, 150, 240, 0.8)',
+    borderColor: 'rgba(0, 0, 0, 0.8)',
     borderWidth: 10,
     borderTopLeftRadius:     25,
     borderTopRightRadius:    25,

@@ -1,100 +1,143 @@
 import { StatusBar } from 'expo-status-bar'
 
 import React from 'react'
-import { Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Button, Card, Icon, ListItem } from 'react-native-elements'
+import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Icon } from 'react-native-elements'
 import AwesomeButton from "react-native-really-awesome-button";
 
+// GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" }
+function getMovementInfo(prob) {
 
-function getMovementInfo(index) {
+  for (var i = 0; i < global.numMovements; i++)
+  {
+    if (prob === global.prediction[i].prob)
+    {
+      const label = JSON.stringify(global.prediction[i].label);
 
-  const key = JSON.stringify(global.prediction[index].label)
-  const num = JSON.stringify(global.prediction[index].prob)
-
-  for (var i = 0; i < global.numMovements; i++) {
-    if (global.movementMap[i].key === key.replace(/['"]+/g, '')) {
-      return {
-        map:  global.movementMap[i],
-        prob: (parseFloat(num)*100).toFixed(2)
+      for (var j = 0; j < global.numMovements; j++)
+      {
+        if (global.movementMap[j].key === label.replace(/['"]+/g, ''))
+        {
+          return { map:  global.movementMap[j],
+                   prob: (parseFloat(prob)*100).toFixed(2)
+                 }
+        }
       }
     }
   }
 }
+// GIVEN A PREDICTION FROM THE LOADED MODEL, RETURNS ALL MOVEMENT INFO FOR TOP 3
+function getTop3Predictions(pred) {
 
-/*
-function getSortedPredictions() {
+  var top3Scores = [0, -1, -2];
 
-  var preds = global.predicitons
+  for (var i = 0; i < global.numMovements; i++)
+  {
+    var currProb = prediction[i].prob;
 
-  preds.sort(function(a, b) {
-    return a.prob > b.prob;
-  });
+    if (currProb > top3Scores[0]) {
+      top3Scores[2] = top3Scores[1];
+      top3Scores[1] = top3Scores[0];
+      top3Scores[0] = currProb;
+    }
+    else if (currProb > top3Scores[1]) {
+      top3Scores[2] = top3Scores[1];
+      top3Scores[1] = currProb;
+    }
+    else if (currProb > top3Scores[2]) {
+      top3Scores[2] = currProb;
+    }
+  }
 
-  return preds;
-}*/
+  const res1 = getMovementInfo(top3Scores[0]);
+  const res2 = getMovementInfo(top3Scores[1]);
+  const res3 = getMovementInfo(top3Scores[2]);
 
+  return [ res1, res2, res3 ];
+}
 
+// RENDER PREDICTION PAGE ======================================================================================================
 function Predictions ({navigation})
 {
   const uri = navigation.state.params.image;
-
-  //const sorted = getSortedPredictions();
-
-  //console.log(sorted)
-
-
-  const res1 = getMovementInfo(0);
-  const res2 = getMovementInfo(1);
-  var top2 = [ res1, res2 ];
-  if (res1.prob < res2.prob) {
-    top2 = [ res2, res1 ];
-  }
+  const top3 = getTop3Predictions(global.prediction);
 
   return (
     <ScrollView style={{backgroundColor:'#444444'}}>
       <View style={styles.outer_view}>
         <View height={25}/>
 
-        <View style={outer_rounded_box('#aaaaaa')}>
+        <View style={styles.image_border}>
             <Image source={{uri: uri}} style={styles.image}/>
         </View>
 
         <View height={25}/>
 
         <AwesomeButton
-          height={120}
-          width={get_width()}
-          backgroundColor={'#323264'}
-          backgroundDarker={'#161632'}
-          borderRadius={15}
-          textSize={18}
+          height       ={buttons.height  }
+          width        ={buttons.width   }
+          borderRadius ={buttons.radius  }
+          textSize     ={buttons.textSize}
+          backgroundColor ={colors.dark1}
+          backgroundDarker={colors.dark2}
           fontFamily={'System'}
-          onPress={ () => navigation.navigate('Movement', {infoMap: top2[0].map, color1: '#323264', color2: '#161632'})}
+          onPress={ () => navigation.navigate('Movement', {infoMap: top3[0].map, color1: colors.dark1, color2: colors.dark2})}
         >
-        <View style={styles.resultbutton1}>
-          <Text style={styles.button}>Best Prediction: { top2[0].map.name }</Text>
-          <Text style={styles.buttonasd}>Probability: { top2[0].prob }%</Text>
-          <Text style={styles.button}>SEE DETAILS <Icon name="arrow-forward" color="#ffffff"></Icon> </Text>
-        </View>
+          <View style={styles.resultbutton1}>
+            <View style={styles.result_text}>
+              <Text style={styles.button}>{ top3[0].map.name }</Text>
+              <Text style={styles.button}>Probability: { top3[0].prob }%</Text>
+            </View>
+            <View>
+              <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
+            </View>
+          </View>
 
-      </AwesomeButton>
+        </AwesomeButton>
 
         <View height={25}/>
 
         <AwesomeButton
-          height={120}
-          width={get_width()}
-          backgroundColor={'#525284'}
-          backgroundDarker={'#363652'}
-          borderRadius={15}
-          textSize={18}
+          height       ={buttons.height  }
+          width        ={buttons.width   }
+          borderRadius ={buttons.radius  }
+          textSize     ={buttons.textSize}
+          backgroundColor ={colors.med1}
+          backgroundDarker={colors.med2}
           fontFamily={'System'}
-          onPress={ () => navigation.navigate('Movement', {infoMap: top2[1].map, color1: '#525284', color2: '#363652'})}
+          onPress={ () => navigation.navigate('Movement', {infoMap: top3[1].map, color1: colors.med1, color2: colors.med2})}
         >
           <View style={styles.resultbutton2}>
-            <Text style={styles.button}>2nd Best: { top2[1].map.name }</Text>
-            <Text style={styles.buttonasd}>Probability: { top2[1].prob }%</Text>
-            <Text style={styles.button}>SEE DETAILS <Icon name="arrow-forward" color="#ffffff"></Icon> </Text>
+            <View style={styles.result_text}>
+              <Text style={styles.button}>{ top3[1].map.name }</Text>
+              <Text style={styles.button}>Probability: { top3[1].prob }%</Text>
+            </View>
+            <View>
+              <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
+            </View>
+          </View>
+        </AwesomeButton>
+
+        <View height={25}/>
+
+        <AwesomeButton
+          height       ={buttons.height  }
+          width        ={buttons.width   }
+          borderRadius ={buttons.radius  }
+          textSize     ={buttons.textSize}
+          backgroundColor ={colors.lite1}
+          backgroundDarker={colors.lite2}
+          fontFamily={'System'}
+          onPress={ () => navigation.navigate('Movement', {infoMap: top3[2].map, color1: colors.lite1, color2: colors.lite2})}
+        >
+          <View style={styles.resultbutton3}>
+            <View style={styles.result_text}>
+              <Text style={styles.button}>{ top3[2].map.name }</Text>
+              <Text style={styles.button}>Probability: { top3[2].prob }%</Text>
+            </View>
+            <View>
+              <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
+            </View>
           </View>
         </AwesomeButton>
 
@@ -114,6 +157,22 @@ Predictions.navigationOptions = navigation => ({
 
 const win = Dimensions.get('window');
 const image_side = win.width*0.8;
+
+const colors = ({
+  dark1: '#161632',
+  dark2: '#080816',
+  med1:  '#323264',
+  med2:  '#161632',
+  lite1: '#525284',
+  lite2: '#363652',
+});
+
+const buttons = ({
+  height: 75,
+  width: image_side,
+  radius: 15,
+  textSize: 18,
+});
 
 const styles = StyleSheet.create({
   outer_view: {
@@ -135,60 +194,8 @@ const styles = StyleSheet.create({
       borderBottomLeftRadius:  15,
       borderBottomRightRadius: 15
   },
-  resultbutton1: {
-    ...padding(10, 10, 0, 30),
-    flex: 1,
-    backgroundColor: '#323264',
-    textAlign: 'left',
-    justifyContent: 'center'
-  },
-  resultbutton2: {
-    ...padding(10, 10, 0, 30),
-    flex: 1,
-    backgroundColor: '#525284',
-    textAlign: 'left',
-    justifyContent: 'center'
-  },
-  button: {
-    fontSize: 18,
-    fontFamily: 'System',
-    color: '#fff'
-  },
-  buttonasd: {
-    fontSize: 18,
-    paddingBottom: 10,
-    fontFamily: 'System',
-    color: '#fff'
-  },
-})
-
-function get_width() {
-  return image_side;
-}
-
-function padding(a, b, c, d) {
-  return {
-    paddingTop: a,
-    paddingRight: b ? b : a,
-    paddingBottom: c ? c : a,
-    paddingLeft: d ? d : (b ? b : a)
-  }
-}
-
-function inner_rounded_box (color) {
-  return {
-    backgroundColor: color,
-    paddingLeft:  15,
-    paddingRight: 15,
-    borderTopLeftRadius:     15,
-    borderTopRightRadius:    15,
-    borderBottomLeftRadius:  15,
-    borderBottomRightRadius: 15
-   }
-}
-function outer_rounded_box (color) {
-  return {
-    backgroundColor: color,
+  image_border: {
+    backgroundColor: '#aaaaaa',
     paddingTop:    10,
     paddingBottom: 10,
     paddingLeft:   10,
@@ -197,7 +204,36 @@ function outer_rounded_box (color) {
     borderTopRightRadius:    25,
     borderBottomLeftRadius:  25,
     borderBottomRightRadius: 25
-  }
-}
+  },
+  result_text: {
+    textAlign: 'left',
+  },
+  resultbutton1: {
+    paddingLeft: 20,
+    flex:1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.dark1,
+  },
+  resultbutton2: {
+    paddingLeft: 20,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.med1,
+  },
+  resultbutton3: {
+    paddingLeft: 20,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.lite1,
+  },
+  button: {
+    fontSize: 18,
+    fontFamily: 'System',
+    color: '#fff'
+  },
+})
 
 export default Predictions;
