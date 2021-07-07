@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 
 import React from 'react'
-import { Dimensions, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 import AwesomeButton from "react-native-really-awesome-button";
 
@@ -63,20 +63,22 @@ function Predictions ({navigation})
   const top3 = getTop3Predictions(global.prediction);
 
   return (
-    <ScrollView style={{backgroundColor:'#444444'}}>
+    <ImageBackground source={require('./assets/images/bg3.png')} style={{flex: 1, width:"100%", alignItems: 'center'}}>
+
+      <View height={25}/>
+
       <View style={styles.outer_view}>
-        <View height={25}/>
 
-        <View style={styles.image_border}>
-            <Image source={{uri: uri}} style={styles.image}/>
-        </View>
+        <Image source={{uri: uri}} style={styles.image}/>
 
-        <View height={25}/>
+        <View height={50}/>
 
         <AwesomeButton
           height       ={buttons.height  }
           width        ={buttons.width   }
           borderRadius ={buttons.radius  }
+          borderColor  ={buttons.bcolor  }
+          borderWidth  ={buttons.bwidth  }
           textSize     ={buttons.textSize}
           backgroundColor ={colors.dark1}
           backgroundDarker={colors.dark2}
@@ -101,6 +103,8 @@ function Predictions ({navigation})
           height       ={buttons.height  }
           width        ={buttons.width   }
           borderRadius ={buttons.radius  }
+          borderColor  ={buttons.bcolor  }
+          borderWidth  ={buttons.bwidth  }
           textSize     ={buttons.textSize}
           backgroundColor ={colors.med1}
           backgroundDarker={colors.med2}
@@ -124,6 +128,8 @@ function Predictions ({navigation})
           height       ={buttons.height  }
           width        ={buttons.width   }
           borderRadius ={buttons.radius  }
+          borderColor  ={buttons.bcolor  }
+          borderWidth  ={buttons.bwidth  }
           textSize     ={buttons.textSize}
           backgroundColor ={colors.lite1}
           backgroundDarker={colors.lite2}
@@ -143,7 +149,7 @@ function Predictions ({navigation})
 
       </View>
       <StatusBar style="light" />
-    </ScrollView>
+    </ImageBackground>
   );
 }
 
@@ -172,38 +178,22 @@ const buttons = ({
   width: image_side,
   radius: 15,
   textSize: 18,
+  bcolor: 'rgba(255, 255, 255, 0)',
+  bwidth: 2
 });
 
 const styles = StyleSheet.create({
   outer_view: {
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#444444',
     flex: 1,
-    paddingLeft:   15,
-    paddingRight:  15,
-    paddingTop:    15,
-    paddingBottom: 15,
   },
   image: {
       alignSelf: 'stretch',
       width: image_side,
       height: image_side,
-      borderTopLeftRadius:     15,
-      borderTopRightRadius:    15,
-      borderBottomLeftRadius:  15,
-      borderBottomRightRadius: 15
-  },
-  image_border: {
-    backgroundColor: '#aaaaaa',
-    paddingTop:    10,
-    paddingBottom: 10,
-    paddingLeft:   10,
-    paddingRight:  10,
-    borderTopLeftRadius:     25,
-    borderTopRightRadius:    25,
-    borderBottomLeftRadius:  25,
-    borderBottomRightRadius: 25
+      borderColor: 'rgba(255, 255, 255, 1)',
+      borderWidth: 5,
+      borderRadius: 15,
   },
   result_text: {
     textAlign: 'left',
