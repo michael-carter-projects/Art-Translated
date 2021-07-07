@@ -72,11 +72,11 @@
 
     This is a cross-platform app that uses a local Tensorflow model trained in Google AutoML to predict the
     art movement associated with an image provided by the user either through the camera roll or by
-    taking a picture. Currently photos can be taken or selected from storage, and fed to the Tensorflow model
-    which provides the user with the 2 most likely movements. The user may then select a movement and read
+    taking a picture. Currently photos can be taken or selected from storage and the Tensorflow model
+    will provide the user with the 3 most likely movements. The user may then select a movement and read
     the details about the movement which were provided originally by my boss as a spreadsheet. Movement data
     and model are stored locally so that cell service is not required for the app to function, and the
-    prediction itself currently takes less than a second. (Longer for camera roll images due to expo Image-
+    prediction itself currently takes less than a second. (~15 sec for camera roll images due to expo Image-
     Manipulator compatibility. ***FIX***)
 
     YouTube link to a demonstration as of 07/07/21: (upload demo and include link)
