@@ -76,11 +76,10 @@
     which provides the user with the 2 most likely movements. The user may then select a movement and read
     the details about the movement which were provided originally by my boss as a spreadsheet. Movement data
     and model are stored locally so that cell service is not required for the app to function, and the
-    prediction itself currently takes less than a second.
+    prediction itself currently takes less than a second. (Longer for camera roll images due to expo Image-
+    Manipulator compatibility. ***FIX***)
 
-    ***predictions currently do not reflect the results given by Google AutoML, FIX ASAP***
-
-    YouTube link to a demonstration as of 06/20/19: (upload demo and include link)
+    YouTube link to a demonstration as of 07/07/21: (upload demo and include link)
 
     amd/App.js                    - the file that handles navigation through the app (react-navigation)
     amd/components                - folder that contains the .js files responsible for each page of the app
