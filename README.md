@@ -70,6 +70,8 @@
 
 **5:** React Native Movement Classification App
 
+[Video demonstration](https://www.youtube.com/watch?v=zNAkUXwmYPs) of v1.0.0 (7/7/2021)
+
     This is a cross-platform app that uses a local Tensorflow model trained in Google AutoML to predict the
     art movement associated with an image provided by the user either through the camera roll or by
     taking a picture. Currently photos can be taken or selected from storage and the Tensorflow model
@@ -79,7 +81,7 @@
     prediction itself currently takes less than a second. (~15 sec for camera roll images due to expo Image-
     Manipulator compatibility. ***FIX***)
 
-[YouTube link to a video demonstration](https://www.youtube.com/watch?v=zNAkUXwmYPs) as of 07/07/21
+
 
     amd/App.js                    - the file that handles navigation through the app (react-navigation)
     amd/components                - folder that contains the .js files responsible for each page of the app
