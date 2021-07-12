@@ -79,7 +79,7 @@
     prediction itself currently takes less than a second. (~15 sec for camera roll images due to expo Image-
     Manipulator compatibility. ***FIX***)
 
-    YouTube link to a demonstration as of 07/07/21: https://www.youtube.com/watch?v=zNAkUXwmYPs
+    [YouTube link to a video demonstration](https://www.youtube.com/watch?v=zNAkUXwmYPs) as of 07/07/21
 
     amd/App.js                    - the file that handles navigation through the app (react-navigation)
     amd/components                - folder that contains the .js files responsible for each page of the app
