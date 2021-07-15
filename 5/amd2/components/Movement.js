@@ -16,9 +16,7 @@ function Movement ({navigation})
       <ScrollView>
         <View style={styles.outer_view}>
 
-          <View style={outer_rounded_box(color2)}>
-
-            <View style={inner_rounded_box(color1)}>
+            <View style={inner_rounded_box(color1, color2)}>
               <Text/>
               <Card.Title style={styles.section_title}>Movement </Card.Title>
               <Text style={styles.section_content}>{infoMap.name}</Text>
@@ -48,7 +46,6 @@ function Movement ({navigation})
               <Text style={styles.section_content}>{infoMap.end_reason}</Text>
             </View>
 
-          </View>
 
         </View>
         <View style={{paddingTop:30}}>
@@ -91,11 +88,13 @@ const styles = StyleSheet.create({
   },
 })
 
-function inner_rounded_box (color) {
+function inner_rounded_box (color1, color2) {
   return {
-    backgroundColor: color,
+    backgroundColor: color1,
     paddingLeft:  15,
     paddingRight: 15,
+    borderColor: color2,
+    borderWidth: 5,
     borderTopLeftRadius:     15,
     borderTopRightRadius:    15,
     borderBottomLeftRadius:  15,

@@ -1,9 +1,8 @@
 import { StatusBar } from 'expo-status-bar'
 
 import React from 'react'
-import { Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Icon } from 'react-native-elements'
-import AwesomeButton from "react-native-really-awesome-button";
 
 // GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" }
 function getMovementInfo(prob) {
@@ -73,19 +72,11 @@ function Predictions ({navigation})
 
         <View height={50}/>
 
-        <AwesomeButton
-          height       ={buttons.height  }
-          width        ={buttons.width   }
-          borderRadius ={buttons.radius  }
-          borderColor  ={buttons.bcolor  }
-          borderWidth  ={buttons.bwidth  }
-          textSize     ={buttons.textSize}
-          backgroundColor ={colors.dark1}
-          backgroundDarker={colors.dark2}
-          fontFamily={'System'}
-          onPress={ () => navigation.navigate('Movement', {infoMap: top3[0].map, color1: colors.dark1, color2: colors.dark2})}
+        <TouchableOpacity
+          onPress={ () => navigation.navigate('Movement', {infoMap:top3[0].map, color1:colors.dark1, color2:colors.dark2})}
         >
-          <View style={styles.resultbutton1}>
+        <View style={styles.resultbutton1}>
+
             <View style={styles.result_text}>
               <Text style={styles.button}>{ top3[0].map.name }</Text>
               <Text style={styles.button}>Probability: { top3[0].prob }%</Text>
@@ -93,22 +84,13 @@ function Predictions ({navigation})
             <View>
               <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
             </View>
-          </View>
 
-        </AwesomeButton>
+        </View>
+        </TouchableOpacity>
 
         <View height={25}/>
 
-        <AwesomeButton
-          height       ={buttons.height  }
-          width        ={buttons.width   }
-          borderRadius ={buttons.radius  }
-          borderColor  ={buttons.bcolor  }
-          borderWidth  ={buttons.bwidth  }
-          textSize     ={buttons.textSize}
-          backgroundColor ={colors.med1}
-          backgroundDarker={colors.med2}
-          fontFamily={'System'}
+        <TouchableOpacity
           onPress={ () => navigation.navigate('Movement', {infoMap: top3[1].map, color1: colors.med1, color2: colors.med2})}
         >
           <View style={styles.resultbutton2}>
@@ -120,20 +102,11 @@ function Predictions ({navigation})
               <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
             </View>
           </View>
-        </AwesomeButton>
+        </TouchableOpacity>
 
         <View height={25}/>
 
-        <AwesomeButton
-          height       ={buttons.height  }
-          width        ={buttons.width   }
-          borderRadius ={buttons.radius  }
-          borderColor  ={buttons.bcolor  }
-          borderWidth  ={buttons.bwidth  }
-          textSize     ={buttons.textSize}
-          backgroundColor ={colors.lite1}
-          backgroundDarker={colors.lite2}
-          fontFamily={'System'}
+        <TouchableOpacity
           onPress={ () => navigation.navigate('Movement', {infoMap: top3[2].map, color1: colors.lite1, color2: colors.lite2})}
         >
           <View style={styles.resultbutton3}>
@@ -145,7 +118,7 @@ function Predictions ({navigation})
               <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
             </View>
           </View>
-        </AwesomeButton>
+        </TouchableOpacity>
 
       </View>
       <StatusBar style="light" />
@@ -165,12 +138,12 @@ const win = Dimensions.get('window');
 const image_side = win.width*0.8;
 
 const colors = ({
-  dark1: '#161632',
+  dark1: '#202042',
   dark2: '#080816',
   med1:  '#323264',
   med2:  '#161632',
-  lite1: '#525284',
-  lite2: '#363652',
+  lite1: '#484880',
+  lite2: '#282852',
 });
 
 const buttons = ({
@@ -179,7 +152,7 @@ const buttons = ({
   radius: 15,
   textSize: 18,
   bcolor: 'rgba(255, 255, 255, 0)',
-  bwidth: 2
+  bwidth: 5
 });
 
 const styles = StyleSheet.create({
@@ -199,25 +172,46 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   resultbutton1: {
-    paddingLeft: 20,
-    flex:1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width:        buttons.width,
+    height:       buttons.height,
+    borderRadius: buttons.radius,
+    borderWidth:  buttons.bwidth,
+    fontSize:     buttons.textSize,
     backgroundColor: colors.dark1,
+    borderColor:     colors.dark2,
+    paddingLeft: 20,
+    paddingBottom: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   resultbutton2: {
-    paddingLeft: 20,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width:        buttons.width,
+    height:       buttons.height,
+    borderRadius: buttons.radius,
+    borderWidth:  buttons.bwidth,
+    fontSize:     buttons.textSize,
     backgroundColor: colors.med1,
+    borderColor:     colors.med2,
+    paddingLeft: 20,
+    paddingBottom: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   resultbutton3: {
-    paddingLeft: 20,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width:        buttons.width,
+    height:       buttons.height,
+    borderRadius: buttons.radius,
+    borderWidth:  buttons.bwidth,
+    fontSize:     buttons.textSize,
     backgroundColor: colors.lite1,
+    borderColor:     colors.lite2,
+    paddingLeft: 20,
+    paddingBottom: 3,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   button: {
     fontSize: 18,
