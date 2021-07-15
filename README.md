@@ -78,10 +78,7 @@
     will provide the user with the 3 most likely movements. The user may then select a movement and read
     the details about the movement which were provided originally by my boss as a spreadsheet. Movement data
     and model are stored locally so that cell service is not required for the app to function, and the
-    prediction itself currently takes less than a second. (~15 sec for camera roll images due to expo Image-
-    Manipulator compatibility. ***FIX***)
-
-
+    prediction itself currently takes less than a second.
 
     amd/App.js                    - the file that handles navigation through the app (react-navigation)
     amd/components                - folder that contains the .js files responsible for each page of the app
