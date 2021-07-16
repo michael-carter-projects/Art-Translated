@@ -1,5 +1,5 @@
 # Author: Michael Carter
-# 20-01-07
+# 21-07-13
 
 """ WINDOWS shell commands """
 # cd X:\Computer-Science\GitHub\Art-Translate\3-AutoML-CSV
@@ -17,9 +17,8 @@ import google.cloud.storage as storage
 import csv
 
 """
-given a blob name (directory in art_translate_1 image bucket), returns the first
-folder in the directory name, which is the movement associated with an image
-e.g. get_movement("cubism/art_image.png") = "cubism"
+given a blob name (directory in image bucket), returns:
+the 2nd folder in the directory name (category)
 """
 def get_category(blobname):
     slashes = []
