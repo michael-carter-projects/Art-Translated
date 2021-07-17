@@ -6,19 +6,17 @@ import { Icon } from 'react-native-elements'
 
 
 // GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" }
-function getMovementInfo(prob) {
+function getMovementInfo(pred, prob, mvmtMap) {
 
-  for (var i = 0; i < global.numMovements; i++)
-  {
-    if (prob === global.prediction[i].prob)
+  // LOOP THROUGH PREDICTION TO FIND MOVEMENT WITH GIVEN SCORE ---------------------------------
+  for (var i = 0; i < pred.length; i++) {
+    if (prob === pred[i].prob)
     {
-      const label = JSON.stringify(global.prediction[i].label);
-
-      for (var j = 0; j < global.numMovements; j++)
-      {
-        if (global.movementMap[j].key === label.replace(/['"]+/g, ''))
-        {
-          return { map:  global.movementMap[j],
+      // ONCE FOUND, SEARCH MOVEMENT MAP FOR INFO OF MOVEMENT ----------------------------------
+      const label = JSON.stringify(pred[i].label);
+      for (var j = 0; j < mvmtMap.length; j++) {
+        if (mvmtMap[j].key === label.replace(/['"]+/g, '')) {
+          return { map:  mvmtMap[j],
                    prob: (parseFloat(prob)*100).toFixed(2)
                  }
         }
@@ -27,11 +25,11 @@ function getMovementInfo(prob) {
   }
 }
 // GIVEN A PREDICTION FROM THE LOADED MODEL, RETURNS ALL MOVEMENT INFO FOR TOP 3
-function getTop3Predictions(pred) {
+function getTop3Predictions(pred, mvmtMap) {
 
   var top3Scores = [0, -1, -2];
 
-  for (var i = 0; i < global.numMovements; i++)
+  for (var i = 0; i < pred.length; i++)
   {
     var currProb = prediction[i].prob;
 
@@ -49,9 +47,11 @@ function getTop3Predictions(pred) {
     }
   }
 
-  const res1 = getMovementInfo(top3Scores[0]);
-  const res2 = getMovementInfo(top3Scores[1]);
-  const res3 = getMovementInfo(top3Scores[2]);
+  console.log('top3:', top3Scores);
+
+  const res1 = getMovementInfo(pred, top3Scores[0], mvmtMap);
+  const res2 = getMovementInfo(pred, top3Scores[1], mvmtMap);
+  const res3 = getMovementInfo(pred, top3Scores[2], mvmtMap);
 
   return [ res1, res2, res3 ];
 }
@@ -60,7 +60,7 @@ function getTop3Predictions(pred) {
 function Predictions ({navigation})
 {
   const uri = navigation.state.params.image;
-  const top3 = getTop3Predictions(global.prediction);
+  const top3 = getTop3Predictions(global.prediction, global.movementMap);
 
   return (
     <ImageBackground source={global.bg} style={{flex: 1, width:"100%", alignItems: 'center'}}>

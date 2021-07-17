@@ -18,19 +18,21 @@ let camera: Camera; // camera ref to allow abort
 async function getMovementDetectorAsync()
 {
     const tfReady = await tf.ready();
-    const modelJson = await require("../assets/model/model.json");
-    const modelWeight = await require("../assets/model/group1-shard.bin");
-    const model = await tf.loadGraphModel(bundleResourceIO(modelJson, modelWeight));
-    // const dict = loadDict("../assets/model/dict.txt");
-    const dict = ["mannerism-late-renaissance",
-                  "renaissance",
-                  "baroque",
-                  "northern-renaissance",
-                  "post_impressionism",
-                  "neoclassicism",
-                  "rococo",
-                  "gothic"];
-    global.movementDetector = new automl.ImageClassificationModel(model, dict);
+
+    const rvfModelJson = await require("../assets/models/rvf-f/model.json");
+    const rvfModelWeight = await require("../assets/models/rvf-f/group1-shard.bin");
+    const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
+    global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
+
+    const rModelJson = await require("../assets/models/r/model.json");
+    const rModelWeight = await require("../assets/models/r/group1-shard.bin");
+    const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
+    global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
+
+    const fModelJson = await require("../assets/models/f1/model.json");
+    const fModelWeight = await require("../assets/models/f1/group1-shard.bin");
+    const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
+    global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
 
     console.log("[+] Movement detection model loaded");
 }
@@ -41,6 +43,27 @@ function b64toTensor(base64) {
   const imgRaw = new Uint8Array(imgBuffer);                      // convert image buffer to array of ints
   return decodeJpeg(imgRaw);                                   // convert array of ints to image tensors
 }
+
+// RUN GIVEN TENSOR IMAGE THROUGH MODEL TREE ===================================================================================
+async function predict(imgTensor)
+{
+  const pred = await global.rvfModel.classify(imgTensor);
+
+  var rvf = 'fakey';
+  if (pred[0].prob > pred[1].prob) { rvf = 'realey'; }
+
+  console.log('rvf: ', rvf);
+
+  if (rvf.localeCompare('realey') === 0) {
+    global.prediction = await global.rModel.classify(imgTensor);
+  }
+  else {
+    global.prediction = await global.fModel.classify(imgTensor);
+  }
+
+
+}
+
 
 
 // ON STARTUP ==================================================================================================================
@@ -74,7 +97,7 @@ function Home ({navigation})
       );
 
       // CONVERT BASE^$ IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-      global.prediction = await global.movementDetector.classify(b64toTensor(base64));
+      global.prediction = await global.rModel.classify(b64toTensor(base64));
 
       nav.navigate('Predictions', {image: uri}); // navigate to Predictions page
 
@@ -98,7 +121,7 @@ function Home ({navigation})
     );
 
     // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ------------------------------------
-    global.prediction = await global.movementDetector.classify(b64toTensor(base64));
+    await predict(b64toTensor(base64));
 
     nav.navigate('Predictions', {image: uri}); // navigate to Predictions page
     setInProgress(false); // reset inProgress hook to false

@@ -1,17 +1,35 @@
 global.bg = require('./assets/backgrounds/bg3.png');
 global.movementDetector = null;
+
+global.rvfModel = null;
+global.rvfDict = ['realey', 'fakey']
+
+global.rModel = null;
+global.rDict = ['mannerism-late-renaissance',
+                'renaissance',
+                'baroque',
+                'northern-renaissance',
+                'post-impressionism',
+                'neoclassicism',
+                'rococo',
+                'gothic'];
+
+global.fModel = null;
+global.fDict = ['symbolism',
+                'cubism',
+                'expressionism',
+                'impressionism',
+                'dada',
+                'futurism',
+                'fauvism',
+                'art-deco',
+                'art-nouveau-modern',
+                'post-impressionism',
+                'surrealism'];
+
 global.image = null;
-global.prediction = [
-  {
-    label: null,
-    prob: 0,
-  },
-  {
-    label: null,
-    prob: 0,
-  },
-];
-global.numMovements = 8;
+global.prediction = null;
+
 global.movementMap = [
   {
     key:  "mannerism-late-renaissance",
@@ -58,7 +76,7 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key:  "post_impressionism",
+    key:  "post-impressionism",
     name: "Post Impressionism",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1882 AD - 1915 AD",
@@ -100,7 +118,107 @@ global.movementMap = [
     themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
     start_reason: "null",
     end_reason: "null",
-  }
+  },
+  {
+    key: "symbolism",
+    name: "Symbolism",
+    dates: "1860 AD - 1910 AD",
+    style: "More a philosophy than an actual style of art.",
+    commentary: "null",
+    themes: "Contemplative refuge from the world of strife and will. Mysticism, Otherworldliness, Mortality. A sense of the malign power of sexuality. Rejects the reality of life. ",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key: "cubism",
+    name: "Cubism",
+    dates: "1905 AD - 1920 AD",
+    style: "Objects are analyzed, broken up and reassembled in an abstracted form—instead of depicting objects from a single viewpoint, the artist depicts the subject from a multitude of viewpoints to represent the subject in a greater context. Reducing everything, places and a figures and houses, to geometric schemas, to cubes. Simplification of form and deconstruction of perspective. Partial abstraction. Total Abstraction. Observing a subject from different points in space and time simultaneously, i.e., the act of moving around an object to seize it from several successive angles fused into a single image (multiple viewpoints, mobile perspective, simultaneity or multiplicity), is a generally recognized device used by the Cubists. Strong emphasis on large overlapping geometric planes and flat surface activity. Use of multiple perspective and complex planar faceting for expressive effect while preserving the eloquence of subjects.",
+    commentary: "\"What do they mean? Have those responsible for them taken leave of their senses? Is it art or madness? Who knows?\"",
+    themes: "Deconstruction, abstraction, expressive and allusive abstraction dedicated to complex emotional and sexual themes.",
+    start_reason: "A new way of seeing for the modern age. Revitalise boring traditions (e.g. perspective) of Western art.",
+    end_reason: "null",
+  },
+  {
+    key: "expressionism",
+    name: "Expressionism",
+    dates: "1901 AD - 1950 AD",
+    style: "Subjective perspective. Radically distorted for emotional effect to evoke moods or ideas. Expressed meaning of emotional experience rather than physical reality.",
+    commentary: "null",
+    themes: "Distorted reality for emotional effect to evoke moods or ideas. Expressing the meaning of emotional experience rather than physical reality.",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key: "impressionism",
+    name: "Impressionism",
+    dates: "1860 AD - 1895 AD",
+    style: "Outdoor settings. Characterized by relatively small, thin, yet visible brush strokes, open composition, emphasis on accurate depiction of light in its changing qualities (often accentuating the effects of the passage of time), ordinary subject matter, inclusion of movement as a crucial element of human perception and experience, and unusual visual angles. Violated the rules of academic painting. They constructed their pictures from freely brushed colours that took precedence over lines and contours. Capturing the momentary and transient effects of sunlight by painting outdoors or en plein air. They portrayed overall visual effects instead of details, and used short \"broken\" brush strokes of mixed and pure unmixed colour—not blended smoothly or shaded, as was customary—to achieve an effect of intense colour vibration. Art of immediacy and movement, of candid poses and compositions, of the play of light expressed in a bright and varied use of colour. Recreating the sensation in the eye that views the subject, rather than delineating the details of the subject, and by creating a welter of techniques and forms. Pursuit of an art of spontaneity, sunlight, and colour. Short, thick strokes of paint quickly capture the essence of the subject, rather than its details. The paint is often applied impasto. Colours are applied side by side with as little mixing as possible, a technique that exploits the principle of simultaneous contrast to make the colour appear more vivid to the viewer. Greys and dark tones are produced by mixing complementary colours. Pure impressionism avoids the use of black paint. Wet paint is placed into wet paint without waiting for successive applications to dry, producing softer edges and intermingling of colour. Impressionist paintings do not exploit the transparency of thin paint films (glazes), which earlier artists manipulated carefully to produce effects. The impressionist painting surface is typically opaque. The paint is applied to a white or light-coloured ground. Previously, painters often used dark grey or strongly coloured grounds. The play of natural light is emphasized. Close attention is paid to the reflection of colours from object to object. Painters often worked in the evening to produce effets de soir—the shadowy effects of evening or twilight. In paintings made en plein air (outdoors), shadows are boldly painted with the blue of the sky as it is reflected onto surfaces, giving a sense of freshness previously not represented in painting. (Blue shadows on snow inspired the technique.). further developing into an art form its very subjectivity in the conception of the image, the very subjectivity that photography eliminated\".[31] The Impressionists sought to express their perceptions of nature, rather than create exact representations. This allowed artists to depict subjectively what they saw with their \"tacit imperatives of taste and conscience\".[32] Photography encouraged painters to exploit aspects of the painting medium, like colour, which photography then lacked: \"The Impressionists were the first to consciously offer a subjective alternative to the photograph\". Bold blocks of colour and composition on a strong diagonal slant showing the influence of Japanese prints.",
+    commentary: "\"...Wallpaper in its embryonic state is more finished than that seascape.\". Louis Leroy to coined the term in a satirical review published in the Parisian newspaper Le Charivari.",
+    themes: "null",
+    start_reason: "Rebelled against Acacdemic conforming paintings. Too polished and detailed. Idealistic. Emphasized still-lifes,  landscapes and daily life.",
+    end_reason: "null",
+  },
+  {
+    key: "dada",
+    name: "Dada",
+    dates: "1915 AD - 1950 AD",
+    style: "Sculpture, Painting, Prints, Mixed Media, Sound media, Collage, Sound poetry, cut-up writing, visual arts, literature, poetry, art manifestos, art theory, theatre, graphic design, readymades, assemblage, Photomontage, Cut-up",
+    commentary: "\"Anti-art.\"; \"Dada philosophy is the sickest, most paralyzing and most destructive thing that has ever originated from the brain of man.\";   If art was to appeal to sensibilities, Dada was intended to offend. \"Dada philosophy is the sickest, most paralyzing and most destructive thing that has ever originated from the brain of man.\" -  American Art News ;  \"reaction to what many of these artists saw as nothing more than an insane spectacle of collective homicide.\"; A savior, a monster, which would lay waste to everything in its path... [It was] a systematic work of destruction and demoralization... In the end it became nothing but an act of sacrilege.\"; Dada is the groundwork to abstract art and sound poetry, a starting point for performance art, a prelude to postmodernism, an influence on pop art, a celebration of antiart to be later embraced for anarcho-political uses in the 1960s and the movement that laid the foundation for Surrealism.",
+    themes: "Nonsense, irrationality, anti-bourgeois, protest, peace, anti-war, anti-nationalism, radical far-left thought. Anti art. Anti colonialism. Believed that the 'reason' and 'logic' of bourgeois capitalist society had led people into war. Protest\"against this world of mutual destruction.\". Opposite of everything which art stood for.  Ignored aesthetics. If art was to appeal to sensibilities, Dada was intended to offend. Addressed a postwar economic and moral crisis. Rejected reason and logic, prizing nonsense, irrationality and intuition. Shock, scandel. Art and culture are considered a type of fetishization where the objects of consumption (including organized systems of thought like philosophy and morality) are chosen, much like a preference for cake or cherries, to fill a void. Rejecting \"retinal art\".",
+    start_reason: "Rejected the logic, reason, and aestheticism of modern capitalist society. Reaction to violence, destruction of WWI. Anti-Art sentiment. detachment from the constraints of reality. Detachment from reality. Rrejection of the tight correlation between words and meaning. Rejected colonialism.",
+    end_reason: "null",
+  },
+  {
+    key: "futurism",
+    name: "Futurism",
+    dates: "1907 AD - 1944 AD",
+    style: "Figurative, Figures in Motion, Speed, movement, glorified science, technology, youth, violence, vehicles, car, airplane, the industrial city,  glorified modernity",
+    commentary: "null",
+    themes: "null",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key: "fauvism",
+    name: "Fauvism",
+    dates: "1904 AD - 1908 AD",
+    style: "Primitive and less naturalistic. Pure, brilliant colour aggressively applied straight from the paint tubes to create a sense of an explosion. Unnatural color selection. Brown is purple, green is pink. Wild brush work and strident colors, subject simplification and abstraction. Unconstrained brushwork. African and Oceanic art influences. Expressive potency of pure color. Flat, bright colors, eclectic style, mixed techniques. Fauvist style: golden yellows, incandescent blues, thick impasto and larger brushstrokes. Rejection of  traditional three-dimensional space and instead use flat areas or patches of colour to create a new pictorial space.",
+    commentary: "\"A pot of paint has been flung in the face of the public.\"  Louis Vauxcelles disparaged the painters as \"fauves\" (wild beasts). An \"orgy of pure tones\". \"A pot of paint has been flung in the face of the public\". Critics were horrified by its flatness, bright colors, eclectic style and mixed technique.",
+    themes: "Disturb complacency.",
+    start_reason: "Disturb art history complacency.",
+    end_reason: "null",
+  },
+  {
+    key: "art-deco",
+    name: "Art Deco",
+    dates: "1915 AD - 1940 AD",
+    style: "Metallic colors, Geometric Designs. From its outset, Art Deco was influenced by the bold geometric forms of Cubism and the Vienna Secession; the bright colors of Fauvism and of the Ballets Russes; the updated craftsmanship of the furniture of the eras of Louis Philippe I and Louis XVI; and the exotic styles of China and Japan, India, Persia, ancient Egypt and Maya art. It featured rare and expensive materials, such as ebony and ivory, and exquisite craftsmanship. The Chrysler Building and other skyscrapers of New York built during the 1920s and 1930s are monuments of the Art Deco style. In the 1930s, during the Great Depression, Art Deco became more subdued. New materials arrived, including chrome plating, stainless steel, and plastic. A sleeker form of the style, called Streamline Moderne, appeared in the 1930s; it featured curving forms and smooth, polished surfaces.[4] Art Deco is one of the first truly international styles, but its dominance ended with the beginning of World War II and the rise of the strictly functional and unadorned styles of modern architecture and the International Style of architecture that followed. Art Deco style, featuring geometric volumes, symmetry, straight lines, concrete covered with marble plaques, finely-sculpted ornament, and lavish interiors, including mosaic friezes. Art Deco was an explosion of colors, featuring bright and often clashing hues, frequently in floral designs, presented in furniture upholstery, carpets, screens, wallpaper and fabrics. Use of ebony and ivory. Luxury and modernity. Combined very expensive materials and exquisite craftsmanship put into modernistic forms. Nothing was cheap about Art Deco: pieces of furniture included ivory and silver inlays, and pieces of Art Deco jewelry combined diamonds with platinum, jade, and other precious materials. Simple geometric shapes like triangles and squares are the basis of all compositional arrangements. ",
+    commentary: "...practical objects such as furniture should not have any decoration at all...\"Modern decoration has no decoration\".",
+    themes: "Luxury, glamour, exuberance, and faith in social and technological progress. Modernity.",
+    start_reason: "Reaction against Art Nouveau. Inspired by Vienna Succession, Cubism, Nabis, Odilon Redon",
+    end_reason: "Beginning of WWII. Rise of the strictly functional and unadorned styles of modernism.",
+  },
+  {
+    key: "art-nouveau-modern",
+    name: "Art Nouveau",
+    dates: "1890 AD - 1920 AD",
+    style: "Floral, Vegetal, Plant, Vines, Geometric Stylistic Elements, Flowing",
+    commentary: "null",
+    themes: "null",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key: "surrealism",
+    name: "Surrealism",
+    dates: "1924 AD - ? AD",
+    style: "Unnerving, illogical scenes, sometimes with photographic precision, creating strange creatures from everyday objects, and developing painting techniques that allowed the unconscious to express itself. Resolves previously contradictory conditions of dream and reality into an absolute reality, a super-reality\", or surreality. Works of surrealism feature the element of surprise, unexpected juxtapositions and non sequitur; however, many surrealist artists and writers regard their work as an expression of the philosophical movement first and foremost, with the works themselves being an artifact. Leader Breton was explicit in his assertion that Surrealism was, above all, a revolutionary movement. At the time, the movement was associated with political causes such as communism and anarchism.",
+    commentary: "null",
+    themes: "Unnerving, illogical, strange unconscious expression, Dream, Unreality, Sureality. Disorienting, hallucinatory quality of a dream; fantastic. Surprise, Unexpected Juxtapositions, non sequiturs. Revolutionary.",
+    start_reason: "null",
+    end_reason: "null",
+  },
 ];
 global.colors = ({
   dark1: '#202042',
