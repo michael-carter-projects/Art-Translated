@@ -52,9 +52,7 @@ def write_csv_file(filename, l, pct_train, pct_valid):
 
         if (category == None or movement_name == None):
             continue
-
         if (category == 'realey'):
-
             if (movement_name != prev_movement): # if we have started a new movement,
                 prev_movement = movement_name   # update the previous movement to current one
                 movement_count = 0             # and reset the movement image count

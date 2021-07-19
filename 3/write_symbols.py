@@ -35,7 +35,7 @@ AutoML images associated with said movement, returns a dictionary that
 contains movement titles as keys and the number of images in that movement
 as values
 """
-def create_movement_size_dict(l):
+def get_movement_sizes(l):
 
     total_image_count = 0 # progress bar stuff --------------------------------
     print("Calculating movement sizes...")
@@ -45,7 +45,7 @@ def create_movement_size_dict(l):
     movement_count = 0 # stores the tentative count of images in the current movement
     prev_movement = "" # stores the name of the movement associated with the previous file
 
-    blobs = storage.Client().list_blobs("art_translate_1") # get all filepaths in the GCP bucket
+    blobs = storage.Client().list_blobs() # get all filepaths in the GCP bucket
     for blob in blobs:                                    # and loop through every file path
 
         movement_name = get_movement(blob.name)                       # get movement of current image
@@ -73,7 +73,7 @@ def write_csv_file(filename, l, pct_train, pct_valid):
 
     write_csv_header(filename) # write the header of the .csv file
 
-    movement_size_dict = create_movement_size_dict(l) # get the number of images in each movement
+    movement_size_dict = get_movement_sizes(l) # get the number of images in each movement
     movement_count = 0 # stores the tentative count of images in the current movement
     prev_movement = "" # stores the name of the movement associated with the previous file
 

@@ -48,7 +48,7 @@ def get_movement_sizes(bucket_name, target_cat, l):
     blobs = storage.Client().list_blobs(bucket_name)                         # get all filepaths in the GCP bucket
     for blob in blobs:                                                      # and loop through every file path
         category, movement_name = get_category_and_movement(blob.name)     # get movement of current image
-        if (category == target_cat):                                      # if images are fakey:
+        if (category == target_cat):                                      # if images are in target category:
             if (movement_name != prev_movement):                         # if we have started a new movement:
                 if (prev_movement != ""):                               #    / check that one was just completed
                     movement_size_dict[prev_movement] = movement_count #     \ and if so update the dictionary.
