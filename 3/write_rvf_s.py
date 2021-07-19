@@ -72,5 +72,5 @@ def write_csv_file(filename, category, pct_train, pct_valid):
 """ ============================================================================================================================
 WHERE THE MAGIC HAPPENS
 """
-write_csv_file('automl_rvf_training_data.csv', 'fakey',  80, 10)
-write_csv_file('automl_rvf_training_data.csv', 'realey', 80, 10)
+write_csv_file('automl_rvf_s_training_data.csv', 'fakey',  80, 10)
+write_csv_file('automl_rvf_s_training_data.csv', 'realey', 80, 10)

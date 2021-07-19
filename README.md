@@ -30,14 +30,18 @@
 
 **3:** Write CSV for AutoML
 
-    This program is used as a map between the dataset collected in Part 1 and Google AutoML. Given the file
-    directory of the training images, this script creates the .csv file containing the training data (with a
-    80:10:10 train:validation:test split) that AutoML needs to actually train a model.
+    This is a series of python scripts used to train 4 different AutoML models which will be implemented
+    as a 'classification tree' in the React Native app (5).
 
-    automl_script_symbols.py - the script that writes the .csv (symbols because the .csv only contains
-                               training data for movements that contain symbols)
-    automl_training_data.csv - the file that was used to train the latest AutoML model.
-
+    write_rvf_s.py - used to train an ML model that determines if an image belongs to a 'realey' movement
+                     or a 'fakey' movement (s for single label classification)
+    write_f_s.py   - used to train a model that distinguishes fakey movements (expressionism, cubism, etc.)
+                     from one another
+    write_f_s.py   - used to train a model that distinguishes realey movements (baroque, realism, renaissance,
+                     etc.) from one another
+    write_ren_s.py - used to train a model that distinguishes renaissance sub-movements (early, high, late,
+                     and northern) from one another
+                     
 **4:** Coat of Arms Classification
 
     This is an investigation into image classification using 'hands-on' machine learning models made with
