@@ -4,12 +4,12 @@
 """ WINDOWS powershell commands """
 # cd C:\Users\lunch\Art-Translated\3
 # $env:GOOGLE_APPLICATION_CREDENTIALS="C:\Users\lunch\Art-Translated\3\ignore\numeric-polygon-283403-e4d6147767c1.json"
-# python automl_script_symbols.py
 
 import google.cloud.storage as storage
 from helpers import print_progress_bar
 from helpers import write_csv_header
 from helpers import write_csv_line
+
 
 """ ============================================================================================================================
 given a blob name (directory in art_translate_1 image bucket), returns the first folder in the directory name, which is the
