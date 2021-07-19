@@ -9,7 +9,6 @@ from helpers import print_progress_bar
 from helpers import write_csv_header
 from helpers import write_csv_line
 
-
 """ ============================================================================================================================
 given a blob name (directory in image bucket), returns:
 the 2nd folder in the directory name (category)

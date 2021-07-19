@@ -1,3 +1,4 @@
 /1/ignore/**
 /2/ignore/**
 /3/ignore/**
+/3/__pycache__/**

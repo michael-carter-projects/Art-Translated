@@ -8,7 +8,6 @@ import google.cloud.storage as storage
 from helpers import print_progress_bar
 from helpers import write_csv_header
 from helpers import write_csv_line
-from helpers import get_movement_sizes
 
 """ ============================================================================================================================
 given a blob name (directory in image bucket), returns:
@@ -27,6 +26,41 @@ def get_category_and_movement(blobname):
         return blobname[slashes[0]+1:slashes[1]], 'renaissance'
     else:
         return blobname[slashes[0]+1:slashes[1]], m
+
+""" ============================================================================================================================
+given a bucket of folders, each representing an art movement and containing
+AutoML images associated with said movement, returns a dictionary that
+contains movement titles as keys and the number of images in that movement
+as values
+"""
+def get_movement_sizes(bucket_name, target_cat, l):
+
+    total_image_count = 0 # progress bar stuff -------------------
+    print("Calculating movement sizes...")
+    print_progress_bar(total_image_count, l, prefix = 'Progress:')
+
+    movement_size_dict = {} # empty movement:size dictionary
+    movement_count = 0 # stores the tentative count of images in the current movement
+    prev_movement = "" # stores the name of the movement associated with the previous file
+
+    blobs = storage.Client().list_blobs(bucket_name)                         # get all filepaths in the GCP bucket
+    for blob in blobs:                                                      # and loop through every file path
+        category, movement_name = get_category_and_movement(blob.name)     # get movement of current image
+        if (category == target_cat):                                      # if images are in target category:
+            if (movement_name != prev_movement):                         # if we have started a new movement:
+                if (prev_movement != ""):                               #    / check that one was just completed
+                    movement_size_dict[prev_movement] = movement_count #     \ and if so update the dictionary.
+                prev_movement = movement_name                         # update the previous movement to current one
+                movement_count = 0                                   # and reset the movement image count
+
+            movement_count += 1 # add 1 to the number of images in current movement
+
+            total_image_count += 1 # progress bar stuff ------------------
+            print_progress_bar(total_image_count, l, prefix = 'Progress:')
+
+    movement_size_dict[prev_movement] = movement_count # add the key:value pair of the last movement
+
+    return movement_size_dict
 
 """ ============================================================================================================================
 writes every image in art_translate_images into a .csv file
