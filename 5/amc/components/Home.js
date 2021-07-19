@@ -14,25 +14,80 @@ import { decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
 let camera: Camera; // camera ref to allow abort
 
+
+const MODEL_MODE = 0; //  0 = accurate (24MB per model)    1 = balanced (12 MB per model)    2 = fast (4 MB per model)
+
 // LOADS THE MOVEMENT DETECTION MODEL AND STORES AS GLOBAL VARIABLE ============================================================
-async function getMovementDetectorAsync()
+async function loadAllModelsAsync()
 {
     const tfReady = await tf.ready();
 
-    const rvfModelJson = await require("../assets/models/rvf-f/model.json");
-    const rvfModelWeight = await require("../assets/models/rvf-f/group1-shard.bin");
-    const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
-    global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
+    if (MODEL_MODE === 0) {
+      const rvfModelJson = await require("../assets/models/rvf-s-a/model.json");
+      const rvfModelWeight = await require("../assets/models/rvf-s-a/group1-shard.bin");
+      const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
+      global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
 
-    const rModelJson = await require("../assets/models/r/model.json");
-    const rModelWeight = await require("../assets/models/r/group1-shard.bin");
-    const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
-    global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
+      const fModelJson = await require("../assets/models/f-s-a/model.json");
+      const fModelWeight = await require("../assets/models/f-s-a/group1-shard.bin");
+      const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
+      global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
 
-    const fModelJson = await require("../assets/models/f1/model.json");
-    const fModelWeight = await require("../assets/models/f1/group1-shard.bin");
-    const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
-    global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
+      const rModelJson = await require("../assets/models/r-s-a/model.json");
+      const rModelWeight = await require("../assets/models/r-s-a/group1-shard.bin");
+      const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
+      global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
+
+      const renModelJson = await require("../assets/models/ren-s-a/model.json");
+      const renModelWeight = await require("../assets/models/ren-s-a/group1-shard.bin");
+      const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
+      global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
+    }
+    else if (MODEL_MODE === 1) {
+      const rvfModelJson = await require("../assets/models/rvf-s-b/model.json");
+      const rvfModelWeight = await require("../assets/models/rvf-s-b/group1-shard.bin");
+      const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
+      global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
+
+      const fModelJson = await require("../assets/models/f-s-b/model.json");
+      const fModelWeight = await require("../assets/models/f-s-b/group1-shard.bin");
+      const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
+      global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
+
+      const rModelJson = await require("../assets/models/r-s-b/model.json");
+      const rModelWeight = await require("../assets/models/r-s-b/group1-shard.bin");
+      const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
+      global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
+
+      const renModelJson = await require("../assets/models/ren-s-b/model.json");
+      const renModelWeight = await require("../assets/models/ren-s-b/group1-shard.bin");
+      const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
+      global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
+    }
+    else if (MODEL_MODE === 2) {
+      const rvfModelJson = await require("../assets/models/rvf-s-f/model.json");
+      const rvfModelWeight = await require("../assets/models/rvf-s-f/group1-shard.bin");
+      const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
+      global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
+
+      const fModelJson = await require("../assets/models/f-s-f/model.json");
+      const fModelWeight = await require("../assets/models/f-s-f/group1-shard.bin");
+      const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
+      global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
+
+      const rModelJson = await require("../assets/models/r-s-f/model.json");
+      const rModelWeight = await require("../assets/models/r-s-f/group1-shard.bin");
+      const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
+      global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
+
+      const renModelJson = await require("../assets/models/ren-s-f/model.json");
+      const renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
+      const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
+      global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
+    }
+    else {
+      console.log("INVALID MODEL MODE. FATAL.");
+    }
 
     console.log("[+] Movement detection model loaded");
 }
@@ -65,9 +120,8 @@ async function predict(imgTensor)
 }
 
 
-
 // ON STARTUP ==================================================================================================================
-getMovementDetectorAsync(); // LOAD MOVEMENT DETECTION ML MODEL
+loadAllModelsAsync(); // LOAD MOVEMENT DETECTION ML MODELS
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 //ImagePicker.requestMediaLibraryPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
