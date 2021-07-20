@@ -38,12 +38,12 @@ async function loadAllModelsAsync()
       const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
       global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
 
-      const renModelJson = await require("../assets/models/ren-s-a/model.json");
-      const renModelWeight = await require("../assets/models/ren-s-a/group1-shard.bin");
+      const renModelJson = await require("../assets/models/ren-s-f/model.json");
+      const renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
       const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
       global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
     }
-    else if (MODEL_MODE === 1) {
+    /*else if (MODEL_MODE === 1) {
       const rvfModelJson = await require("../assets/models/rvf-s-b/model.json");
       const rvfModelWeight = await require("../assets/models/rvf-s-b/group1-shard.bin");
       const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
@@ -84,12 +84,12 @@ async function loadAllModelsAsync()
       const renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
       const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
       global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
-    }
+    }*/
     else {
       console.log("INVALID MODEL MODE. FATAL.");
     }
 
-    console.log("[+] Movement detection model loaded");
+    console.log("[+] Movement detection models loaded");
 }
 
 // CONVERTS BASE64 IMAGE TO TENSORS FOR PREDICTION =============================================================================
@@ -97,6 +97,16 @@ function b64toTensor(base64) {
   const imgBuffer = tf.util.encodeString(base64, 'base64').buffer; // get image buffer from base 64
   const imgRaw = new Uint8Array(imgBuffer);                      // convert image buffer to array of ints
   return decodeJpeg(imgRaw);                                   // convert array of ints to image tensors
+}
+
+function get_max_pred(pred) {
+  var max = 0;
+  for (var i=0; i < pred.length; i++) {
+    if (pred[i].prob > max) {
+      max = pred[i].prob;
+    }
+  }
+  return max;
 }
 
 // RUN GIVEN TENSOR IMAGE THROUGH MODEL TREE ===================================================================================
@@ -107,16 +117,21 @@ async function predict(imgTensor)
   var rvf = 'fakey';
   if (pred[0].prob > pred[1].prob) { rvf = 'realey'; }
 
-  console.log('rvf: ', rvf);
-
   if (rvf.localeCompare('realey') === 0) {
-    global.prediction = await global.rModel.classify(imgTensor);
+    const pred2 = await global.rModel.classify(imgTensor);
+
+    if (pred2[3].prob >= get_max_pred(pred2)) {
+      global.prediction = await global.renModel.classify(imgTensor);
+    }
+    else {
+      global.prediction = pred2;
+    }
+
   }
   else {
     global.prediction = await global.fModel.classify(imgTensor);
   }
-
-
+  console.log(global.prediction)
 }
 
 

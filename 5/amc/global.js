@@ -1,19 +1,28 @@
 global.bg = require('./assets/backgrounds/bg3.png');
-global.movementDetector = null;
 
+// REALEY V. FAKEY MODEL INFO ==================================================
 global.rvfModel = null;
 global.rvfDict = ['realey', 'fakey']
 
+// REALEY MODEL INFO ===========================================================
 global.rModel = null;
-global.rDict = ['mannerism-late-renaissance',
-                'renaissance',
+global.rDict = ['romanticism',
+                'realism',
                 'baroque',
-                'northern-renaissance',
-                'post-impressionism',
+                'renaissance',
+                'gothic',
                 'neoclassicism',
-                'rococo',
-                'gothic'];
+                'academicism',
+                'rococo'];
 
+// RENAISSANCE MODEL INFO ======================================================
+global.renModel = null;
+global.renDict = ['northern-renaissance',
+                  'early-renaissance',
+                  'mannerism-late-renaissance',
+                  'high-renaissance'];
+
+// FAKEY MODEL INFO ============================================================
 global.fModel = null;
 global.fDict = ['symbolism',
                 'cubism',
@@ -25,10 +34,22 @@ global.fDict = ['symbolism',
                 'post-impressionism',
                 'surrealism'];
 
+// PREDICTION INFO =============================================================
 global.image = null;
 global.prediction = null;
 
+// MOVEMENT MAP ================================================================
 global.movementMap = [
+  {
+    key: 'academicism',
+    name: "Academic Classicism",
+    dates: "1865 AD - 1920 AD",
+    style: "Many paintings by academic artists are simple nature allegories with titles like Dawn, Dusk, Seeing, and Tasting, where these ideas are personified by a single nude figure, composed in such a way as to bring out the essence of the idea. The trend in art was also towards greater idealism, which is contrary to realism, in that the figures depicted were made simpler and more abstract—idealized—in order to be able to represent the ideals they stood in for. This would involve both generalizing forms seen in nature, and subordinating them to the unity and theme of the artwork. Drawings and paintings of the nude, called \"académies\", were the basic building blocks of academic art. Nased on idealistic clichés and representing mythical and legendary motives while contemporary social concerns were being ignored.  Objects depicted looked smooth, slick, and idealized—showing no real texture. Finished and idealized with perfect detail. Platonic forms, or ideals, behind ordinary depictions one would glimpse something abstract, some eternal truth. Beauty is truth, truth beauty. A full and complete idea.",
+    commentary: "\"The only was for us to become great and possibly inimitable is to imitate the ancients.\" Only based on idealistic clichés and representing mythical and legendary motives while contemporary social concerns were being ignored.  \"False surface\" of paintings—the objects depicted looked smooth, slick, and idealized—showing no real texture. Too finished and idealized. Sentimental, clichéd, conservative, non-innovative, bourgeois, and \"styleless\". Manufactured false emotion through contrivances and tricks. Old-fashioned with the allegorical nudes and theatrically posed figures seemly bizarre and dreamlike.",
+    themes: "History, Technical expertise, Beauty, impressive execution of subject. Platonic forms, or ideals, behind ordinary depictions one would glimpse something abstract, some eternal truth. Beauty is truth, truth beauty. A full and complete idea.",
+    start_reason: "Nationalism. Advance cultural standings of nation-states. Increase skill of country artisans. Political control of the arts. ",
+    end_reason: "null",
+  },
   {
     key:  "mannerism-late-renaissance",
     name: "Mannerism",
@@ -41,8 +62,18 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key:  "renaissance",
-    name: "Renaissance",
+    key: 'early-renaissance',
+    name: "Early Renaissance",
+    dates: "1350 AD - 1500 AD",
+    style: "Ideal beauty. Realistic use of colors and light. Ethereal, foggy backgrounds. Romantized landscapes. An abundance of sharply outlined characters suddenly appears, robust, clear-cut personalities; lawless nature belonging just as much in the gallery of criminals as in that of great men. Character, individuality, power and energy are the passwords of the Renaissance age.  This new humanity, all these rugged and manly figures which the age had created, had also to appear in painting. In contrast to the former preference for beauty of an angelic and tender type, the problem now was to depict energetic and powerful beings; and to replace shy and feminine, though bearded, men in the pictures of the older masters by angular, harsh determined and daring types. The figures which has formerly hovered like spirits above the earth had now to stand firmly upon their own feet and become part of their earthly home. structure and position of  the figures, as in their expression, a general and uniform type of beauty prevailed. Rudimentary and uncompromising representation of individual qualities. This may  best explain all the strange physiognomies witch suddenly made their appearance in art; course men of the people with uncouth, overworked figures; peasants, with bones of bronze and pointed weather beaten features; half starved old beggars with sagging flesh and tottering bodies; neglected fellows with bald heads, stubbly beards, and long muscular arms. In place of the former dainty pose, every line is now sinew. Their firm, energetic attitude reflects the entire sprit of the rugged age. Expressive possibilities of the human anatomy. Lighting, linear and atmospheric perspective, anatomy, foreshortening and characterisation. The use of proportion – The first major treatment of the painting as a window into space appeared in the work of Giotto di Bondone, at the beginning of the 14th century. True linear perspective was formalized later, by Filippo Brunelleschi and Leon Battista Alberti. In addition to giving a more realistic presentation of art, it moved Renaissance painters into composing more paintings. Foreshortening – The term foreshortening refers to the artistic effect of shortening lines in a drawing so as to create an illusion of depth. Sfumato – The term sfumato was coined by Italian Renaissance artist Leonardo da Vinci and refers to a fine art painting technique of blurring or softening of sharp outlines by subtle and gradual blending of one tone into another through the use of thin glazes to give the illusion of depth or three-dimensionality. This stems from the Italian word sfumare meaning to evaporate or to fade out. The Latin origin is fumare, to smoke. Chiaroscuro – The term chiaroscuro refers to the fine art painting modeling effect of using a strong contrast between light and dark to give the illusion of depth or three-dimensionality. This comes from the Italian words meaning light (chiaro) and dark (scuro), a technique which came into wide use in the Baroque period. Use of: glazing, impasto.",
+    commentary: "null",
+    themes: "Individualism, humanism, Classics, Classical Orators and philosophers, prominance of the individual. Intellectual and spiritual awakening. Every person's life had value and dignity, Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A moral narrative.",
+    start_reason: "Expanded on religious subject matter to more real, human subjects. Discovey of classic liturature, sculpture.",
+    end_reason: "null",
+  },
+  {
+    key:  "high-renaissance",
+    name: "High Renaissance",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1450 AD - 1530 AD",
     style: "Sumptuous, elaborate, expressive, and exhalted wealthy and powerful people.  Like kings they were depicted in elaborate settings swaddled in furs and silks. Figures had this suppleness and elegance of pose, and to clothed with artistically arranged draperies. Ideal beauty. Realistic use of colors and light. Ethereal, foggy backgrounds. Romantized landscapes. An abundance of sharply outlined characters suddenly appears, robust, clear-cut personalities; lawless nature belonging just as much in the gallery of criminals as in that of great men. Character, individuality, power and energy are the passwords of the Renaissance age.  This new humanity, all these rugged and manly figures which the age had created, had also to appear in painting. In contrast to the former preference for beauty of an angelic and tender type, the problem now was to depict energetic and powerful beings; and to replace shy and feminine, though bearded, men in the pictures of the older masters by angular, harsh determined and daring types. The figures which has formerly hovered like spirits above the earth had now to stand firmly upon their own feet and become part of their earthly home. structure and position of  the figures, as in their expression, a general and uniform type of beauty prevailed. Rudimentary and uncompromising representation of individual qualities. This may  best explain all the strange physiognomies witch suddenly made their appearance in art; course men of the people with uncouth, overworked figures; peasants, with bones of bronze and pointed weather beaten features; half starved old beggars with sagging flesh and tottering bodies; neglected fellows with bald heads, stubbly beards, and long muscular arms. In place of the former dainty pose, every line is now sinew. Their firm, energetic attitude reflects the entire sprit of the rugged age. Expressive possibilities of the human anatomy. Lighting, linear and atmospheric perspective, anatomy, foreshortening and characterisation. The use of proportion – The first major treatment of the painting as a window into space appeared in the work of Giotto di Bondone, at the beginning of the 14th century. True linear perspective was formalized later, by Filippo Brunelleschi and Leon Battista Alberti. In addition to giving a more realistic presentation of art, it moved Renaissance painters into composing more paintings. Foreshortening – The term foreshortening refers to the artistic effect of shortening lines in a drawing so as to create an illusion of depth. Sfumato – The term sfumato was coined by Italian Renaissance artist Leonardo da Vinci and refers to a fine art painting technique of blurring or softening of sharp outlines by subtle and gradual blending of one tone into another through the use of thin glazes to give the illusion of depth or three-dimensionality. This stems from the Italian word sfumare meaning to evaporate or to fade out. The Latin origin is fumare, to smoke. Chiaroscuro – The term chiaroscuro refers to the fine art painting modeling effect of using a strong contrast between light and dark to give the illusion of depth or three-dimensionality. This comes from the Italian words meaning light (chiaro) and dark (scuro), a technique which came into wide use in the Baroque period. Use of: glazing, impasto.",
@@ -52,7 +83,18 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key:  "baroque",
+    key:  "renaissance",
+    name: "Renaissance",
+    imagePath: "./assets/images/madonna.jpg",
+    dates: "null",
+    style: "null",
+    commentary: "null",
+    themes: "null",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key:  'baroque',
     name: "Baroque",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1600 AD - 1750 AD",
@@ -205,6 +247,26 @@ global.movementMap = [
     commentary: "null",
     themes: "null",
     start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key: 'realism',
+    name: "Realism / Naturalism",
+    dates: "1850 AD - null AD",
+    style: "Generally the attempt to represent subject matter truthfully, without artificiality and avoiding artistic conventions, or implausible, exotic, and supernatural elements. The accurate depiction of lifeforms, perspective, and the details of light and colour. But realist or naturalist works of art may, as well or instead of illusionist realism, be \"realist\" in their subject-matter, and emphasize the mundane, ugly or sordid. Realism is the precise, detailed and accurate representation in art of the visual appearance of scenes and objects. depicted with great skill and care. But subjects could be unreal (e.g. Angels with realistic wings). Realists used unprettified detail depicting the existence of ordinary contemporary life. Realism or naturalism as a style meaning the honest, unidealizing depiction of the subject, can be used in depicting any type of subject, without any commitment to treating the typical or everyday. In the 19th century \"Naturalism\" or the \"Naturalist school\" was somewhat artificially erected as a term representing a breakaway sub-movement of Realism, that attempted (not wholly successfully) to distinguish itself from its parent by its avoidance of politics and social issues, and liked to proclaim a quasi-scientific basis, playing on the sense of \"naturalist\" as a student of Natural history, as the biological sciences were then generally known. ",
+    commentary: "null",
+    themes: "social or political awareness, mundane, ugly, sordid, social realism, kitchen sink realism.",
+    start_reason: "Rejected Romanticism, History Painting",
+    end_reason: "null",
+  },
+  {
+    key: 'romanticism',
+    name: "Romanticism",
+    dates: "1750 AD - 1860 AD",
+    style: "Unrefined outlines, unrestrained brushstrokes, and the emphasis on color over form makes the painterly style the choice of the Romantics. Visible brushstrokes, which lend themselves to an energy and immediacy to the painting. Ethereal and foggy Backgrounds. 3D drawing and representation. ",
+    commentary: "“Romanticism is precisely situated neither in choice of subject nor in exact truth, but in a way of feeling,”",
+    themes: "Individualistic, exotic, beautiful and emotionally wrought. Passion, sensitivity, and imagination. Emotion, individualism, Glorification of all the past, Glorification of nature, medieval rather than the classical.  Intense emotion as an authentic source of aesthetic experience, placing new emphasis on such emotions as apprehension, horror and terror, and awe—especially that experienced in confronting the new aesthetic categories of the sublimity and beauty of nature. Revived medievalism Authentically medieval in an attempt to escape population growth, early urban sprawl, and industrialism.  Achievements of \"heroic\" individualists and artists.  Promoted individual imagination. Realism was offered as a polar opposite to Romanticism. Strong belief and interest in the importance of nature. Effect of nature upon the artist when he is surrounded by it, preferably alone. Distrustful of the human world, close connection with nature was mentally and morally healthy. Uses personal voice of the artist. A new and restless spirit, seeking violently to burst through old and cramping forms. A nervous preoccupation with perpetually changing inner states of consciousness, a longing for the unbounded and the indefinable, for perpetual movement and change, an effort to return to the forgotten sources of life, a passionate effort at self-assertion both individual and collective, a search after means of expressing an unappeasable yearning for unattainable goals\". Horror, passion, and awe, when experienced in the face of nature’s sublime landscape, offered an artistic antidote to the perceived disconnect from spirituality occurring as the theory of evolution took hold around the world. This nostalgia inspired the Romantics to shift the spotlight onto the individual’s imagination and his or her interpretation of the world. Patriotism, nationalism, struggle for independence",
+    start_reason: "Reaction against a restrained Classicism and Neoclassicism. Rejections of Industrial Revolution, the aristocratic social and political norms of the Age of Enlightenment, and the scientific rationalization of nature—all components of modernity. Rejection of modernity. Escaping of population growth, early urban sprawl, and industrialism. Rejecting excessive emphasis on the cerebral and instead arguing for heightened emotion.",
     end_reason: "null",
   },
   {
