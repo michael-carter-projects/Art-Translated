@@ -16,7 +16,7 @@ import { decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
 let camera: Camera; // camera ref to allow abort
 
 
-const MODEL_MODE = 0; //  0 = accurate (24MB per model)    1 = balanced (12 MB per model)    2 = fast (4 MB per model)
+const MODEL_MODEs = [0, 0, 0, 0]; //  0 = accurate (24MB per model)    1 = balanced (12 MB per model)    2 = fast (4 MB per model)
 
 // CONVERTS BASE64 IMAGE TO TENSORS FOR PREDICTION =============================================================================
 function b64toTensor(base64) {

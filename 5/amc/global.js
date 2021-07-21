@@ -34,6 +34,79 @@ global.fDict = ['symbolism',
                 'post-impressionism',
                 'surrealism'];
 
+global.treeInfo = {
+  rvf: {
+    accurate: {
+      accu: 0.836,
+      size: 22.0
+    },
+    balanced: {
+      accu: 0.809,
+      size: 11.8
+    },
+    fast: {
+      accu: 0.811,
+      size: 2.02
+    }
+  },
+  f_m: {
+    accurate: {
+      accu: 0.711,
+      size: 22.0
+    },
+    balanced: {
+      accu: 0.715,
+      size: 11.8
+    },
+    fast: {
+      accu: 0.651,
+      size: 2.02
+    }
+  },
+  f_s: {
+    accurate: {
+      accu: 0.711,
+      size: 22.0
+    },
+    balanced: {
+      accu: 0.698,
+      size: 11.8
+    },
+    fast: {
+      accu: 0.649,
+      size: 2.02
+    }
+  },
+  r: {
+    accurate: {
+      accu: 0.784,
+      size: 22.0
+    },
+    balanced: {
+      accu: 0.763,
+      size: 11.8
+    },
+    fast: {
+      accu: 0.728,
+      size: 2.02
+    }
+  },
+  ren:  {
+    accurate: {
+      accu: 0.831,
+      size: 22.0
+    },
+    balanced: {
+      accu: 0.778,
+      size: 11.8
+    },
+    fast: {
+      accu: 0.744,
+      size: 2.02
+    }
+  },
+}
+
 // PREDICTION INFO =============================================================
 global.image = null;
 global.prediction = null;
@@ -280,6 +353,8 @@ global.movementMap = [
     end_reason: "null",
   },
 ];
+
+// BUTTON COLORS ===============================================================
 global.colors = ({
   dark1: '#202042',
   dark2: '#080816',

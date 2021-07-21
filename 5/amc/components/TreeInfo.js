@@ -3,13 +3,13 @@ import { StatusBar } from 'expo-status-bar'
 import React                                      from 'react'
 import { ImageBackground, StyleSheet, Text, View} from 'react-native'
 
-function History ({navigation})
+function TreeInfo ({navigation})
 {
   return (
     <ImageBackground source={global.bg} style={{flex: 1, width:"100%", alignItems: 'center'}}>
       <View style={styles.container}>
 
-        <Text style={{color:'rgba(255,255,255,1)'}}>YOUR HISTORY</Text>
+        <Text style={{color:'rgba(255,255,255,1)'}}>YOUR TreeInfo</Text>
 
         <StatusBar style="light" />
       </View>
@@ -17,8 +17,8 @@ function History ({navigation})
   );
 }
 
-History.navigationOptions = navigation => ({
-  title: "History",
+TreeInfo.navigationOptions = navigation => ({
+  title: "Tree Info",
   headerStyle: {
     backgroundColor: '#333333',
   },
@@ -33,4 +33,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default History;
+export default TreeInfo;
