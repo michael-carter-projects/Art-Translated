@@ -1,10 +1,11 @@
-import { StatusBar }         from 'expo-status-bar';
 import { Camera }            from 'expo-camera';
 import * as FileSystem       from 'expo-file-system';
 import * as ImagePicker      from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import * as SplashScreen     from 'expo-splash-screen';
+import { StatusBar }         from 'expo-status-bar';
 
-import   React, { useState, useEffect }                                                 from 'react';
+import   React, { useState, useEffect, useCallback }                                    from 'react';
 import { Dimensions, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as Progress                                                                    from 'react-native-progress';
 
@@ -18,8 +19,7 @@ let camera: Camera; // camera ref to allow abort
 const MODEL_MODE = 0; //  0 = accurate (24MB per model)    1 = balanced (12 MB per model)    2 = fast (4 MB per model)
 
 // LOADS THE MOVEMENT DETECTION MODEL AND STORES AS GLOBAL VARIABLE ============================================================
-async function loadAllModelsAsync()
-{
+async function loadAllModelsAsync() {
     const tfReady = await tf.ready();
 
     if (MODEL_MODE === 0) {
@@ -38,8 +38,8 @@ async function loadAllModelsAsync()
       const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
       global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
 
-      const renModelJson = await require("../assets/models/ren-s-f/model.json");
-      const renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
+      const renModelJson = await require("../assets/models/ren-s-a/model.json");
+      const renModelWeight = await require("../assets/models/ren-s-a/group1-shard.bin");
       const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
       global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
     }
@@ -99,6 +99,7 @@ function b64toTensor(base64) {
   return decodeJpeg(imgRaw);                                   // convert array of ints to image tensors
 }
 
+// GETS HIGHEST PROB GIVEN A PREDICTION ========================================================================================
 function get_max_pred(pred) {
   var max = 0;
   for (var i=0; i < pred.length; i++) {
@@ -110,8 +111,7 @@ function get_max_pred(pred) {
 }
 
 // RUN GIVEN TENSOR IMAGE THROUGH MODEL TREE ===================================================================================
-async function predict(imgTensor)
-{
+async function predict(imgTensor) {
   const pred = await global.rvfModel.classify(imgTensor);
 
   var rvf = 'fakey';
@@ -136,9 +136,10 @@ async function predict(imgTensor)
 
 
 // ON STARTUP ==================================================================================================================
-loadAllModelsAsync(); // LOAD MOVEMENT DETECTION ML MODELS
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 //ImagePicker.requestMediaLibraryPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
+//loadAllModelsAsync();
+//{ loadingModel ? ( <BlurView style={styles.blurView} intensity={100} /> ) : (null) }
 
 
 // ON SCREEN ===================================================================================================================
@@ -146,6 +147,8 @@ function Home ({navigation})
 {
   const [inProgress, setInProgress] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [appIsReady, setAppIsReady] = useState(false);
+
 
   // SELECT AN IMAGE, MAKE A PREDICTION, STORE AS GLOBAL VARIABLE ================================================================
   async function selectPicAndPredictMovementAsync(nav)
@@ -173,7 +176,6 @@ function Home ({navigation})
       setInProgress(false); // reset inProgress hook to false
     }
   }
-
   // SELECT IMAGE, MAKE A PREDICTION, STORE AS GLOBAL VARIABLE ===================================================================
   async function takePicAndPredictMovementAsync(nav)
   {
@@ -196,20 +198,85 @@ function Home ({navigation})
     setInProgress(false); // reset inProgress hook to false
   }
 
+  // LOAD ML MODEL TREE DURING SPLASH SCREEN =====================================================================================
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Keep the splash screen visible while we fetch resources
+        await SplashScreen.preventAutoHideAsync();
+
+        const tfReady = await tf.ready();
+
+        console.log("1");
+
+        const rvfModelJson = await require("../assets/models/rvf-s-a/model.json");
+        const rvfModelWeight = await require("../assets/models/rvf-s-a/group1-shard.bin");
+        const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
+        global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
+
+        console.log("2");
+
+        const fModelJson = await require("../assets/models/f-s-a/model.json");
+        const fModelWeight = await require("../assets/models/f-s-a/group1-shard.bin");
+        const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
+        global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
+
+        console.log("3");
+
+        const rModelJson = await require("../assets/models/r-s-a/model.json");
+        const rModelWeight = await require("../assets/models/r-s-a/group1-shard.bin");
+        const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
+        global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
+
+        console.log("4");
+
+        const renModelJson = await require("../assets/models/ren-s-a/model.json");
+        const renModelWeight = await require("../assets/models/ren-s-a/group1-shard.bin");
+        const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
+        global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
+
+        console.log("5");
+
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
+  }, []);
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      // This tells the splash screen to hide immediately! If we call this after
+      // `setAppIsReady`, then we may see a blank screen while the app is
+      // loading its initial state and rendering its first pixels. So instead,
+      // we hide the splash screen once we know the root view has already
+      // performed layout.
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+  if (!appIsReady) {
+    return null;
+  }
+
+
 
   // RENDER THE VIEWS FOR THE HOME PAGE ========================================================================================
   return (
-    <ImageBackground source={global.bg} style={{flex: 1, width:"100%", alignItems: 'center'}}>
+
+    <ImageBackground onLayout={onLayoutRootView} source={global.bg} style={{flex: 1, width:"100%", alignItems: 'center'}}>
 
         <View height={25}/>
 
         <View style={styles.photo_outline_outer}>
-          <Camera
-            style={{flex: 1, width:"100%", alignItems: 'center', overflow:'hidden'}}
-            ref={(r) => { camera = r }}
-          >
-            <View style={styles.photo_outline}/>
-          </Camera>
+            <Camera
+              style={{flex: 1, width:"100%", alignItems: 'center', overflow:'hidden'}}
+              ref={(r) => { camera = r }}
+            >
+              <View style={styles.photo_outline}/>
+            </Camera>
         </View>
 
         <View height={25}/>
