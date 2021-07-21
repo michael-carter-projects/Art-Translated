@@ -57,7 +57,6 @@ async function predict(imgTensor) {
   else {
     global.prediction = await global.fModel.classify(imgTensor);
   }
-  console.log(global.prediction)
 }
 
 
@@ -121,12 +120,15 @@ function Home ({navigation})
     setInProgress(false); // reset inProgress hook to false
   }
 
+
   // LOAD ML MODEL TREE DURING SPLASH SCREEN =====================================================================================
   useEffect(() => {
     async function prepare() {
       try {
         // Keep the splash screen visible while we fetch resources
         await SplashScreen.preventAutoHideAsync();
+
+        global.bg = require('../assets/backgrounds/bg3.png');
 
         const tfReady = await tf.ready();
 
@@ -183,7 +185,6 @@ function Home ({navigation})
   if (!appIsReady) {
     return null;
   }
-
 
 
   // RENDER THE VIEWS FOR THE HOME PAGE ========================================================================================

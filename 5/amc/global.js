@@ -1,4 +1,4 @@
-global.bg = require('./assets/backgrounds/bg3.png');
+global.bg = null;
 
 // REALEY V. FAKEY MODEL INFO ==================================================
 global.rvfModel = null;
