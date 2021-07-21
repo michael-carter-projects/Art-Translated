@@ -134,29 +134,29 @@ function Home ({navigation})
 
         console.log("1");
 
-        const rvfModelJson = await require("../assets/models/rvf-s-a/model.json");
-        const rvfModelWeight = await require("../assets/models/rvf-s-a/group1-shard.bin");
+        const rvfModelJson = await require("../assets/models/rvf-s-f/model.json");
+        const rvfModelWeight = await require("../assets/models/rvf-s-f/group1-shard.bin");
         const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
         global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
 
         console.log("2");
 
-        const fModelJson = await require("../assets/models/f-s-a/model.json");
-        const fModelWeight = await require("../assets/models/f-s-a/group1-shard.bin");
+        const fModelJson = await require("../assets/models/f-s-f/model.json");
+        const fModelWeight = await require("../assets/models/f-s-f/group1-shard.bin");
         const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
         global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
 
         console.log("3");
 
-        const rModelJson = await require("../assets/models/r-s-a/model.json");
-        const rModelWeight = await require("../assets/models/r-s-a/group1-shard.bin");
+        const rModelJson = await require("../assets/models/r-s-f/model.json");
+        const rModelWeight = await require("../assets/models/r-s-f/group1-shard.bin");
         const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
         global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
 
         console.log("4");
 
-        const renModelJson = await require("../assets/models/ren-s-a/model.json");
-        const renModelWeight = await require("../assets/models/ren-s-a/group1-shard.bin");
+        const renModelJson = await require("../assets/models/ren-s-f/model.json");
+        const renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
         const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
         global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
 
