@@ -34,73 +34,189 @@ global.fDict = ['symbolism',
                 'post-impressionism',
                 'surrealism'];
 
+global.MODEL_MODES = [0, 0, 0, 0, 0, 0, 0];
+
 global.treeInfo = {
+  aps: {
+    accurate: {
+      name: 'Architecture, Painting, or Sculpture (accurate)',
+      type: 'single-label classification',
+      desc: 'what is the image of? \n[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    },
+    balanced: {
+      name: 'Architecture, Painting, or Sculpture (balanced)',
+      type: 'single-label classification',
+      desc: 'what is the image of? \n[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    },
+    fast: {
+      name: 'Architecture, Painting, or Sculpture (fast)',
+      type: 'single-label classification',
+      desc: 'what is the image of? \m[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    }
+  },
+  a: {
+    accurate: {
+      name: 'Architecture (accurate)',
+      type: 'single-label classification',
+      desc: 'determine movement: art-deco, gothic, romanesque, etc. \n[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    },
+    balanced: {
+      name: 'Architecture (balanced)',
+      type: 'single-label classification',
+      desc: 'determine movement: art-deco, gothic, romanesque, etc. \n[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    },
+    fast: {
+      name: 'Architecture (fast)',
+      type: 'single-label classification',
+      desc: 'determine movement: art-deco, gothic, romanesque, etc. \n[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    }
+  },
+  s: {
+    accurate: {
+      name: 'Sculpture (accurate)',
+      type: 'single-label classification',
+      desc: 'determine movement: gothic, mannerism, expressionism, etc. \n[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    },
+    balanced: {
+      name: 'Sculpture (balanced)',
+      type: 'single-label classification',
+      desc: 'determine movement: gothic, mannerism, expressionism, etc. \n[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    },
+    fast: {
+      name: 'Sculpture (fast)',
+      type: 'single-label classification',
+      desc: 'determine movement: gothic, mannerism, expressionism, etc. \n[NOT YET IMPLEMENTED]',
+      accu: 0.000,
+      size: 0.0
+    }
+  },
   rvf: {
     accurate: {
+      name: 'Realey vs. Fakey (accurate)',
+      type: 'single-label classification',
+      desc: 'is the image \"realey\" or \"fakey\"',
       accu: 0.836,
       size: 22.0
     },
     balanced: {
+      name: 'Realey vs. Fakey (balanced)',
+      type: 'single-label classification',
+      desc: 'is the image \"realey\" or \"fakey\"',
       accu: 0.809,
       size: 11.8
     },
     fast: {
+      name: 'Realey vs. Fakey (fast)',
+      type: 'single-label classification',
+      desc: 'is the image \"realey\" or \"fakey\"',
       accu: 0.811,
       size: 2.02
     }
   },
   f_m: {
     accurate: {
+      name: 'Fakey (accurate)',
+      type: 'multi-label classification',
+      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
       accu: 0.711,
       size: 22.0
     },
     balanced: {
+      name: 'Fakey (balanced)',
+      type: 'multi-label classification',
+      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
       accu: 0.715,
       size: 11.8
     },
     fast: {
+      name: 'Fakey (fast)',
+      type: 'multi-label classification',
+      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
       accu: 0.651,
       size: 2.02
     }
   },
   f_s: {
     accurate: {
+      name: 'Fakey (accurate)',
+      type: 'single-label classification',
+      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
       accu: 0.711,
       size: 22.0
     },
     balanced: {
+      name: 'Fakey (balanced)',
+      type: 'single-label classification',
+      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
       accu: 0.698,
       size: 11.8
     },
     fast: {
+      name: 'Fakey (fast)',
+      type: 'single-label classification',
+      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
       accu: 0.649,
       size: 2.02
     }
   },
   r: {
     accurate: {
+      name: 'Realey (accurate)',
+      type: 'single-label classification',
+      desc: 'determine movement: baroque, realism, renaissance, etc.',
       accu: 0.784,
       size: 22.0
     },
     balanced: {
+      name: 'Realey (balanced)',
+      type: 'single-label classification',
+      desc: 'determine movement: baroque, realism, renaissance, etc.',
       accu: 0.763,
       size: 11.8
     },
     fast: {
+      name: 'Realey (fast)',
+      type: 'single-label classification',
+      desc: 'determine movement: baroque, realism, renaissance, etc.',
       accu: 0.728,
       size: 2.02
     }
   },
   ren:  {
     accurate: {
+      name: 'Renaissance (accurate)',
+      type: 'single-label classification',
+      desc: 'determine renaissance sub-movement: early, high, late, northern',
       accu: 0.831,
       size: 22.0
     },
     balanced: {
+      name: 'Renaissance (balanced)',
+      type: 'single-label classification',
+      desc: 'determine renaissance sub-movement: early, high, late, northern',
       accu: 0.778,
       size: 11.8
     },
     fast: {
+      name: 'Renaissance (fast)',
+      type: 'single-label classification',
+      desc: 'determine renaissance sub-movement: early, high, late, northern',
       accu: 0.744,
       size: 2.02
     }
@@ -355,11 +471,11 @@ global.movementMap = [
 ];
 
 // BUTTON COLORS ===============================================================
-global.colors = ({
+global.colors = {
   dark1: '#202042',
   dark2: '#080816',
   med1:  '#323264',
   med2:  '#161632',
   lite1: '#484880',
   lite2: '#282852',
-});
+};

@@ -16,8 +16,6 @@ import { decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
 let camera: Camera; // camera ref to allow abort
 
 
-const MODEL_MODEs = [0, 0, 0, 0]; //  0 = accurate (24MB per model)    1 = balanced (12 MB per model)    2 = fast (4 MB per model)
-
 // CONVERTS BASE64 IMAGE TO TENSORS FOR PREDICTION =============================================================================
 function b64toTensor(base64) {
   const imgBuffer = tf.util.encodeString(base64, 'base64').buffer; // get image buffer from base 64
@@ -255,7 +253,7 @@ function Home ({navigation})
                 style={{ top: 30, width: 50, height: 52 }}
               />
               <TouchableOpacity style={styles.nav_button}
-                onPress={ () => navigation.navigate('History') }
+                onPress={ () => navigation.navigate('TreeInfo') }
               />
             </View>
           </View>
