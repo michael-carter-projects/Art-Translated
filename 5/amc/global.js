@@ -62,46 +62,46 @@ global.treeInfo = {
   },
   a: {
     accurate: {
-      name: 'Architecture',
+      name: 'Architecture [NOT YET IMPLEMENTED]',
       type: 'single-label, high-accuracy',
-      desc: 'determine movement: art-deco, gothic, romanesque, etc. \n[NOT YET IMPLEMENTED]',
+      desc: 'determine movement: art-deco, gothic, romanesque, etc.',
       accu: 0.000,
       size: 0.0
     },
     balanced: {
-      name: 'Architecture',
+      name: 'Architecture [NOT YET IMPLEMENTED]',
       type: 'single-label, balanced',
-      desc: 'determine movement: art-deco, gothic, romanesque, etc. \n[NOT YET IMPLEMENTED]',
+      desc: 'determine movement: art-deco, gothic, romanesque, etc.',
       accu: 0.000,
       size: 0.0
     },
     fast: {
-      name: 'Architecture',
+      name: 'Architecture [NOT YET IMPLEMENTED]',
       type: 'single-label, fast',
-      desc: 'determine movement: art-deco, gothic, romanesque, etc. \n[NOT YET IMPLEMENTED]',
+      desc: 'determine movement: art-deco, gothic, romanesque, etc.',
       accu: 0.000,
       size: 0.0
     }
   },
   s: {
     accurate: {
-      name: 'Sculpture',
+      name: 'Sculpture [NOT YET IMPLEMENTED]',
       type: 'single-label, high-accuracy',
-      desc: 'determine movement: gothic, mannerism, expressionism, etc. \n[NOT YET IMPLEMENTED]',
+      desc: 'determine movement: gothic, mannerism, expressionism, etc.',
       accu: 0.000,
       size: 0.0
     },
     balanced: {
-      name: 'Sculpture',
+      name: 'Sculpture [NOT YET IMPLEMENTED]',
       type: 'single-label, balanced',
-      desc: 'determine movement: gothic, mannerism, expressionism, etc. \n[NOT YET IMPLEMENTED]',
+      desc: 'determine movement: gothic, mannerism, expressionism, etc.',
       accu: 0.000,
       size: 0.0
     },
     fast: {
-      name: 'Sculpture',
+      name: 'Sculpture [NOT YET IMPLEMENTED]',
       type: 'single-label, fast',
-      desc: 'determine movement: gothic, mannerism, expressionism, etc. \n[NOT YET IMPLEMENTED]',
+      desc: 'determine movement: gothic, mannerism, expressionism, etc.',
       accu: 0.000,
       size: 0.0
     }
@@ -110,21 +110,21 @@ global.treeInfo = {
     accurate: {
       name: 'Realey vs. Fakey',
       type: 'single-label, high-accuracy',
-      desc: 'is the image \"realey\" or \"fakey\"',
+      desc: 'determine if the image is \"realey\" or \"fakey\"',
       accu: 0.836,
       size: 22.0
     },
     balanced: {
       name: 'Realey vs. Fakey',
       type: 'single-label, balanced',
-      desc: 'is the image \"realey\" or \"fakey\"',
+      desc: 'determine if the image is \"realey\" or \"fakey\"',
       accu: 0.809,
       size: 11.8
     },
     fast: {
       name: 'Realey vs. Fakey',
       type: 'single-label, fast',
-      desc: 'is the image \"realey\" or \"fakey\"',
+      desc: 'determine if the image is \"realey\" or \"fakey\"',
       accu: 0.811,
       size: 2.02
     }
