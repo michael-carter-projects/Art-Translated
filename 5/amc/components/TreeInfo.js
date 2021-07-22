@@ -105,7 +105,7 @@ function TreeInfo ({navigation})
               fill={colors.dark1}
               onPress={()=>get_model_info('aps')}
             />
-            <Text x={center} y={tier_height/2 +6} fill={'#ff7777'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>aps</Text>
+            <Text x={center} y={tier_height/2 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>aps</Text>
 
 
 
@@ -120,7 +120,7 @@ function TreeInfo ({navigation})
               fill={colors.med1}
               onPress={()=>get_model_info('a')}
             />
-            <Text x={tier6th} y={tier_height*1.5 +6} fill={'#ff7777'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>a</Text>
+            <Text x={tier6th} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>a</Text>
             <Circle
               cx={tier6th*3}
               cy={tier_height * 1.5}
@@ -140,7 +140,7 @@ function TreeInfo ({navigation})
               fill={colors.med1}
               onPress={()=>get_model_info('s')}
             />
-            <Text x={tier6th*5} y={tier_height*1.5 +6} fill={'#ff7777'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>s</Text>
+            <Text x={tier6th*5} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>s</Text>
 
 
             <Line x1={tier6th*4} y1={tier_height*2.5} x2={tier6th*5} y2={tier_height*3.5} stroke={colors.lite2} strokeWidth="5" />
