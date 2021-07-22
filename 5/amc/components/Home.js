@@ -130,35 +130,102 @@ function Home ({navigation})
 
         const tfReady = await tf.ready();
 
-        console.log("1");
+        var rvfModelJson = null;
+        var rvfModelWeight = null;
+        switch (global.MODEL_MODES[2]) {
+          case 0:
+            rvfModelJson = await require("../assets/models/rvf-s-a/model.json");
+            rvfModelWeight = await require("../assets/models/rvf-s-a/group1-shard.bin");
+            break;
+          case 1:
+            rvfModelJson = await require("../assets/models/rvf-s-b/model.json");
+            rvfModelWeight = await require("../assets/models/rvf-s-b/group1-shard.bin");
+            break;
+          case 2:
+            rvfModelJson = await require("../assets/models/rvf-s-f/model.json");
+            rvfModelWeight = await require("../assets/models/rvf-s-f/group1-shard.bin");
+            break;
+          default:
+            rvfModelJson = await require("../assets/models/rvf-s-f/model.json");
+            rvfModelWeight = await require("../assets/models/rvf-s-f/group1-shard.bin");
+            break;
+        }
 
-        const rvfModelJson = await require("../assets/models/rvf-s-f/model.json");
-        const rvfModelWeight = await require("../assets/models/rvf-s-f/group1-shard.bin");
+        var fModelJson = null;
+        var fModelWeight = null;
+        switch (global.MODEL_MODES[4]) {
+          case 0:
+            fModelJson = await require("../assets/models/f-s-a/model.json");
+            fModelWeight = await require("../assets/models/f-s-a/group1-shard.bin");
+            break;
+          case 1:
+            fModelJson = await require("../assets/models/f-s-b/model.json");
+            fModelWeight = await require("../assets/models/f-s-b/group1-shard.bin");
+            break;
+          case 2:
+            fModelJson = await require("../assets/models/f-s-f/model.json");
+            fModelWeight = await require("../assets/models/f-s-f/group1-shard.bin");
+            break;
+          default:
+            fModelJson = await require("../assets/models/f-s-f/model.json");
+            fModelWeight = await require("../assets/models/f-s-f/group1-shard.bin");
+            break;
+        }
+
+        var rModelJson = null;
+        var rModelWeight = null;
+        switch (global.MODEL_MODES[5]) {
+          case 0:
+            rModelJson = await require("../assets/models/r-s-a/model.json");
+            rModelWeight = await require("../assets/models/r-s-a/group1-shard.bin");
+            break;
+          case 1:
+            rModelJson = await require("../assets/models/r-s-b/model.json");
+            rModelWeight = await require("../assets/models/r-s-b/group1-shard.bin");
+            break;
+          case 2:
+            rModelJson = await require("../assets/models/r-s-f/model.json");
+            rModelWeight = await require("../assets/models/r-s-f/group1-shard.bin");
+            break;
+          default:
+            rModelJson = await require("../assets/models/r-s-f/model.json");
+            rModelWeight = await require("../assets/models/r-s-f/group1-shard.bin");
+            break;
+        }
+
+        var renModelJson = null;
+        var renModelWeight = null;
+        switch (global.MODEL_MODES[6]) {
+          case 0:
+            renModelJson = await require("../assets/models/ren-s-a/model.json");
+            renModelWeight = await require("../assets/models/ren-s-a/group1-shard.bin");
+            break;
+          case 1:
+            renModelJson = await require("../assets/models/ren-s-b/model.json");
+            renModelWeight = await require("../assets/models/ren-s-b/group1-shard.bin");
+            break;
+          case 2:
+            renModelJson = await require("../assets/models/ren-s-f/model.json");
+            renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
+            break;
+          default:
+            renModelJson = await require("../assets/models/ren-s-f/model.json");
+            renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
+            break;
+        }
+
         const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
         global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
 
-        console.log("2");
-
-        const fModelJson = await require("../assets/models/f-s-f/model.json");
-        const fModelWeight = await require("../assets/models/f-s-f/group1-shard.bin");
         const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
         global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
 
-        console.log("3");
-
-        const rModelJson = await require("../assets/models/r-s-f/model.json");
-        const rModelWeight = await require("../assets/models/r-s-f/group1-shard.bin");
         const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
         global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
 
-        console.log("4");
-
-        const renModelJson = await require("../assets/models/ren-s-f/model.json");
-        const renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
         const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
         global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
 
-        console.log("5");
 
       } catch (e) {
         console.warn(e);
@@ -249,8 +316,8 @@ function Home ({navigation})
           <View style={{flex: 1, alignItems: 'center'}} >
             <View style={styles.circlesContainer}>
               <Image
-                source={require('../assets/buttons/icon_history.gif')}
-                style={{ top: 30, width: 50, height: 52 }}
+                source={require('../assets/buttons/icon_info.png')}
+                style={{ top: 30, width: 55, height: 52 }}
               />
               <TouchableOpacity style={styles.nav_button}
                 onPress={ () => navigation.navigate('TreeInfo') }

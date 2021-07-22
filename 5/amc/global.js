@@ -34,7 +34,7 @@ global.fDict = ['symbolism',
                 'post-impressionism',
                 'surrealism'];
 
-global.MODEL_MODES = [0, 0, 0, 0, 0, 0, 0];
+global.MODEL_MODES = [0, 0, 2, 0, 2, 2, 2];
 
 global.treeInfo = {
   aps: {
