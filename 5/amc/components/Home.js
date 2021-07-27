@@ -43,7 +43,7 @@ async function predict(imgTensor) {
 
   if (rvf.localeCompare('realey') === 0) {
     const pred2 = await global.rModel.classify(imgTensor);
-
+    
     if (pred2[3].prob >= get_max_pred(pred2)) {
       global.prediction = await global.renModel.classify(imgTensor);
     }
@@ -66,7 +66,7 @@ Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 function Home ({navigation})
 {
   const [inProgress, setInProgress] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [progress,   setProgress  ] = useState(0);
   const [appIsReady, setAppIsReady] = useState(false);
 
 
@@ -230,7 +230,6 @@ function Home ({navigation})
       } catch (e) {
         console.warn(e);
       } finally {
-        // Tell the application to render
         setAppIsReady(true);
       }
     }
@@ -239,11 +238,6 @@ function Home ({navigation})
   }, []);
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      // This tells the splash screen to hide immediately! If we call this after
-      // `setAppIsReady`, then we may see a blank screen while the app is
-      // loading its initial state and rendering its first pixels. So instead,
-      // we hide the splash screen once we know the root view has already
-      // performed layout.
       await SplashScreen.hideAsync();
     }
   }, [appIsReady]);
@@ -260,10 +254,7 @@ function Home ({navigation})
         <View height={25}/>
 
         <View style={styles.photo_outline_outer}>
-            <Camera
-              style={{flex: 1, width:"100%", alignItems: 'center', overflow:'hidden'}}
-              ref={(r) => { camera = r }}
-            >
+            <Camera style={{flex: 1, width:"100%", alignItems: 'center', overflow:'hidden'}} ref={(r) => { camera = r }}>
               <View style={styles.photo_outline}/>
             </Camera>
         </View>

@@ -74,7 +74,7 @@
 
 **5:** React Native Movement Classification App
 
-[Video demonstration](https://www.youtube.com/watch?v=zNAkUXwmYPs) of v1.0.0 (7/7/2021)
+[Video demonstration](https://www.youtube.com/watch?v=QGAyUAiePt4) of v1.2.0 (7/27/2021)
 
     This is a cross-platform app that uses a local Tensorflow model trained in Google AutoML to predict the
     art movement associated with an image provided by the user either through the camera roll or by
@@ -87,6 +87,6 @@
     amd/App.js                    - the file that handles navigation through the app (react-navigation)
     amd/components                - folder that contains the .js files responsible for each page of the app
     amd/components/Home.js        - renders the home screen (camera)
-    amd/components/Review.js      - renders review screen (predict? or retake?) (may remove screen)
+    amd/components/TreeInfo.js    - renders a visual representation of the model tree used to predict
     amd/components/Predictions.js - renders prediction buttons (nav to details)
-    amd/components/Details.js     - renders movement details
+    amd/components/Movement.js    - renders movement details

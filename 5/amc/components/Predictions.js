@@ -47,8 +47,6 @@ function getTop3Predictions(pred, mvmtMap) {
     }
   }
 
-  console.log('top3:', top3Scores);
-
   const res1 = getMovementInfo(pred, top3Scores[0], mvmtMap);
   const res2 = getMovementInfo(pred, top3Scores[1], mvmtMap);
   const res3 = getMovementInfo(pred, top3Scores[2], mvmtMap);
