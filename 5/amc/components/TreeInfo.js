@@ -12,60 +12,65 @@ function TreeInfo ({navigation})
   const [modelInfo, setModelInfo] = useState(global.treeInfo.aps.accurate);
   const [color1, setColor1] = useState(colors.dark1);
   const [color2, setColor2] = useState(colors.dark2);
+  const [index, setIndex] = useState(-1);
 
   function get_model_info(abbr)
   {
     var model = null;
-    var index = 0;
 
     switch (abbr) {
       case 'aps':
         model = global.treeInfo.aps;
-        index = 0;
+        if (index === 0) { setIndex(-1); }
+        else             { setIndex(0);  }
         setColor1(colors.dark1);
         setColor2(colors.dark2);
         break;
       case 'a':
         model = global.treeInfo.a;
-        index = 1;
+        if (index === 1) { setIndex(-1); }
+        else             { setIndex(1);  }
         setColor1(colors.med1);
         setColor2(colors.med2);
         break;
       case 'rvf':
         model = global.treeInfo.rvf;
-        index = 2;
+        if (index === 2) { setIndex(-1); }
+        else             { setIndex(2);  }
         setColor1(colors.med1);
         setColor2(colors.med2);
         break;
       case 's':
         model = global.treeInfo.s;
-        index = 3;
+        if (index === 3) { setIndex(-1); }
+        else             { setIndex(3);  }
         setColor1(colors.med1);
         setColor2(colors.med2);
         break;
       case 'f':
         model = global.treeInfo.f_s;
-        index = 4;
+        if (index === 4) { setIndex(-1); }
+        else             { setIndex(4);  }
         setColor1(colors.lite1);
         setColor2(colors.lite2);
         break;
       case 'r':
         model = global.treeInfo.r;
-        index = 5;
+        if (index === 5) { setIndex(-1); }
+        else             { setIndex(5);  }
         setColor1(colors.lite1);
         setColor2(colors.lite2);
         break;
       case 'ren':
         model = global.treeInfo.ren;
-        index = 6;
+        if (index === 6) { setIndex(-1); }
+        else             { setIndex(6);  }
         setColor1(colors.ul1);
         setColor2(colors.ul2);
         break;
       default:
-        model = global.treeInfo.aps;
-        index = 0;
-        setColor1(colors.dark1);
-        setColor2(colors.dark2);
+        model = null;
+        setIndex(-1);
         break;
     }
     switch (MODEL_MODES[index]) {
@@ -96,6 +101,16 @@ function TreeInfo ({navigation})
             <Line x1={center} y1={tier_height/2} x2={tier6th*1} y2={tier_height*1.5} stroke={colors.dark2} strokeWidth="5" />
             <Line x1={center} y1={tier_height/2} x2={tier6th*3} y2={tier_height*1.5} stroke={colors.dark2} strokeWidth="5" />
             <Line x1={center} y1={tier_height/2} x2={tier6th*5} y2={tier_height*1.5} stroke={colors.dark2} strokeWidth="5" />
+            { (index === 0) ? (
+              <Circle
+                cx={center}
+                cy={tier_height/2}
+                r="35"
+                stroke={'rgba(255, 255, 255, 1)'}
+                strokeWidth="3"
+                fill={'rgba(0, 0, 0, 0)'}
+              />
+            ) : (null)}
             <Circle
               cx={center}
               cy={tier_height/2}
@@ -105,12 +120,23 @@ function TreeInfo ({navigation})
               fill={colors.dark1}
               onPress={()=>get_model_info('aps')}
             />
+
             <Text x={center} y={tier_height/2 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>aps</Text>
 
 
 
             <Line x1={center} y1={tier_height*1.5} x2={tier6th*2} y2={tier_height*2.5} stroke={colors.med2} strokeWidth="5" />
             <Line x1={center} y1={tier_height*1.5} x2={tier6th*4} y2={tier_height*2.5} stroke={colors.med2} strokeWidth="5" />
+            { (index === 1) ? (
+              <Circle
+                cx={tier6th}
+                cy={tier_height*1.5}
+                r="35"
+                stroke={'rgba(255, 255, 255, 1)'}
+                strokeWidth="3"
+                fill={'rgba(0, 0, 0, 0)'}
+              />
+            ) : (null)}
             <Circle
               cx={tier6th}
               cy={tier_height*1.5}
@@ -120,7 +146,18 @@ function TreeInfo ({navigation})
               fill={colors.med1}
               onPress={()=>get_model_info('a')}
             />
+
             <Text x={tier6th} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>a</Text>
+            { (index === 2) ? (
+              <Circle
+                cx={tier6th*3}
+                cy={tier_height*1.5}
+                r="35"
+                stroke={'rgba(255, 255, 255, 1)'}
+                strokeWidth="3"
+                fill={'rgba(0, 0, 0, 0)'}
+              />
+            ) : (null)}
             <Circle
               cx={tier6th*3}
               cy={tier_height * 1.5}
@@ -130,7 +167,18 @@ function TreeInfo ({navigation})
               fill={colors.med1}
               onPress={()=>get_model_info('rvf')}
             />
+
             <Text x={tier6th*3} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>rvf</Text>
+            { (index === 3) ? (
+              <Circle
+                cx={tier6th*5}
+                cy={tier_height*1.5}
+                r="35"
+                stroke={'rgba(255, 255, 255, 1)'}
+                strokeWidth="3"
+                fill={'rgba(0, 0, 0, 0)'}
+              />
+            ) : (null)}
             <Circle
               cx={tier6th*5}
               cy={tier_height * 1.5}
@@ -140,10 +188,21 @@ function TreeInfo ({navigation})
               fill={colors.med1}
               onPress={()=>get_model_info('s')}
             />
+
             <Text x={tier6th*5} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>s</Text>
 
 
             <Line x1={tier6th*4} y1={tier_height*2.5} x2={tier6th*5} y2={tier_height*3.5} stroke={colors.lite2} strokeWidth="5" />
+            { (index === 4) ? (
+              <Circle
+                cx={tier6th*2}
+                cy={tier_height * 2.5}
+                r="35"
+                stroke={'rgba(255, 255, 255, 1)'}
+                strokeWidth="3"
+                fill={'rgba(0, 0, 0, 0)'}
+              />
+            ) : (null)}
             <Circle
               cx={tier6th*2}
               cy={tier_height * 2.5}
@@ -153,7 +212,18 @@ function TreeInfo ({navigation})
               fill={colors.lite1}
               onPress={()=>get_model_info('f')}
             />
+
             <Text x={tier6th*2} y={tier_height*2.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>f</Text>
+            { (index === 5) ? (
+              <Circle
+                cx={tier6th*4}
+                cy={tier_height * 2.5}
+                r="35"
+                stroke={'rgba(255, 255, 255, 1)'}
+                strokeWidth="3"
+                fill={'rgba(0, 0, 0, 0)'}
+              />
+            ) : (null)}
             <Circle
               cx={tier6th*4}
               cy={tier_height * 2.5}
@@ -163,9 +233,19 @@ function TreeInfo ({navigation})
               fill={colors.lite1}
               onPress={()=>get_model_info('r')}
             />
+
             <Text x={tier6th*4} y={tier_height*2.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>r</Text>
 
-
+            { (index === 6) ? (
+              <Circle
+                cx={tier6th*5}
+                cy={tier_height * 3.5}
+                r="35"
+                stroke={'rgba(255, 255, 255, 1)'}
+                strokeWidth="3"
+                fill={'rgba(0, 0, 0, 0)'}
+              />
+            ) : (null)}
             <Circle
               cx={tier6th*5}
               cy={tier_height * 3.5}
@@ -175,27 +255,30 @@ function TreeInfo ({navigation})
               fill={colors.ul1}
               onPress={()=>get_model_info('ren')}
             />
+
             <Text x={tier6th*5} y={tier_height*3.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>ren</Text>
           </Svg>
 
-          <View style={rounded_box(color1, color2)}>
-            <TextRN/>
-            <Card.Title style={styles.section_title}>{modelInfo.name}</Card.Title>
-            <Card.Divider/>
+          { (index !== -1) ? (
+            <View style={rounded_box(color1, color2)}>
+              <TextRN/>
+              <Card.Title style={styles.section_title}>{modelInfo.name}</Card.Title>
+              <Card.Divider/>
 
-            <TextRN style={styles.section_content}>Type: {modelInfo.type}</TextRN>
-            <Card.Divider/>
+              <TextRN style={styles.section_content}>Type: {modelInfo.type}</TextRN>
+              <Card.Divider/>
 
-            <TextRN style={styles.section_content}>Purpose: {modelInfo.desc}</TextRN>
-            <Card.Divider/>
+              <TextRN style={styles.section_content}>Purpose: {modelInfo.desc}</TextRN>
+              <Card.Divider/>
 
-            <TextRN style={styles.section_content}>Average Precision: {modelInfo.accu}</TextRN>
-            <Card.Divider/>
+              <TextRN style={styles.section_content}>Average Precision: {modelInfo.accu}</TextRN>
+              <Card.Divider/>
 
-            <TextRN style={styles.section_content}>Size: {modelInfo.size} MB</TextRN>
+              <TextRN style={styles.section_content}>Size: {modelInfo.size} MB</TextRN>
 
-          </View>
-
+            </View>
+          ) : ( null )
+          }
           <TextRN/>
 
       </View>
