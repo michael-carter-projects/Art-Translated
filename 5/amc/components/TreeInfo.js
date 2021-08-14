@@ -121,7 +121,7 @@ function TreeInfo ({navigation})
               onPress={()=>get_model_info('aps')}
             />
 
-            <Text x={center} y={tier_height/2 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>aps</Text>
+            <Text x={center} y={tier_height/2 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>1</Text>
 
 
 
@@ -147,7 +147,7 @@ function TreeInfo ({navigation})
               onPress={()=>get_model_info('a')}
             />
 
-            <Text x={tier6th} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>a</Text>
+            <Text x={tier6th} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>2</Text>
             { (index === 2) ? (
               <Circle
                 cx={tier6th*3}
@@ -168,7 +168,7 @@ function TreeInfo ({navigation})
               onPress={()=>get_model_info('rvf')}
             />
 
-            <Text x={tier6th*3} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>rvf</Text>
+            <Text x={tier6th*3} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>3</Text>
             { (index === 3) ? (
               <Circle
                 cx={tier6th*5}
@@ -189,7 +189,7 @@ function TreeInfo ({navigation})
               onPress={()=>get_model_info('s')}
             />
 
-            <Text x={tier6th*5} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>s</Text>
+            <Text x={tier6th*5} y={tier_height*1.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>4</Text>
 
 
             <Line x1={tier6th*4} y1={tier_height*2.5} x2={tier6th*5} y2={tier_height*3.5} stroke={colors.lite2} strokeWidth="5" />
@@ -213,7 +213,7 @@ function TreeInfo ({navigation})
               onPress={()=>get_model_info('f')}
             />
 
-            <Text x={tier6th*2} y={tier_height*2.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>f</Text>
+            <Text x={tier6th*2} y={tier_height*2.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>5</Text>
             { (index === 5) ? (
               <Circle
                 cx={tier6th*4}
@@ -234,7 +234,7 @@ function TreeInfo ({navigation})
               onPress={()=>get_model_info('r')}
             />
 
-            <Text x={tier6th*4} y={tier_height*2.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>r</Text>
+            <Text x={tier6th*4} y={tier_height*2.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>6</Text>
 
             { (index === 6) ? (
               <Circle
@@ -256,7 +256,7 @@ function TreeInfo ({navigation})
               onPress={()=>get_model_info('ren')}
             />
 
-            <Text x={tier6th*5} y={tier_height*3.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>ren</Text>
+            <Text x={tier6th*5} y={tier_height*3.5 +6} fill={'#ffffff'} fontSize="24" stroke={'rgba(0,0,0,0)'} textAnchor='middle'>7</Text>
           </Svg>
 
           { (index !== -1) ? (
