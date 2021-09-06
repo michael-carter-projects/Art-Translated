@@ -4,61 +4,12 @@ import React from 'react'
 import { Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 
-
-// GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" }
-function getMovementInfo(pred, prob, mvmtMap) {
-
-  // LOOP THROUGH PREDICTION TO FIND MOVEMENT WITH GIVEN SCORE ---------------------------------
-  for (var i = 0; i < pred.length; i++) {
-    if (prob === pred[i].prob)
-    {
-      // ONCE FOUND, SEARCH MOVEMENT MAP FOR INFO OF MOVEMENT ----------------------------------
-      const label = JSON.stringify(pred[i].label);
-      for (var j = 0; j < mvmtMap.length; j++) {
-        if (mvmtMap[j].key === label.replace(/['"]+/g, '')) {
-          return { map:  mvmtMap[j],
-                   prob: (parseFloat(prob)*100).toFixed(2)
-                 }
-        }
-      }
-    }
-  }
-}
-// GIVEN A PREDICTION FROM THE LOADED MODEL, RETURNS ALL MOVEMENT INFO FOR TOP 3
-function getTop3Predictions(pred, mvmtMap) {
-
-  var top3Scores = [0, -1, -2];
-
-  for (var i = 0; i < pred.length; i++)
-  {
-    var currProb = prediction[i].prob;
-
-    if (currProb > top3Scores[0]) {
-      top3Scores[2] = top3Scores[1];
-      top3Scores[1] = top3Scores[0];
-      top3Scores[0] = currProb;
-    }
-    else if (currProb > top3Scores[1]) {
-      top3Scores[2] = top3Scores[1];
-      top3Scores[1] = currProb;
-    }
-    else if (currProb > top3Scores[2]) {
-      top3Scores[2] = currProb;
-    }
-  }
-
-  const res1 = getMovementInfo(pred, top3Scores[0], mvmtMap);
-  const res2 = getMovementInfo(pred, top3Scores[1], mvmtMap);
-  const res3 = getMovementInfo(pred, top3Scores[2], mvmtMap);
-
-  return [ res1, res2, res3 ];
-}
-
 // RENDER PREDICTION PAGE ======================================================================================================
 function Predictions ({navigation})
 {
-  const uri = navigation.state.params.image;
-  const top3 = getTop3Predictions(global.prediction, global.movementMap);
+  const selected_image_uri = navigation.state.params.selected_image_uri;
+  //const predictions = global.predictions_info;
+  const predictions = navigation.state.params.predictions;
 
   return (
     <ImageBackground source={global.bg} style={{flex: 1, width:"100%", alignItems: 'center'}}>
@@ -67,18 +18,18 @@ function Predictions ({navigation})
 
       <View style={styles.outer_view}>
 
-        <Image source={{uri: uri}} style={styles.image}/>
+        <Image source={{uri: selected_image_uri}} style={styles.image}/>
 
         <View height={50}/>
 
         <TouchableOpacity
-          onPress={ () => navigation.navigate('Movement', {infoMap:top3[0].map, color1:colors.dark1, color2:colors.dark2})}
+          onPress={ () => navigation.navigate('Movement', {infoMap:predictions[0].map, color1:colors.dark1, color2:colors.dark2})}
         >
         <View style={styles.resultbutton1}>
 
             <View style={styles.result_text}>
-              <Text style={styles.button}>{ top3[0].map.name }</Text>
-              <Text style={styles.button}>Probability: { top3[0].prob }%</Text>
+              <Text style={styles.button}>{ predictions[0].map.name }</Text>
+              <Text style={styles.button}>Probability: { predictions[0].prob }%</Text>
             </View>
             <View>
               <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
@@ -90,12 +41,12 @@ function Predictions ({navigation})
         <View height={25}/>
 
         <TouchableOpacity
-          onPress={ () => navigation.navigate('Movement', {infoMap: top3[1].map, color1: colors.med1, color2: colors.med2})}
+          onPress={ () => navigation.navigate('Movement', {infoMap: predictions[1].map, color1: colors.med1, color2: colors.med2})}
         >
           <View style={styles.resultbutton2}>
             <View style={styles.result_text}>
-              <Text style={styles.button}>{ top3[1].map.name }</Text>
-              <Text style={styles.button}>Probability: { top3[1].prob }%</Text>
+              <Text style={styles.button}>{ predictions[1].map.name }</Text>
+              <Text style={styles.button}>Probability: { predictions[1].prob }%</Text>
             </View>
             <View>
               <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
@@ -106,12 +57,12 @@ function Predictions ({navigation})
         <View height={25}/>
 
         <TouchableOpacity
-          onPress={ () => navigation.navigate('Movement', {infoMap: top3[2].map, color1: colors.lite1, color2: colors.lite2})}
+          onPress={ () => navigation.navigate('Movement', {infoMap: predictions[2].map, color1: colors.lite1, color2: colors.lite2})}
         >
           <View style={styles.resultbutton3}>
             <View style={styles.result_text}>
-              <Text style={styles.button}>{ top3[2].map.name }</Text>
-              <Text style={styles.button}>Probability: { top3[2].prob }%</Text>
+              <Text style={styles.button}>{ predictions[2].map.name }</Text>
+              <Text style={styles.button}>Probability: { predictions[2].prob }%</Text>
             </View>
             <View>
               <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>

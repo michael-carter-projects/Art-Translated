@@ -1,234 +1,137 @@
 global.bg = null;
 
-// REALEY V. FAKEY MODEL INFO ==================================================
-global.rvfModel = null;
-global.rvfDict = ['realey', 'fakey']
-
 // REALEY MODEL INFO ===========================================================
-global.rModel = null;
-global.rDict = ['romanticism',
-                'realism',
-                'baroque',
-                'renaissance',
-                'gothic',
-                'neoclassicism',
-                'academicism',
-                'rococo'];
+global.twoDimensionalTF = null;
+global.twoDimensionalDict = ['romanticism',
+                              'gothic-worn',
+                              'neoclassicism',
+                              'art-nouveau-modern',
+                              'gothic-painting',
+                              'grotesque-design',
+                              'gothic-polyptych',
+                              'byzantine',
+                              'renaissancish',
+                              'symbolism',
+                              'gothic-book',
+                              'cubism',
+                              'realism',
+                              'abstractish',
+                              'baroque-painting',
+                              'vanitas',
+                              'surrealism',
+                              'rococo',
+                              'art-deco',
+                              'egyptian'];
 
 // RENAISSANCE MODEL INFO ======================================================
-global.renModel = null;
-global.renDict = ['northern-renaissance',
-                  'early-renaissance',
-                  'mannerism-late-renaissance',
-                  'high-renaissance'];
+global.renaissancishTF = null;
+global.renaissancishDict = ['mannerism-painting',
+                            'northern-renaissance-painting',
+                            'high-renaissance-painting',
+                            'early-renaissance-painting',
+                            'academicism'];
 
-// FAKEY MODEL INFO ============================================================
-global.fModel = null;
-global.fDict = ['symbolism',
-                'cubism',
-                'expressionism',
-                'impressionism',
-                'fauvism',
-                'art-deco',
-                'art-nouveau-modern',
-                'post-impressionism',
-                'surrealism'];
+// ABSTRACTISH MODEL INFO ======================================================
+global.abstractishTF = null;
+global.abstractishDict = ['expressionism',
+                          'fauvism',
+                          'impressionism',
+                          'post-impressionism'];
 
-global.MODEL_MODES = [0, 0, 2, 0, 2, 2, 2];
-
+// INFO FOR TREE INFO PAGE =====================================================
 global.treeInfo = {
-  aps: {
-    accurate: {
-      name: 'Architecture, Painting, or Sculpture',
-      type: 'single-label, high-accuracy',
-      desc: 'what is the image of? \n[NOT YET IMPLEMENTED]',
-      accu: 0.000,
-      size: 0.0
-    },
-    balanced: {
-      name: 'Architecture, Painting, or Sculpture',
-      type: 'single-label, balanced',
-      desc: 'what is the image of? \n[NOT YET IMPLEMENTED]',
-      accu: 0.000,
-      size: 0.0
-    },
-    fast: {
-      name: 'Architecture, Painting, or Sculpture',
-      type: 'single-label, fast',
-      desc: 'what is the image of? \n[NOT YET IMPLEMENTED]',
-      accu: 0.000,
-      size: 0.0
-    }
+  a2o: {
+    name: 'Architecture, 2D, or Object [NOT YET IMPLEMENTED]',
+    type: 'single-label, high-accuracy',
+    desc: ['architecture', 'twodimensional', 'object'],
+    accu: 0.000,
+    size: 0.0
   },
-  a: {
-    accurate: {
-      name: 'Architecture [NOT YET IMPLEMENTED]',
-      type: 'single-label, high-accuracy',
-      desc: 'determine movement: art-deco, gothic, romanesque, etc.',
-      accu: 0.000,
-      size: 0.0
-    },
-    balanced: {
-      name: 'Architecture [NOT YET IMPLEMENTED]',
-      type: 'single-label, balanced',
-      desc: 'determine movement: art-deco, gothic, romanesque, etc.',
-      accu: 0.000,
-      size: 0.0
-    },
-    fast: {
-      name: 'Architecture [NOT YET IMPLEMENTED]',
-      type: 'single-label, fast',
-      desc: 'determine movement: art-deco, gothic, romanesque, etc.',
-      accu: 0.000,
-      size: 0.0
-    }
+  arc: {
+    name: 'Architecture [NOT YET IMPLEMENTED]',
+    type: 'single-label, high-accuracy',
+    desc: ['art-deco', 'gothic', 'romanesque', 'etcetera'],
+    accu: 0.000,
+    size: 0.0
   },
-  s: {
-    accurate: {
-      name: 'Sculpture [NOT YET IMPLEMENTED]',
-      type: 'single-label, high-accuracy',
-      desc: 'determine movement: gothic, mannerism, expressionism, etc.',
-      accu: 0.000,
-      size: 0.0
-    },
-    balanced: {
-      name: 'Sculpture [NOT YET IMPLEMENTED]',
-      type: 'single-label, balanced',
-      desc: 'determine movement: gothic, mannerism, expressionism, etc.',
-      accu: 0.000,
-      size: 0.0
-    },
-    fast: {
-      name: 'Sculpture [NOT YET IMPLEMENTED]',
-      type: 'single-label, fast',
-      desc: 'determine movement: gothic, mannerism, expressionism, etc.',
-      accu: 0.000,
-      size: 0.0
-    }
+  obj: {
+    name: 'Object [NOT YET IMPLEMENTED]',
+    type: 'single-label, high-accuracy',
+    desc: ['gothic', 'egyptian', 'mannerism-late-renaissance', 'etcetera'],
+    accu: 0.000,
+    size: 0.0
   },
-  rvf: {
-    accurate: {
-      name: 'Realey vs. Fakey',
-      type: 'single-label, high-accuracy',
-      desc: 'determine if the image is \"realey\" or \"fakey\"',
-      accu: 0.836,
-      size: 22.0
-    },
-    balanced: {
-      name: 'Realey vs. Fakey',
-      type: 'single-label, balanced',
-      desc: 'determine if the image is \"realey\" or \"fakey\"',
-      accu: 0.809,
-      size: 11.8
-    },
-    fast: {
-      name: 'Realey vs. Fakey',
-      type: 'single-label, fast',
-      desc: 'determine if the image is \"realey\" or \"fakey\"',
-      accu: 0.811,
-      size: 2.02
-    }
+  two: {
+    name: 'Two Dimensional',
+    type: 'multi-label, high-accuracy',
+    desc: [ 'abstractish', 'art-deco', 'art-nouveau-modern', 'baroque-painting', 'byzantine',
+            'cubism', 'egyptian', 'gothic-book', 'gothic-painting', 'gothic-polyptych',
+            'gothic-worn', 'grotesque-design', 'neoclassicism', 'realism', 'renaissancish',
+            'rococo', 'romanticism', 'surrealism', 'symbolism', 'vanitas'],
+    accu: 0.777,
+    size: 22.0
   },
-  f_m: {
-    accurate: {
-      name: 'Fakey',
-      type: 'multi-label, high-accuracy',
-      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
-      accu: 0.711,
-      size: 22.0
-    },
-    balanced: {
-      name: 'Fakey',
-      type: 'multi-label, balanced',
-      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
-      accu: 0.715,
-      size: 11.8
-    },
-    fast: {
-      name: 'Fakey',
-      type: 'multi-label, fast',
-      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
-      accu: 0.651,
-      size: 2.02
-    }
+  abs: {
+    name: 'Abstract-ish',
+    type: 'multi-label, high-accuracy',
+    desc: ['expressionism', 'fauvism', 'impressionism', 'post-impressionism'],
+    accu: 0.813,
+    size: 22.0
   },
-  f_s: {
-    accurate: {
-      name: 'Fakey',
-      type: 'single-label, high-accuracy',
-      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
-      accu: 0.711,
-      size: 22.0
-    },
-    balanced: {
-      name: 'Fakey',
-      type: 'single-label, balanced',
-      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
-      accu: 0.698,
-      size: 11.8
-    },
-    fast: {
-      name: 'Fakey',
-      type: 'single-label, fast',
-      desc: 'determine movement: cubism, impressionism, fauvism, etc.',
-      accu: 0.649,
-      size: 2.02
-    }
-  },
-  r: {
-    accurate: {
-      name: 'Realey',
-      type: 'single-label, high-accuracy',
-      desc: 'determine movement: baroque, realism, renaissance, etc.',
-      accu: 0.784,
-      size: 22.0
-    },
-    balanced: {
-      name: 'Realey',
-      type: 'single-label, balanced',
-      desc: 'determine movement: baroque, realism, renaissance, etc.',
-      accu: 0.763,
-      size: 11.8
-    },
-    fast: {
-      name: 'Realey',
-      type: 'single-label, fast',
-      desc: 'determine movement: baroque, realism, renaissance, etc.',
-      accu: 0.728,
-      size: 2.02
-    }
-  },
-  ren:  {
-    accurate: {
-      name: 'Renaissance',
-      type: 'single-label, high-accuracy',
-      desc: 'determine renaissance sub-movement: early, high, late, northern',
-      accu: 0.831,
-      size: 22.0
-    },
-    balanced: {
-      name: 'Renaissance',
-      type: 'single-label, balanced',
-      desc: 'determine renaissance sub-movement: early, high, late, northern',
-      accu: 0.778,
-      size: 11.8
-    },
-    fast: {
-      name: 'Renaissance',
-      type: 'single-label, fast',
-      desc: 'determine renaissance sub-movement: early, high, late, northern',
-      accu: 0.744,
-      size: 2.02
-    }
+  ren: {
+    name: 'Renaissance-ish',
+    type: 'multi-label, high-accuracy',
+    desc: ['academicism', 'early-renaissance-painting', 'high-renaissance-paintings', 'mannerism-painting', 'northern-renaissance-painting'],
+    accu: 0.849,
+    size: 22.0
   },
 }
 
 // PREDICTION INFO =============================================================
 global.image = null;
-global.prediction = null;
 
 // MOVEMENT MAP ================================================================
 global.movementMap = [
+  {
+    key: 'grotesque-design',
+    name: "Grotesque",
+    dates: "null",
+    style: "null",
+    commentary: "null",
+    themes: "null",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key: 'byzantine',
+    name: "Byzantine",
+    dates: "null",
+    style: "null",
+    commentary: "null",
+    themes: "null",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key: 'egyptian',
+    name: "Egyptian",
+    dates: "null",
+    style: "null",
+    commentary: "null",
+    themes: "null",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key: 'vanitas',
+    name: "Vanitas",
+    dates: "null",
+    style: "null",
+    commentary: "null",
+    themes: "null",
+    start_reason: "null",
+    end_reason: "null",
+  },
   {
     key: 'academicism',
     name: "Academic Classicism",
@@ -240,7 +143,7 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key:  "mannerism-late-renaissance",
+    key:  "mannerism-painting",
     name: "Mannerism",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1510 AD - 1600 AD",
@@ -251,7 +154,7 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key: 'early-renaissance',
+    key: 'early-renaissance-painting',
     name: "Early Renaissance",
     dates: "1350 AD - 1500 AD",
     style: "Ideal beauty. Realistic use of colors and light. Ethereal, foggy backgrounds. Romantized landscapes. An abundance of sharply outlined characters suddenly appears, robust, clear-cut personalities; lawless nature belonging just as much in the gallery of criminals as in that of great men. Character, individuality, power and energy are the passwords of the Renaissance age.  This new humanity, all these rugged and manly figures which the age had created, had also to appear in painting. In contrast to the former preference for beauty of an angelic and tender type, the problem now was to depict energetic and powerful beings; and to replace shy and feminine, though bearded, men in the pictures of the older masters by angular, harsh determined and daring types. The figures which has formerly hovered like spirits above the earth had now to stand firmly upon their own feet and become part of their earthly home. structure and position of  the figures, as in their expression, a general and uniform type of beauty prevailed. Rudimentary and uncompromising representation of individual qualities. This may  best explain all the strange physiognomies witch suddenly made their appearance in art; course men of the people with uncouth, overworked figures; peasants, with bones of bronze and pointed weather beaten features; half starved old beggars with sagging flesh and tottering bodies; neglected fellows with bald heads, stubbly beards, and long muscular arms. In place of the former dainty pose, every line is now sinew. Their firm, energetic attitude reflects the entire sprit of the rugged age. Expressive possibilities of the human anatomy. Lighting, linear and atmospheric perspective, anatomy, foreshortening and characterisation. The use of proportion – The first major treatment of the painting as a window into space appeared in the work of Giotto di Bondone, at the beginning of the 14th century. True linear perspective was formalized later, by Filippo Brunelleschi and Leon Battista Alberti. In addition to giving a more realistic presentation of art, it moved Renaissance painters into composing more paintings. Foreshortening – The term foreshortening refers to the artistic effect of shortening lines in a drawing so as to create an illusion of depth. Sfumato – The term sfumato was coined by Italian Renaissance artist Leonardo da Vinci and refers to a fine art painting technique of blurring or softening of sharp outlines by subtle and gradual blending of one tone into another through the use of thin glazes to give the illusion of depth or three-dimensionality. This stems from the Italian word sfumare meaning to evaporate or to fade out. The Latin origin is fumare, to smoke. Chiaroscuro – The term chiaroscuro refers to the fine art painting modeling effect of using a strong contrast between light and dark to give the illusion of depth or three-dimensionality. This comes from the Italian words meaning light (chiaro) and dark (scuro), a technique which came into wide use in the Baroque period. Use of: glazing, impasto.",
@@ -261,7 +164,7 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key:  "high-renaissance",
+    key:  "high-renaissance-painting",
     name: "High Renaissance",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1450 AD - 1530 AD",
@@ -283,7 +186,7 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key:  'baroque',
+    key:  'baroque-painting',
     name: "Baroque",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1600 AD - 1750 AD",
@@ -294,7 +197,7 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key:  "northern-renaissance",
+    key:  "northern-renaissance-painting",
     name: "Northern Renaissance",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1350 AD - 1600 AD",
@@ -338,7 +241,40 @@ global.movementMap = [
     end_reason: "null",
   },
   {
-    key:  "gothic",
+    key:  "gothic-book",
+    name: "Gothic",
+    imagePath: "./assets/images/madonna.jpg",
+    dates: "1150 AD - 1580 AD",
+    style: "The earliest Gothic art was monumental sculpture, on the walls of Cathedrals and abbeys. Saints' lives were often depicted. Images of the Virgin Mary changed from the Byzantine iconic form to a more human and affectionate mother, cuddling her infant, swaying from her hip, and showing the refined manners of a well-born aristocratic courtly lady. More focus on Saints.  Gothic ornamental detailing is often introduced before much change is seen in the style of figures or compositions themselves. Then figures become more animated in pose and facial expression, tend to be smaller in relation to the background of scenes, and are arranged more freely in the pictorial space, where there is room. Use of compounds of silver, painted on glass which was then fired, allowed a number of variations of colour, centred on yellows, to be used with clear glass in a single piece. By the end of the period designs increasingly used large pieces of glass which were painted, with yellows as the dominant colours, and relatively few smaller pieces of glass in other colours. Heavy use of gold and goldleaf. The use of spatial indicators such as building elements and natural features such as trees and clouds also denote the French Gothic style of illumination. A new minute realism in oil painting was combined with subtle and complex theological allusions, expressed precisely through the highly detailed settings of religious scenes. Use of polyptychs, multiple panels of painted subjects,  in oil. Donor portraits smaller than the Virgin or saints depicted were used. Heavy use of sculpture. The facades of large churches, especially around doors, continued to have large tympanums, but also rows of sculpted figures spreading around them. Statues show an elegant but exaggerated columnar elongation, some show a more naturalistic style and increasing detachment from the wall behind, and some awareness of the classical tradition. some  figures are almost in the round. Life-size tomb effigies in stone or alabaster became popular for the wealthy, and grand multi-level tombs evolved. Architectural elements are: The rib vault, flying buttress, and pointed (Gothic) arch, Stained-glass window, more windows for light, use of stone, ",
+    commentary: "The word \"Gothic\" for art was initially used as a synonym for \"Barbaric\", and was therefore used pejoratively. The new 'barbarian' styles filtering down from north of the Alps posed a similar threat to the classical revival promoted by the early Renaissance. \"monstrous and barbarous\" \"disorder\"- Vasari. \"pointed arches of northern architecture were an echo of the primitive huts\" - Raphael.",
+    themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key:  'gothic-painting',
+    name: "Gothic",
+    imagePath: "./assets/images/madonna.jpg",
+    dates: "1150 AD - 1580 AD",
+    style: "The earliest Gothic art was monumental sculpture, on the walls of Cathedrals and abbeys. Saints' lives were often depicted. Images of the Virgin Mary changed from the Byzantine iconic form to a more human and affectionate mother, cuddling her infant, swaying from her hip, and showing the refined manners of a well-born aristocratic courtly lady. More focus on Saints.  Gothic ornamental detailing is often introduced before much change is seen in the style of figures or compositions themselves. Then figures become more animated in pose and facial expression, tend to be smaller in relation to the background of scenes, and are arranged more freely in the pictorial space, where there is room. Use of compounds of silver, painted on glass which was then fired, allowed a number of variations of colour, centred on yellows, to be used with clear glass in a single piece. By the end of the period designs increasingly used large pieces of glass which were painted, with yellows as the dominant colours, and relatively few smaller pieces of glass in other colours. Heavy use of gold and goldleaf. The use of spatial indicators such as building elements and natural features such as trees and clouds also denote the French Gothic style of illumination. A new minute realism in oil painting was combined with subtle and complex theological allusions, expressed precisely through the highly detailed settings of religious scenes. Use of polyptychs, multiple panels of painted subjects,  in oil. Donor portraits smaller than the Virgin or saints depicted were used. Heavy use of sculpture. The facades of large churches, especially around doors, continued to have large tympanums, but also rows of sculpted figures spreading around them. Statues show an elegant but exaggerated columnar elongation, some show a more naturalistic style and increasing detachment from the wall behind, and some awareness of the classical tradition. some  figures are almost in the round. Life-size tomb effigies in stone or alabaster became popular for the wealthy, and grand multi-level tombs evolved. Architectural elements are: The rib vault, flying buttress, and pointed (Gothic) arch, Stained-glass window, more windows for light, use of stone, ",
+    commentary: "The word \"Gothic\" for art was initially used as a synonym for \"Barbaric\", and was therefore used pejoratively. The new 'barbarian' styles filtering down from north of the Alps posed a similar threat to the classical revival promoted by the early Renaissance. \"monstrous and barbarous\" \"disorder\"- Vasari. \"pointed arches of northern architecture were an echo of the primitive huts\" - Raphael.",
+    themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key:  'gothic-polyptych',
+    name: "Gothic",
+    imagePath: "./assets/images/madonna.jpg",
+    dates: "1150 AD - 1580 AD",
+    style: "The earliest Gothic art was monumental sculpture, on the walls of Cathedrals and abbeys. Saints' lives were often depicted. Images of the Virgin Mary changed from the Byzantine iconic form to a more human and affectionate mother, cuddling her infant, swaying from her hip, and showing the refined manners of a well-born aristocratic courtly lady. More focus on Saints.  Gothic ornamental detailing is often introduced before much change is seen in the style of figures or compositions themselves. Then figures become more animated in pose and facial expression, tend to be smaller in relation to the background of scenes, and are arranged more freely in the pictorial space, where there is room. Use of compounds of silver, painted on glass which was then fired, allowed a number of variations of colour, centred on yellows, to be used with clear glass in a single piece. By the end of the period designs increasingly used large pieces of glass which were painted, with yellows as the dominant colours, and relatively few smaller pieces of glass in other colours. Heavy use of gold and goldleaf. The use of spatial indicators such as building elements and natural features such as trees and clouds also denote the French Gothic style of illumination. A new minute realism in oil painting was combined with subtle and complex theological allusions, expressed precisely through the highly detailed settings of religious scenes. Use of polyptychs, multiple panels of painted subjects,  in oil. Donor portraits smaller than the Virgin or saints depicted were used. Heavy use of sculpture. The facades of large churches, especially around doors, continued to have large tympanums, but also rows of sculpted figures spreading around them. Statues show an elegant but exaggerated columnar elongation, some show a more naturalistic style and increasing detachment from the wall behind, and some awareness of the classical tradition. some  figures are almost in the round. Life-size tomb effigies in stone or alabaster became popular for the wealthy, and grand multi-level tombs evolved. Architectural elements are: The rib vault, flying buttress, and pointed (Gothic) arch, Stained-glass window, more windows for light, use of stone, ",
+    commentary: "The word \"Gothic\" for art was initially used as a synonym for \"Barbaric\", and was therefore used pejoratively. The new 'barbarian' styles filtering down from north of the Alps posed a similar threat to the classical revival promoted by the early Renaissance. \"monstrous and barbarous\" \"disorder\"- Vasari. \"pointed arches of northern architecture were an echo of the primitive huts\" - Raphael.",
+    themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
+    start_reason: "null",
+    end_reason: "null",
+  },
+  {
+    key:  'gothic-worn',
     name: "Gothic",
     imagePath: "./assets/images/madonna.jpg",
     dates: "1150 AD - 1580 AD",
@@ -429,7 +365,7 @@ global.movementMap = [
     end_reason: "Beginning of WWII. Rise of the strictly functional and unadorned styles of modernism.",
   },
   {
-    key: "art-nouveau-modern",
+    key: 'art-nouveau-modern',
     name: "Art Nouveau",
     dates: "1890 AD - 1920 AD",
     style: "Floral, Vegetal, Plant, Vines, Geometric Stylistic Elements, Flowing",

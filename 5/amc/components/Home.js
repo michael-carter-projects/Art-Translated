@@ -17,44 +17,104 @@ let camera: Camera; // camera ref to allow abort
 
 
 // CONVERTS BASE64 IMAGE TO TENSORS FOR PREDICTION =============================================================================
-function b64toTensor(base64) {
+function b64_to_tensor(base64) {
   const imgBuffer = tf.util.encodeString(base64, 'base64').buffer; // get image buffer from base 64
   const imgRaw = new Uint8Array(imgBuffer);                      // convert image buffer to array of ints
   return decodeJpeg(imgRaw);                                   // convert array of ints to image tensors
 }
 
-// GETS HIGHEST PROB GIVEN A PREDICTION ========================================================================================
-function get_max_pred(pred) {
-  var max = 0;
-  for (var i=0; i < pred.length; i++) {
-    if (pred[i].prob > max) {
-      max = pred[i].prob;
+// INSERTS A PREDICTION INTO A LIST OF PREDICTIONS SORTED BY DESCENDING PROBABILITY ============================================
+function insert_descending(sorted_results, prediction) {
+
+  if (prediction.label === 'renaissancish' || prediction.label === 'abstractish') {
+    return sorted_results;
+  }
+
+  var index = sorted_results.length;
+
+  for (var i=0; i < sorted_results.length; i++) {
+    if (prediction.prob > sorted_results[i].prob) {
+      index = i;
+      break;
     }
   }
-  return max;
+  sorted_results.splice(index, 0, prediction)
+  //console.log(sorted_results);
+  return sorted_results;
+}
+
+// GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" } ==================================================
+function get_movement_info(prediction) {
+  // SEARCH MOVEMENT MAP FOR INFO OF MOVEMENT ----------------------------------
+  const label = JSON.stringify(prediction.label);
+
+  for (var i = 0; i < global.movementMap.length; i++) {
+    if (global.movementMap[i].key === label.replace(/['"]+/g, '')) {
+      return { map:  global.movementMap[i],
+               prob: (parseFloat(prediction.prob)*100).toFixed(2)
+             }
+    }
+  }
+}
+
+// GETS LIST OF PREDICTIONS SORTED BY DESCENDING PROBABILITY ABOVE CERTAIN PROBABILITY =========================================
+function get_predictions_info(two, ren, abs, threshold) {
+
+  var sorted_results = [two[0]];
+
+  for (var i=1; i < two.length; i++) {
+    sorted_results = insert_descending(sorted_results, two[i]);
+  }
+  for (var i=0; i < ren.length; i++) {
+    sorted_results = insert_descending(sorted_results, ren[i]);
+  }
+  for (var i=0; i < abs.length; i++) {
+    sorted_results = insert_descending(sorted_results, abs[i]);
+  }
+
+  /*var threshold_index = sorted_results.length-1;
+  for (var i=0; i < sorted_results.length; i++) {
+    if (sorted_results[i].prob < threshold) {
+      threshold_index = i;
+      break;
+    }
+  }
+  sorted_results = sorted_results.slice(0, threshold_index);
+  */
+
+  var sorted_info = [];
+  for (var i=0; i < sorted_results.length; i++) {
+    sorted_info.splice(i, 0, get_movement_info(sorted_results[i]));
+  }
+
+  return sorted_info;
 }
 
 // RUN GIVEN TENSOR IMAGE THROUGH MODEL TREE ===================================================================================
-async function predict(imgTensor) {
-  const pred = await global.rvfModel.classify(imgTensor);
+async function predict_tree(imgTensor) {
 
-  var rvf = 'fakey';
-  if (pred[0].prob > pred[1].prob) { rvf = 'realey'; }
+  const threshold_FIN = 0.0; // probability with which movement must be predicted to display on page
 
-  if (rvf.localeCompare('realey') === 0) {
-    const pred2 = await global.rModel.classify(imgTensor);
-    
-    if (pred2[3].prob >= get_max_pred(pred2)) {
-      global.prediction = await global.renModel.classify(imgTensor);
-    }
-    else {
-      global.prediction = pred2;
-    }
+  const threshold_REN = 0.5; // probability with which "renaissancish" must be predicted to run renaissancish model
+  const threshold_ABS = 0.5; // probability with which "abstractish"   must be predicted to run abstractish model
 
+  var predictionREN = []; // list for storing renaissancish predictions
+  var predictionABS = []; // list for storing abstractish predictions
+
+  console.log("[+] Running Two Dimensional")
+  const predictionTWO = await global.twoDimensionalTF.classify(imgTensor); // run 2D model
+
+  if (predictionTWO[8].prob  > threshold_REN) { // renaissancish = 8
+    predictionREN = await global.renaissancishTF.classify(imgTensor);
+    console.log("[+] Running Renaissancish")
   }
-  else {
-    global.prediction = await global.fModel.classify(imgTensor);
+  if (predictionTWO[13].prob > threshold_ABS) { // abstractish = 13
+    predictionABS = await global.abstractishTF.classify(imgTensor);
+    console.log("[+] Running Abstractish")
   }
+
+  //global.predictions_info = get_predictions_info(predictionTWO, predictionREN, predictionABS, threshold_FIN);
+  return get_predictions_info(predictionTWO, predictionREN, predictionABS, threshold_FIN);
 }
 
 
@@ -89,9 +149,11 @@ function Home ({navigation})
       );
 
       // CONVERT BASE^$ IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-      global.prediction = await global.rModel.classify(b64toTensor(base64));
+      // await predict_tree(b64_to_tensor(base64));
+      const predictions = await predict_tree(b64_to_tensor(base64));
 
-      nav.navigate('Predictions', {image: uri}); // navigate to Predictions page
+      //nav.navigate('Predictions', {selected_image_uri: uri}); // navigate to Predictions page
+      nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
 
       setInProgress(false); // reset inProgress hook to false
     }
@@ -112,9 +174,12 @@ function Home ({navigation})
     );
 
     // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ------------------------------------
-    await predict(b64toTensor(base64));
+    //await predict_tree(b64_to_tensor(base64));
+    const predictions = await predict_tree(b64_to_tensor(base64));
 
-    nav.navigate('Predictions', {image: uri}); // navigate to Predictions page
+    //nav.navigate('Predictions', {selected_image_uri: uri}); // navigate to Predictions page
+    nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+
     setInProgress(false); // reset inProgress hook to false
   }
 
@@ -130,102 +195,20 @@ function Home ({navigation})
 
         const tfReady = await tf.ready();
 
-        var rvfModelJson = null;
-        var rvfModelWeight = null;
-        switch (global.MODEL_MODES[2]) {
-          case 0:
-            rvfModelJson = await require("../assets/models/rvf-s-a/model.json");
-            rvfModelWeight = await require("../assets/models/rvf-s-a/group1-shard.bin");
-            break;
-          case 1:
-            rvfModelJson = await require("../assets/models/rvf-s-b/model.json");
-            rvfModelWeight = await require("../assets/models/rvf-s-b/group1-shard.bin");
-            break;
-          case 2:
-            rvfModelJson = await require("../assets/models/rvf-s-f/model.json");
-            rvfModelWeight = await require("../assets/models/rvf-s-f/group1-shard.bin");
-            break;
-          default:
-            rvfModelJson = await require("../assets/models/rvf-s-f/model.json");
-            rvfModelWeight = await require("../assets/models/rvf-s-f/group1-shard.bin");
-            break;
-        }
+        const twoDimensionalModel   = await require("../assets/models/twodimensional/model.json");
+        const twoDimensionalWeights = await require("../assets/models/twodimensional/weights.bin");
+        const twoDimensionalTF = await tf.loadGraphModel(bundleResourceIO(twoDimensionalModel, twoDimensionalWeights));
+        global.twoDimensionalTF = new automl.ImageClassificationModel(twoDimensionalTF, global.twoDimensionalDict);
 
-        var fModelJson = null;
-        var fModelWeight = null;
-        switch (global.MODEL_MODES[4]) {
-          case 0:
-            fModelJson = await require("../assets/models/f-s-a/model.json");
-            fModelWeight = await require("../assets/models/f-s-a/group1-shard.bin");
-            break;
-          case 1:
-            fModelJson = await require("../assets/models/f-s-b/model.json");
-            fModelWeight = await require("../assets/models/f-s-b/group1-shard.bin");
-            break;
-          case 2:
-            fModelJson = await require("../assets/models/f-s-f/model.json");
-            fModelWeight = await require("../assets/models/f-s-f/group1-shard.bin");
-            break;
-          default:
-            fModelJson = await require("../assets/models/f-s-f/model.json");
-            fModelWeight = await require("../assets/models/f-s-f/group1-shard.bin");
-            break;
-        }
+        const abstractishModel   = await require("../assets/models/abstractish/model.json");
+        const abstractishWeights = await require("../assets/models/abstractish/weights.bin");
+        const abstractishTF = await tf.loadGraphModel(bundleResourceIO(abstractishModel, abstractishWeights));
+        global.abstractishTF = new automl.ImageClassificationModel(abstractishTF, global.abstractishDict);
 
-        var rModelJson = null;
-        var rModelWeight = null;
-        switch (global.MODEL_MODES[5]) {
-          case 0:
-            rModelJson = await require("../assets/models/r-s-a/model.json");
-            rModelWeight = await require("../assets/models/r-s-a/group1-shard.bin");
-            break;
-          case 1:
-            rModelJson = await require("../assets/models/r-s-b/model.json");
-            rModelWeight = await require("../assets/models/r-s-b/group1-shard.bin");
-            break;
-          case 2:
-            rModelJson = await require("../assets/models/r-s-f/model.json");
-            rModelWeight = await require("../assets/models/r-s-f/group1-shard.bin");
-            break;
-          default:
-            rModelJson = await require("../assets/models/r-s-f/model.json");
-            rModelWeight = await require("../assets/models/r-s-f/group1-shard.bin");
-            break;
-        }
-
-        var renModelJson = null;
-        var renModelWeight = null;
-        switch (global.MODEL_MODES[6]) {
-          case 0:
-            renModelJson = await require("../assets/models/ren-s-a/model.json");
-            renModelWeight = await require("../assets/models/ren-s-a/group1-shard.bin");
-            break;
-          case 1:
-            renModelJson = await require("../assets/models/ren-s-b/model.json");
-            renModelWeight = await require("../assets/models/ren-s-b/group1-shard.bin");
-            break;
-          case 2:
-            renModelJson = await require("../assets/models/ren-s-f/model.json");
-            renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
-            break;
-          default:
-            renModelJson = await require("../assets/models/ren-s-f/model.json");
-            renModelWeight = await require("../assets/models/ren-s-f/group1-shard.bin");
-            break;
-        }
-
-        const rvfModel = await tf.loadGraphModel(bundleResourceIO(rvfModelJson, rvfModelWeight));
-        global.rvfModel = new automl.ImageClassificationModel(rvfModel, global.rvfDict);
-
-        const fModel = await tf.loadGraphModel(bundleResourceIO(fModelJson, fModelWeight));
-        global.fModel = new automl.ImageClassificationModel(fModel, global.fDict);
-
-        const rModel = await tf.loadGraphModel(bundleResourceIO(rModelJson, rModelWeight));
-        global.rModel = new automl.ImageClassificationModel(rModel, global.rDict);
-
-        const renModel = await tf.loadGraphModel(bundleResourceIO(renModelJson, renModelWeight));
-        global.renModel = new automl.ImageClassificationModel(renModel, global.renDict);
-
+        const renaissancishModel   = await require("../assets/models/renaissancish/model.json");
+        const renaissancishWeights = await require("../assets/models/renaissancish/weights.bin");
+        const renaissancishTF = await tf.loadGraphModel(bundleResourceIO(renaissancishModel, renaissancishWeights));
+        global.renaissancishTF = new automl.ImageClassificationModel(renaissancishTF, global.renaissancishDict);
 
       } catch (e) {
         console.warn(e);
