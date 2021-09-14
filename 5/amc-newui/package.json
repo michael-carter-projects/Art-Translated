@@ -9,6 +9,8 @@
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/blur": "^3.6.0",
+    "@react-navigation/material-bottom-tabs": "^6.0.5",
+    "@react-navigation/native": "^6.0.2",
     "@tensorflow/tfjs": "^2.6.0",
     "@tensorflow/tfjs-automl": "1.2.0",
     "@tensorflow/tfjs-converter": "^3.7.0",
@@ -32,14 +34,13 @@
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "~1.7.0",
+    "react-native-paper": "^4.9.2",
     "react-native-progress": "^4.1.2",
     "react-native-reanimated": "~1.13.0",
     "react-native-screens": "~2.10.1",
     "react-native-svg": "12.1.0",
     "react-native-unimodules": "~0.11.0",
     "react-native-web": "~0.13.12",
-    "react-navigation": "^4.4.4",
-    "react-navigation-stack": "^2.10.4",
     "seedrandom": "~2.4.3"
   },
   "devDependencies": {
