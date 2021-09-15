@@ -1,19 +1,152 @@
-import { Camera }            from 'expo-camera';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+
+import { Camera as CamComp}  from 'expo-camera';
 import * as FileSystem       from 'expo-file-system';
+import * as Font             from 'expo-font';
 import * as ImagePicker      from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as SplashScreen     from 'expo-splash-screen';
 import { StatusBar }         from 'expo-status-bar';
+import { Ionicons }          from '@expo/vector-icons';
 
-import   React, { useState, useEffect, useCallback }                                    from 'react';
-import { Dimensions, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as Progress                                                                    from 'react-native-progress';
+import   React, { useState, useEffect, useCallback }                               from 'react';
+import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as Progress                                                               from 'react-native-progress';
+import Svg, { Circle, Line }                                                       from 'react-native-svg';
 
 import * as tf                          from '@tensorflow/tfjs';
 import * as automl                      from '@tensorflow/tfjs-automl';
 import { decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
-let camera: Camera; // camera ref to allow abort
+let camera: CamComp; // camera ref to allow abort
+
+// STYLES FOR VARIOUS ELEMENTS =================================================================================================
+const teal   = 'rgba(  0,  75,  95, 1)'; //global.colors.teal;
+const orange = 'rgba(242, 154, 124, 1)'; //global.colors.orange;
+const white  = 'rgba(255, 255, 255, 1)'; //global.colors.white;
+const grey   = 'rgba(180, 180, 180, 1)'; //global.colors.grey;
+const black  = 'rgba(  0,   0,   0, 1)'; //global.colors.black;
+
+const screen_dimensions = Dimensions.get('window');
+const screen_width  = screen_dimensions.width;   // iPhone 12 Mini: 375
+const screen_height = screen_dimensions.height; //  iPhone 12 Mini: 812
+
+const image_side = screen_dimensions.width*0.9;
+
+const shadow_size = image_side*3;
+const shadow_border = image_side;
+const shadow_offset = image_side*0.8*-1;
+
+const title_bar_height = screen_height*0.11;
+
+const button_panel_height = screen_height*0.12;
+
+const navigation_bar_height = screen_height*0.1;
+
+const photos_page_spacing = 5;
+const photos_page_image_size = (screen_width - 5*photos_page_spacing) / 4;
+
+const styles = StyleSheet.create({
+  camera_title_bar: {
+    position: 'absolute',
+    top: 0,
+    height: title_bar_height,
+    width: screen_width,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems:'center',
+  },
+  photo_outline: {
+    width: image_side,
+    height: image_side,
+    borderColor: white,
+    borderWidth: 2,
+  },
+  transparent_frame: {
+    top: shadow_offset,
+    width: shadow_size,
+    height: shadow_size,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderWidth: shadow_border,
+  },
+  button_panel: {
+    position: 'absolute',
+    bottom: navigation_bar_height + 15,
+    width: screen_width,
+    height: button_panel_height,
+    alignItems: 'center',
+  },
+  nav_panel_outer: {
+    position: 'absolute',
+    bottom: 0,
+    width: screen_width,
+    height: navigation_bar_height,
+    backgroundColor: white
+  },
+  nav_panel_inner: {
+    width: screen_width,
+    height: navigation_bar_height * (7/8),
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  nav_button: {
+    alignItems: 'center',
+    width: screen_width/2,
+  },
+  nav_button_text: {
+    fontSize: 20,
+    fontFamily:'ArgentumSansLight'
+  },
+  nav_selection_camera: {
+    width: screen_width/2,
+    height: navigation_bar_height/8,
+    borderTopRightRadius: navigation_bar_height/16,
+    borderBottomRightRadius: navigation_bar_height/16,
+    backgroundColor: teal
+  },
+  nav_selection_photos: {
+    left: screen_width/2,
+    height: navigation_bar_height/8,
+    width: screen_width/2,
+    borderTopLeftRadius: navigation_bar_height/16,
+    borderBottomLeftRadius: navigation_bar_height/16,
+    backgroundColor: teal
+  },
+  photo_selection_page: {
+    position: 'absolute',
+    bottom: navigation_bar_height,
+    width:screen_width,
+    height: screen_height - navigation_bar_height,
+    backgroundColor: white,
+  },
+  photo_title_bar: {
+    height: title_bar_height,
+    width: screen_width,
+    backgroundColor: white,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems:'center',
+  },
+  image_row: {
+    width: screen_width,
+    height: (screen_width - 25)/4 + 5,
+    paddingTop:   5,
+    paddingLeft:  5,
+    paddingRight: 5,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  image: {
+    width:  photos_page_image_size,
+    height: photos_page_image_size,
+    backgroundColor: grey
+  },
+
+})
 
 
 // CONVERTS BASE64 IMAGE TO TENSORS FOR PREDICTION =============================================================================
@@ -113,22 +246,21 @@ async function predict_tree(imgTensor) {
     console.log("[+] Running Abstractish")
   }
 
-  //global.predictions_info = get_predictions_info(predictionTWO, predictionREN, predictionABS, threshold_FIN);
   return get_predictions_info(predictionTWO, predictionREN, predictionABS, threshold_FIN);
 }
 
-
 // ON STARTUP ==================================================================================================================
-Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
+CamComp.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 //ImagePicker.requestMediaLibraryPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
-// ON SCREEN ===================================================================================================================
 function Home ({navigation})
 {
+  const [isCameraScreen, setCameraScreen] = useState(true);
+
   const [inProgress, setInProgress] = useState(false);
   const [progress,   setProgress  ] = useState(0);
-  const [appIsReady, setAppIsReady] = useState(false);
 
+  const [appIsReady, setAppIsReady] = useState(false);
 
   // SELECT AN IMAGE, MAKE A PREDICTION, STORE AS GLOBAL VARIABLE ================================================================
   async function selectPicAndPredictMovementAsync(nav)
@@ -149,17 +281,15 @@ function Home ({navigation})
       );
 
       // CONVERT BASE^$ IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-      // await predict_tree(b64_to_tensor(base64));
-      const predictions = await predict_tree(b64_to_tensor(base64));
+      //const predictions = await predict_tree(b64_to_tensor(base64));
 
-      //nav.navigate('Predictions', {selected_image_uri: uri}); // navigate to Predictions page
-      nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+      //nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
 
       setInProgress(false); // reset inProgress hook to false
     }
   }
   // SELECT IMAGE, MAKE A PREDICTION, STORE AS GLOBAL VARIABLE ===================================================================
-  async function takePicAndPredictMovementAsync(nav)
+  async function take_pic_and_predict_async(nav)
   {
     if (!camera) return // stop execution if camera is undefined/null
     const photo = await camera.takePictureAsync(); // take picture using camera
@@ -174,42 +304,45 @@ function Home ({navigation})
     );
 
     // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ------------------------------------
-    //await predict_tree(b64_to_tensor(base64));
     const predictions = await predict_tree(b64_to_tensor(base64));
 
-    //nav.navigate('Predictions', {selected_image_uri: uri}); // navigate to Predictions page
     nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
 
     setInProgress(false); // reset inProgress hook to false
   }
 
-
   // LOAD ML MODEL TREE DURING SPLASH SCREEN =====================================================================================
   useEffect(() => {
     async function prepare() {
       try {
-        // Keep the splash screen visible while we fetch resources
-        await SplashScreen.preventAutoHideAsync();
+        await SplashScreen.preventAutoHideAsync();  // Keep the splash screen visible while we fetch resources
 
         global.bg = require('../assets/backgrounds/bg3.png');
 
-        const tfReady = await tf.ready();
+        await Font.loadAsync({
+          ArgentumSansLight: require('../assets/fonts/argentum-sans.light.ttf'),
+          ArgentumSansRegular: require('../assets/fonts/argentum-sans.regular.ttf'),
+        });
+        console.log("[+] Fonts loaded")
 
+        const tfReady = await tf.ready();
         const twoDimensionalModel   = await require("../assets/models/twodimensional/model.json");
         const twoDimensionalWeights = await require("../assets/models/twodimensional/weights.bin");
         const twoDimensionalTF = await tf.loadGraphModel(bundleResourceIO(twoDimensionalModel, twoDimensionalWeights));
         global.twoDimensionalTF = new automl.ImageClassificationModel(twoDimensionalTF, global.twoDimensionalDict);
-
+        console.log('[+] Tensorflow model A loaded');
         const abstractishModel   = await require("../assets/models/abstractish/model.json");
         const abstractishWeights = await require("../assets/models/abstractish/weights.bin");
         const abstractishTF = await tf.loadGraphModel(bundleResourceIO(abstractishModel, abstractishWeights));
         global.abstractishTF = new automl.ImageClassificationModel(abstractishTF, global.abstractishDict);
-
+        console.log('[+] Tensorflow model B loaded');
         const renaissancishModel   = await require("../assets/models/renaissancish/model.json");
         const renaissancishWeights = await require("../assets/models/renaissancish/weights.bin");
         const renaissancishTF = await tf.loadGraphModel(bundleResourceIO(renaissancishModel, renaissancishWeights));
         global.renaissancishTF = new automl.ImageClassificationModel(renaissancishTF, global.renaissancishDict);
+        console.log('[+] Tensorflow model C loaded');
 
+        console.log("ALL ASSETS LOADED")
       } catch (e) {
         console.warn(e);
       } finally {
@@ -218,6 +351,7 @@ function Home ({navigation})
     }
 
     prepare();
+
   }, []);
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -228,167 +362,245 @@ function Home ({navigation})
     return null;
   }
 
-
-  // RENDER THE VIEWS FOR THE HOME PAGE ========================================================================================
   return (
+    <View onLayout={onLayoutRootView} style={{ width:screen_width, height: screen_height }}>
+      <CamComp style={{flex: 1, paddingTop: 80, alignItems: 'center', overflow:'hidden'}} ref={(r) => { camera = r }}>
 
-    <ImageBackground onLayout={onLayoutRootView} source={global.bg} style={{flex: 1, width:"100%", alignItems: 'center'}}>
+        <View style={styles.transparent_frame}>
+          <View style={styles.photo_outline}/>
 
-        <View height={25}/>
+          { inProgress ?
+            (
+              <View style={{alignItems:'center', paddingTop: 40, justifyContent:'space-between'}}>
+                <Text style={{fontSize:24, color:white, fontFamily:'ArgentumSansLight'}}>
+                  analyzing...
+                </Text>
+                <Text/>
+                <Progress.Bar
+                  animationType={'timing'}
+                  borderRadius={15}
+                  borderWidth={5}
+                  color={white}
+                  height={10}
+                  indeterminate={true}
+                  width={image_side/1.5}
+                />
+              </View>
+            ) : (null) }
 
-        <View style={styles.photo_outline_outer}>
-            <Camera style={{flex: 1, width:"100%", alignItems: 'center', overflow:'hidden'}} ref={(r) => { camera = r }}>
-              <View style={styles.photo_outline}/>
-            </Camera>
         </View>
-
-        <View height={25}/>
-
-        { inProgress ?
-          (
-            <View style={{alignItems:'center', paddingTop: 40, justifyContent:'space-between'}}>
-              <Text style={{fontSize:24, color:'rgba(255,255,255,1)', fontFamily:'System'}}>
-                analyzing... beep boop
-              </Text>
-              <Text/>
-              <Progress.Bar
-                animationType={'timing'}
-                borderRadius={15}
-                borderWidth={5}
-                color={'rgba(255, 255, 255, 1)'}
-                height={10}
-                indeterminate={true}
-                width={image_side}
-              />
-            </View>
-          ) : (null)
-        }
 
         <View style={styles.button_panel}>
-
-          <View style={{flex: 1, alignItems: 'center'}} >
-            <View style={styles.circlesContainer}>
-              <Image
-                source={require('../assets/buttons/icon_gallery.gif')}
-                style={{ top: 20, width: 70, height: 70 }}
-              />
-              <TouchableOpacity style={styles.nav_button}
-                onPress={ () => {selectPicAndPredictMovementAsync(navigation);}}
-              />
-            </View>
-          </View>
-
-          <View style={{flex: 1, alignItems: 'center'}} >
-            <View style={styles.circlesContainer}>
-              <View style={styles.take_pic_button_outer_ring} />
-              <TouchableOpacity style={styles.take_pic_button}
-                onPress={ () => {takePicAndPredictMovementAsync(navigation);}}
-              />
-            </View>
-          </View>
-
-          <View style={{flex: 1, alignItems: 'center'}} >
-            <View style={styles.circlesContainer}>
-              <Image
-                source={require('../assets/buttons/icon_info.png')}
-                style={{ top: 30, width: 55, height: 52 }}
-              />
-              <TouchableOpacity style={styles.nav_button}
-                onPress={ () => navigation.navigate('TreeInfo') }
-              />
-            </View>
-          </View>
+          <Svg>
+            <Circle
+              cx={screen_width/2}
+              cy={button_panel_height/2}
+              r={button_panel_height/2}
+              fill={white}
+            />
+            <Circle
+              cx={screen_width/2}
+              cy={button_panel_height/2}
+              r={button_panel_height/2 - 4}
+              fill={teal}
+            />
+            <Circle
+              cx={screen_width/2}
+              cy={button_panel_height/2}
+              r={button_panel_height/2 - 8}
+              fill={orange}
+            />
+            <Circle
+              cx={screen_width/2}
+              cy={button_panel_height/2}
+              r={button_panel_height/2 - 10}
+              fill={white}
+              onPress={() => take_pic_and_predict_async(navigation)}
+            />
+          </Svg>
         </View>
 
-      <StatusBar style="light" />
+      </CamComp>
 
-    </ImageBackground>
+      <View style={styles.nav_panel_outer}>
+
+        { isCameraScreen ? (<View style={styles.nav_selection_camera}/>)
+                         : (<View style={styles.nav_selection_photos}/>) }
+
+        <View style={styles.nav_panel_inner}>
+
+          <TouchableOpacity onPress={() => setCameraScreen(true)}>
+            <View style={styles.nav_button}>
+              <Text style={styles.nav_button_text}>Camera</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setCameraScreen(false)}>
+            <View style={styles.nav_button}>
+              <Text style={styles.nav_button_text}>Photos</Text>
+            </View>
+          </TouchableOpacity>
+
+        </View>
+      </View>
+
+
+      { isCameraScreen ? (
+        <View style={styles.camera_title_bar}>
+
+          <View style={{width: screen_width/3, alignItems:'center'}}>
+            <Ionicons name="ios-close" size={55} color={white} style={{position: 'absolute', left:title_bar_height*0.3, bottom: title_bar_height*-0.55}}/>
+          </View>
+
+          <View style={{width: screen_width/3, alignItems:'center'}}/>
+
+          <View style={{width: screen_width/3}}>
+            <TouchableOpacity style={{alignItems:'center'}} onPress={ () => navigation.navigate('TreeInfo')}>
+              <Ionicons name="md-help-circle" size={37} color={white} style={{position: 'absolute', right: title_bar_height*0.3, bottom: title_bar_height*-0.48}}/>
+            </TouchableOpacity>
+          </View>
+
+          <StatusBar style="light" />
+        </View>
+      ) : (
+        <View style={styles.photo_selection_page}>
+          <View style={styles.photo_title_bar}>
+
+            <View style={{width: screen_width/3, alignItems:'center'}}>
+              <Ionicons name="ios-close" size={55} color={teal} style={{position: 'absolute', left:title_bar_height*0.3, bottom: title_bar_height*-0.55}}/>
+            </View>
+
+            <View style={{width: screen_width/3, alignItems:'center'}}>
+              <Text style={{position: 'absolute', bottom: title_bar_height*-0.4, fontSize:26, color:black, fontFamily:'ArgentumSansLight'}}>Photos</Text>
+            </View>
+
+            <View style={{width: screen_width/3, alignItems:'center'}}/>
+          </View>
+
+          <ScrollView>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+            <View style={styles.image_row}>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+              <View style={styles.image}/>
+            </View>
+          </ScrollView>
+
+          <StatusBar style="dark" />
+        </View>
+        ) }
+    </View>
   );
 }
 
-Home.navigationOptions = navigation => ({
-  title: "Art Movement Image Classifer",
-  headerStyle: {
-    backgroundColor: '#333333',
-  },
-  headerTintColor: '#fff',
-});
-
-
-// STYLES FOR VARIOUS ELEMENTS =================================================================================================
-const BASE_SIZE=110
-const win = Dimensions.get('window');
-const image_side = win.width*0.9;
-
-const styles = StyleSheet.create({
-  image: {
-      alignSelf: 'center',
-      width: image_side,
-      height: image_side,
-      borderColor: 'rgba(255, 255, 255, 1)',
-      borderWidth: 5,
-      borderRadius: 15,
-  },
-  photo_outline_outer: {
-    width: image_side,
-    height: image_side,
-    borderColor: 'rgba(255, 255, 255, 1)',
-    borderWidth: 5,
-    borderRadius: 15,
-  },
-  photo_outline: {
-    width: image_side,
-    height: image_side,
-    borderColor: 'rgba(255, 255, 255, 1)',
-    borderWidth: 5,
-    borderRadius: 15,
-    position: 'absolute',
-    top: -5,
-  },
-  button_panel: {
-    position: 'absolute',
-    bottom: 0,
-    flexDirection: 'row',
-    flex: 1,
-    width: '100%',
-    padding: 20,
-    justifyContent: 'space-between',
-    backgroundColor: 'rgba(0, 0, 0, 0.0)'
-  },
-  circlesContainer:{
-        width: BASE_SIZE,
-        height: BASE_SIZE,
-        alignItems: 'center',
-  },
-  take_pic_button_outer_ring:{
-      top:BASE_SIZE*0.14, // The amount remaining
-      left:BASE_SIZE*0.14,
-      position: 'absolute',
-      width:BASE_SIZE*0.72,
-      height:BASE_SIZE*0.72,
-      borderWidth:4,
-      borderColor: '#FFFFFF',
-      borderRadius: BASE_SIZE/2,
-      backgroundColor: 'rgba(0, 0, 0, 0)'
-  },
-  take_pic_button:{
-      top:BASE_SIZE*0.2,
-      left:BASE_SIZE*0.2,
-      position: 'absolute',
-      width:BASE_SIZE*0.6,
-      height:BASE_SIZE*0.6, // 60% of the base size
-      borderRadius: BASE_SIZE*0.6/2,
-      backgroundColor: '#FFFFFF'
-  },
-  nav_button: {
-      top:BASE_SIZE*0.2,
-      left:BASE_SIZE*0.2,
-      position: 'absolute',
-      width:BASE_SIZE*0.6,
-      height:BASE_SIZE*0.6, // 60% of the base size
-      borderRadius: BASE_SIZE*0.6/2,
-      backgroundColor: 'rgba(0, 0, 0, 0)'
-  }
-})
+Home.navigationOptions = navigation => ({ headerShown: false });
 
 export default Home;
