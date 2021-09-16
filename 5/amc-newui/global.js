@@ -1,4 +1,7 @@
-global.bg = null;
+// iwuehfiwuehfiwuehfiwuegfiwuegf
+global.albums = [{title:"Recents"}];
+global.albumThumbnailURIs = [];
+global.recentURIs = [];
 
 // REALEY MODEL INFO ===========================================================
 global.twoDimensionalTF = null;
@@ -405,6 +408,7 @@ global.movementMap = [
     end_reason: "null",
   },
 ];
+
 
 /* BUTTON COLORS ===============================================================
 global.colors: {
