@@ -13,7 +13,7 @@ const photos_page_image_size = (SC.screen_width - 5*photos_page_spacing) / 4;
 
 const card_height = photos_page_image_size;
 
-export const HomeStyles = StyleSheet.create({
+export const home_styles = StyleSheet.create({
   camera_title_bar: {
     position: 'absolute',
     top: 0,

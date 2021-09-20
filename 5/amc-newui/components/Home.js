@@ -17,8 +17,8 @@ import CameraRoll                                          from "@react-native-c
 
 import { PredictTree, LoadModelTree } from '../tree/prediction_tree.js';
 
-import { HomeStyles } from '../styles/home_styles.js';
-import * as SC        from '../styles/style_constants.js';
+import { home_styles } from '../styles/home_styles.js';
+import * as sc         from '../styles/style_constants.js';
 
 let camera: Camera; // camera ref to allow abort
 
@@ -35,8 +35,7 @@ function Home ({navigation})
   const [photosTitle,    setPhotosTitle ] = useState("Albums");
 
   // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ============================================================
-  async function select_pic_and_predict_async(nav)
-  {
+  async function select_pic_and_predict_async(nav) {
     // PICK AN IMAGE FROM GALLERY OR CAMERA ROLL AND ALLOW USER TO CROP -----------------------
     let photo = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -62,14 +61,11 @@ function Home ({navigation})
   }
 
   // SELECT IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ===============================================================
-  async function take_pic_and_predict_async(nav)
-  {
+  async function take_pic_and_predict_async(nav) {
     if (camera) { // skip execution if camera is undefined/null
 
       let photo = await camera.takePictureAsync(); // take picture using camera
-
       setInProgress(true); // set inProgress hook to true for progress bar
-      console.log("SUCCESS")
 
       // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
       const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
@@ -79,7 +75,6 @@ function Home ({navigation})
         {base64: true}
       );
 
-
       // MAKE PREDICTION ------------------------------------------------------------------------
       const predictions = await PredictTree(base64);
 
@@ -88,7 +83,7 @@ function Home ({navigation})
       setInProgress(false); // reset inProgress hook to false
     }
     else {
-      console.log('FAILURE')
+      console.log('CAMERA ACCESS NOT GRANTED?')
     }
   }
 
@@ -148,15 +143,15 @@ function Home ({navigation})
   // COMPONENT FOR RENDERING CAMERA TITLE BAR ==================================================================================
   const CameraTitleBar = () => {
     return (
-      <View style={HomeStyles.camera_title_bar}>
+      <View style={home_styles.camera_title_bar}>
 
         <View style={{flex:1, alignItems:'center'}}>
-          <Ionicons name="ios-close" color={SC.white} style={HomeStyles.close_icon}/>
+          <Ionicons name="ios-close" color={sc.white} style={home_styles.close_icon}/>
         </View>
 
         <View style={{flex:1}}>
           <TouchableOpacity style={{alignItems:'center'}} onPress={ () => navigation.navigate('TreeInfo')}>
-            <Ionicons name="md-help-circle" style={HomeStyles.help_button}/>
+            <Ionicons name="md-help-circle" style={home_styles.help_button}/>
           </TouchableOpacity>
         </View>
 
@@ -168,13 +163,13 @@ function Home ({navigation})
   // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
   const PictureFrameProgressBar = () => {
     return (
-      <View style={HomeStyles.transparent_frame}>
-        <View style={HomeStyles.photo_outline}/>
+      <View style={home_styles.transparent_frame}>
+        <View style={home_styles.photo_outline}/>
 
         { inProgress ?
           (
             <View style={{alignItems:'center', paddingTop: 20, justifyContent:'space-between'}}>
-              <Text style={HomeStyles.progress_bar_text}>
+              <Text style={home_styles.progress_bar_text}>
                 analyzing...
               </Text>
               <Text/>
@@ -182,10 +177,10 @@ function Home ({navigation})
                 animationType={'timing'}
                 borderRadius={15}
                 borderWidth={5}
-                color={SC.white}
+                color={sc.white}
                 height={10}
                 indeterminate={true}
-                width={SC.card_width/2}
+                width={sc.card_width/2}
               />
             </View>
           ) : (null)
@@ -197,31 +192,31 @@ function Home ({navigation})
   // COMPONENT FOR TAKE PICTURE BUTTON =========================================================================================
   const TakePictureButton = () => {
     return (
-        <View style={HomeStyles.button_panel}>
+        <View style={home_styles.button_panel}>
           <Svg>
             <Circle
-              cx={SC.screen_width/2}
-              cy={SC.take_pic_button_diameter/2}
-              r={SC.take_pic_button_diameter/2}
-              fill={SC.white}
+              cx={sc.screen_width/2}
+              cy={sc.take_pic_button_diameter/2}
+              r={sc.take_pic_button_diameter/2}
+              fill={sc.white}
             />
             <Circle
-              cx={SC.screen_width/2}
-              cy={SC.take_pic_button_diameter/2}
-              r={SC.take_pic_button_diameter/2 - 4}
-              fill={SC.teal}
+              cx={sc.screen_width/2}
+              cy={sc.take_pic_button_diameter/2}
+              r={sc.take_pic_button_diameter/2 - 4}
+              fill={sc.teal}
             />
             <Circle
-              cx={SC.screen_width/2}
-              cy={SC.take_pic_button_diameter/2}
-              r={SC.take_pic_button_diameter/2 - 8}
-              fill={SC.orange}
+              cx={sc.screen_width/2}
+              cy={sc.take_pic_button_diameter/2}
+              r={sc.take_pic_button_diameter/2 - 8}
+              fill={sc.orange}
             />
             <Circle
-              cx={SC.screen_width/2}
-              cy={SC.take_pic_button_diameter/2}
-              r={SC.take_pic_button_diameter/2 - 10}
-              fill={SC.white}
+              cx={sc.screen_width/2}
+              cy={sc.take_pic_button_diameter/2}
+              r={sc.take_pic_button_diameter/2 - 10}
+              fill={sc.white}
               onPress={() => take_pic_and_predict_async(navigation)}
             />
           </Svg>
@@ -233,21 +228,21 @@ function Home ({navigation})
   const PhotosTitleBar = () => {
     return (
 
-        <View style={HomeStyles.photo_title_bar}>
+        <View style={home_styles.photo_title_bar}>
 
           <View style={{flex:1}}>
             { photosTitle === "Albums" ? (
-              <Ionicons name="ios-close" color={SC.teal} style={HomeStyles.close_icon}/>
+              <Ionicons name="ios-close" color={sc.teal} style={home_styles.close_icon}/>
             ) : (
               <TouchableOpacity style={{alignItems:'center'}} onPress={() => setPhotosTitle("Albums")}>
-                <Ionicons name="ios-arrow-back" style={HomeStyles.back_icon}/>
+                <Ionicons name="ios-arrow-back" style={home_styles.back_icon}/>
               </TouchableOpacity>
             )
             }
           </View>
 
           <View style={{flex:3, alignItems:'center'}}>
-            <Text numberOfLines={1} style={HomeStyles.photo_title_bar_text}>{photosTitle}</Text>
+            <Text numberOfLines={1} style={home_styles.photo_title_bar_text}>{photosTitle}</Text>
           </View>
 
           <View style={{flex:1, alignItems:'center'}}/>
@@ -258,23 +253,23 @@ function Home ({navigation})
   // COMPONENT FOR NAVIGATION BAR ==============================================================================================
   const NavigationPanel = () => {
     return (
-      <View style={HomeStyles.nav_panel_outer}>
+      <View style={home_styles.nav_panel_outer}>
 
-        { isCameraScreen ? ( <View style={HomeStyles.nav_selection_camera}/> )
-                         : ( <View style={HomeStyles.nav_selection_photos}/> )
+        { isCameraScreen ? ( <View style={home_styles.nav_selection_camera}/> )
+                         : ( <View style={home_styles.nav_selection_photos}/> )
         }
 
-        <View style={HomeStyles.nav_panel_inner}>
+        <View style={home_styles.nav_panel_inner}>
 
           <TouchableOpacity onPress={() => setCameraScreen(true)}>
-            <View style={HomeStyles.nav_button}>
-              <Text style={HomeStyles.nav_button_text}>Camera</Text>
+            <View style={home_styles.nav_button}>
+              <Text style={home_styles.nav_button_text}>Camera</Text>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => setCameraScreen(false)}>
-            <View style={HomeStyles.nav_button}>
-              <Text style={HomeStyles.nav_button_text}>Photos</Text>
+            <View style={home_styles.nav_button}>
+              <Text style={home_styles.nav_button_text}>Photos</Text>
             </View>
           </TouchableOpacity>
 
@@ -286,7 +281,7 @@ function Home ({navigation})
   // COMPONENT FOR OVERLAYING PHOTOS PAGE ======================================================================================
   const PhotosPageOverlay = () => {
     return (
-      <View style={HomeStyles.photo_selection_page}>
+      <View style={home_styles.photo_selection_page}>
 
         <PhotosTitleBar/>
 
@@ -306,23 +301,23 @@ function Home ({navigation})
 
     let albumViews = [
       <TouchableOpacity key="Recents" onPress={() => setPhotosTitle("Recents")}>
-        <View style={HomeStyles.album_card}>
-          <Image source={{uri: global.albumThumbnailURIs[0]}} style={HomeStyles.image}/>
-          <Text style={HomeStyles.album_name_text}>Recents</Text>
-          <Text style={HomeStyles.album_image_count_text}>{123456} images</Text>
+        <View style={home_styles.album_card}>
+          <Image source={{uri: global.albumThumbnailURIs[0]}} style={home_styles.image}/>
+          <Text style={home_styles.album_name_text}>Recents</Text>
+          <Text style={home_styles.album_image_count_text}>{123456} images</Text>
         </View>
-        <View height={SC.margin_width}/>
+        <View height={sc.margin_width}/>
       </TouchableOpacity>
     ];
     for (let i=0; i < global.albums.length; i++) {
       albumViews.push(
         <TouchableOpacity key={global.albums[i].id} onPress={() => setPhotosTitle(global.albums[i].title)}>
-          <View style={HomeStyles.album_card}>
-            <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={HomeStyles.image}/>
-            <Text style={HomeStyles.album_name_text}>{ global.albums[i].title }</Text>
-            <Text style={HomeStyles.album_image_count_text}>{ global.albums[i].assetCount } images</Text>
+          <View style={home_styles.album_card}>
+            <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={home_styles.image}/>
+            <Text style={home_styles.album_name_text}>{ global.albums[i].title }</Text>
+            <Text style={home_styles.album_image_count_text}>{ global.albums[i].assetCount } images</Text>
           </View>
-          <View height={SC.margin_width}/>
+          <View height={sc.margin_width}/>
         </TouchableOpacity>
       );
     }
@@ -333,47 +328,47 @@ function Home ({navigation})
   const ShowPhotos = () => {
     return (
       <View>
-        <View style={HomeStyles.image_row}>
-          <Image source={{uri: global.recentURIs[0]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[1]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[2]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[3]}} style={HomeStyles.image}/>
+        <View style={home_styles.image_row}>
+          <Image source={{uri: global.recentURIs[0]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[1]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[2]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[3]}} style={home_styles.image}/>
         </View>
-        <View style={HomeStyles.image_row}>
-          <Image source={{uri: global.recentURIs[4]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[5]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[6]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[7]}} style={HomeStyles.image}/>
+        <View style={home_styles.image_row}>
+          <Image source={{uri: global.recentURIs[4]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[5]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[6]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[7]}} style={home_styles.image}/>
         </View>
-        <View style={HomeStyles.image_row}>
-          <Image source={{uri: global.recentURIs[8]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[9]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[10]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[11]}} style={HomeStyles.image}/>
+        <View style={home_styles.image_row}>
+          <Image source={{uri: global.recentURIs[8]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[9]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[10]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[11]}} style={home_styles.image}/>
         </View>
-        <View style={HomeStyles.image_row}>
-          <Image source={{uri: global.recentURIs[12]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[13]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[14]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[15]}} style={HomeStyles.image}/>
+        <View style={home_styles.image_row}>
+          <Image source={{uri: global.recentURIs[12]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[13]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[14]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[15]}} style={home_styles.image}/>
         </View>
-        <View style={HomeStyles.image_row}>
-          <Image source={{uri: global.recentURIs[16]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[17]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[18]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[19]}} style={HomeStyles.image}/>
+        <View style={home_styles.image_row}>
+          <Image source={{uri: global.recentURIs[16]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[17]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[18]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[19]}} style={home_styles.image}/>
         </View>
-        <View style={HomeStyles.image_row}>
-          <Image source={{uri: global.recentURIs[20]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[21]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[22]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[23]}} style={HomeStyles.image}/>
+        <View style={home_styles.image_row}>
+          <Image source={{uri: global.recentURIs[20]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[21]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[22]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[23]}} style={home_styles.image}/>
         </View>
-        <View style={HomeStyles.image_row}>
-          <Image source={{uri: global.recentURIs[24]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[25]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[26]}} style={HomeStyles.image}/>
-          <Image source={{uri: global.recentURIs[27]}} style={HomeStyles.image}/>
+        <View style={home_styles.image_row}>
+          <Image source={{uri: global.recentURIs[24]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[25]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[26]}} style={home_styles.image}/>
+          <Image source={{uri: global.recentURIs[27]}} style={home_styles.image}/>
         </View>
       </View>
     );
@@ -383,7 +378,7 @@ function Home ({navigation})
   return (
     <View onLayout={onLayoutRootView} style={{flex: 1}}>
 
-      <Camera style={HomeStyles.camera_view} ref={(r) => { camera = r }}>
+      <Camera style={home_styles.camera_view} ref={(r) => { camera = r }}>
         <PictureFrameProgressBar/>
         <TakePictureButton/>
       </Camera>
