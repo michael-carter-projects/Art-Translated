@@ -1,4 +1,4 @@
-import { Camera }  from 'expo-camera';
+import { Camera }            from 'expo-camera';
 import * as FileSystem       from 'expo-file-system';
 import * as Font             from 'expo-font';
 import * as ImagePicker      from 'expo-image-picker';
@@ -21,7 +21,6 @@ import { HomeStyles } from '../styles/home_styles.js';
 import * as SC        from '../styles/style_constants.js';
 
 let camera: Camera; // camera ref to allow abort
-
 
 // ON STARTUP ==================================================================================================================
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
@@ -65,23 +64,32 @@ function Home ({navigation})
   // SELECT IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ===============================================================
   async function take_pic_and_predict_async(nav)
   {
-    if (!camera) return // stop execution if camera is undefined/null
-    const photo = await camera.takePictureAsync(); // take picture using camera
-    setInProgress(true); // set inProgress hook to true for progress bar
+    if (camera) { // skip execution if camera is undefined/null
 
-    // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
-    const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
-      photo.uri,
-      [{resize: {width:224}}],
-      {base64: true}
-    );
+      let photo = await camera.takePictureAsync(); // take picture using camera
 
-    // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ------------------------------------
-    const predictions = await PredictTree(base64);
+      setInProgress(true); // set inProgress hook to true for progress bar
+      console.log("SUCCESS")
 
-    nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+      // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
+      const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
+        photo.uri,
+        [{crop:   {originX:30, originY:300, width:photo.width*0.9, height:photo.width*0.9}},
+         {resize: {width:224}}],
+        {base64: true}
+      );
 
-    setInProgress(false); // reset inProgress hook to false
+
+      // MAKE PREDICTION ------------------------------------------------------------------------
+      const predictions = await PredictTree(base64);
+
+      nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+
+      setInProgress(false); // reset inProgress hook to false
+    }
+    else {
+      console.log('FAILURE')
+    }
   }
 
   // LOAD ML MODEL TREE DURING SPLASH SCREEN ===================================================================================
@@ -102,10 +110,9 @@ function Home ({navigation})
 
         // LOAD ALBUM THUMBNAILS -----------------------------------------------
         global.albums = await MediaLibrary.getAlbumsAsync();
-        console.log("[+] Albums list loaded")
+        console.log("[+] Albums list loaded");
 
         let recentAssets = await MediaLibrary.getAssetsAsync({first:28});
-        console.log(recentAssets.totalCount);
         global.albumThumbnailURIs.push(recentAssets.assets[0].uri);
 
         for (let i=0; i < 28; i++) {
@@ -166,7 +173,7 @@ function Home ({navigation})
 
         { inProgress ?
           (
-            <View style={{alignItems:'center', paddingTop: 40, justifyContent:'space-between'}}>
+            <View style={{alignItems:'center', paddingTop: 20, justifyContent:'space-between'}}>
               <Text style={HomeStyles.progress_bar_text}>
                 analyzing...
               </Text>
@@ -178,11 +185,11 @@ function Home ({navigation})
                 color={SC.white}
                 height={10}
                 indeterminate={true}
-                width={SC.image_frame_side_length/2}
+                width={SC.card_width/2}
               />
             </View>
-          ) : (null) }
-
+          ) : (null)
+        }
       </View>
     );
   }
@@ -190,35 +197,35 @@ function Home ({navigation})
   // COMPONENT FOR TAKE PICTURE BUTTON =========================================================================================
   const TakePictureButton = () => {
     return (
-      <View style={HomeStyles.button_panel}>
-        <Svg>
-          <Circle
-            cx={SC.screen_width/2}
-            cy={SC.take_pic_button_diameter/2}
-            r={SC.take_pic_button_diameter/2}
-            fill={SC.white}
-          />
-          <Circle
-            cx={SC.screen_width/2}
-            cy={SC.take_pic_button_diameter/2}
-            r={SC.take_pic_button_diameter/2 - 4}
-            fill={SC.teal}
-          />
-          <Circle
-            cx={SC.screen_width/2}
-            cy={SC.take_pic_button_diameter/2}
-            r={SC.take_pic_button_diameter/2 - 8}
-            fill={SC.orange}
-          />
-          <Circle
-            cx={SC.screen_width/2}
-            cy={SC.take_pic_button_diameter/2}
-            r={SC.take_pic_button_diameter/2 - 10}
-            fill={SC.white}
-            onPress={() => take_pic_and_predict_async(navigation)}
-          />
-        </Svg>
-      </View>
+        <View style={HomeStyles.button_panel}>
+          <Svg>
+            <Circle
+              cx={SC.screen_width/2}
+              cy={SC.take_pic_button_diameter/2}
+              r={SC.take_pic_button_diameter/2}
+              fill={SC.white}
+            />
+            <Circle
+              cx={SC.screen_width/2}
+              cy={SC.take_pic_button_diameter/2}
+              r={SC.take_pic_button_diameter/2 - 4}
+              fill={SC.teal}
+            />
+            <Circle
+              cx={SC.screen_width/2}
+              cy={SC.take_pic_button_diameter/2}
+              r={SC.take_pic_button_diameter/2 - 8}
+              fill={SC.orange}
+            />
+            <Circle
+              cx={SC.screen_width/2}
+              cy={SC.take_pic_button_diameter/2}
+              r={SC.take_pic_button_diameter/2 - 10}
+              fill={SC.white}
+              onPress={() => take_pic_and_predict_async(navigation)}
+            />
+          </Svg>
+        </View>
     );
   }
 

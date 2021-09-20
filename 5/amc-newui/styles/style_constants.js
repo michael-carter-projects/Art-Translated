@@ -15,5 +15,5 @@ export const title_bar_height = screen_height*0.11;
 
 export const take_pic_button_diameter = screen_height*0.12;
 
-export const margin_width = screen_width*0.025;
+export const margin_width = 5;
 export const card_width  = screen_width - (2*margin_width);

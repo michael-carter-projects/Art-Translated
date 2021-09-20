@@ -64,8 +64,8 @@ export const HomeStyles = StyleSheet.create({
   },
   // PROGRESS BAR STUFF --------------------------------------------------------
   progress_bar_text: {
-    fontSize:24,
-    color:SC.white,
+    fontSize: 24,
+    color: SC.white,
     fontFamily:'ArgentumSansLight'
   },
   // PHOTO BUTTON STYLES -------------------------------------------------------
@@ -74,7 +74,7 @@ export const HomeStyles = StyleSheet.create({
     bottom: navigation_bar_height + 15,
     width: SC.screen_width,
     height: SC.take_pic_button_diameter,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   //
   nav_panel_outer: {
@@ -132,15 +132,15 @@ export const HomeStyles = StyleSheet.create({
   photo_title_bar_text: {
     position: 'absolute',
     bottom: SC.title_bar_height*-0.4,
-    fontSize:26,
-    color:SC.black,
+    fontSize: 26,
+    color: SC.black,
     fontFamily:'ArgentumSansLight'
   },
   image_row: {
     width: SC.screen_width,
     height: (SC.screen_width - 25)/4 + 5,
-    paddingTop:   5,
-    paddingLeft:  5,
+    paddingTop: 5,
+    paddingLeft: 5,
     paddingRight: 5,
     flex: 1,
     flexDirection: 'row',
