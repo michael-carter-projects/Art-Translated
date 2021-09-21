@@ -4,7 +4,6 @@ import * as Font             from 'expo-font';
 import * as ImagePicker      from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as MediaLibrary     from 'expo-media-library';
-import * as MediaType        from 'expo-media-library';
 import * as SplashScreen     from 'expo-splash-screen';
 import { StatusBar }         from 'expo-status-bar';
 import { Ionicons }          from '@expo/vector-icons';
@@ -17,8 +16,8 @@ import CameraRoll                                          from "@react-native-c
 
 import { PredictTree, LoadModelTree } from '../tree/prediction_tree.js';
 
-import { home_styles } from '../styles/home_styles.js';
-import * as sc         from '../styles/style_constants.js';
+import    { hs } from '../styles/home_styles.js';
+import * as sc   from '../styles/style_constants.js';
 
 let camera: Camera; // camera ref to allow abort
 
@@ -143,15 +142,15 @@ function Home ({navigation})
   // COMPONENT FOR RENDERING CAMERA TITLE BAR ==================================================================================
   const CameraTitleBar = () => {
     return (
-      <View style={home_styles.camera_title_bar}>
+      <View style={hs.camera_title_bar}>
 
         <View style={{flex:1, alignItems:'center'}}>
-          <Ionicons name="ios-close" color={sc.white} style={home_styles.close_icon}/>
+          <Ionicons name="ios-close" color={sc.white} style={hs.close_icon}/>
         </View>
 
         <View style={{flex:1}}>
           <TouchableOpacity style={{alignItems:'center'}} onPress={ () => navigation.navigate('TreeInfo')}>
-            <Ionicons name="md-help-circle" style={home_styles.help_button}/>
+            <Ionicons name="md-help-circle" style={hs.help_button}/>
           </TouchableOpacity>
         </View>
 
@@ -163,13 +162,13 @@ function Home ({navigation})
   // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
   const PictureFrameProgressBar = () => {
     return (
-      <View style={home_styles.transparent_frame}>
-        <View style={home_styles.photo_outline}/>
+      <View style={hs.transparent_frame}>
+        <View style={hs.photo_outline}/>
 
         { inProgress ?
           (
             <View style={{alignItems:'center', paddingTop: 20, justifyContent:'space-between'}}>
-              <Text style={home_styles.progress_bar_text}>
+              <Text style={hs.progress_bar_text}>
                 analyzing...
               </Text>
               <Text/>
@@ -192,7 +191,7 @@ function Home ({navigation})
   // COMPONENT FOR TAKE PICTURE BUTTON =========================================================================================
   const TakePictureButton = () => {
     return (
-        <View style={home_styles.button_panel}>
+        <View style={hs.button_panel}>
           <Svg>
             <Circle
               cx={sc.screen_width/2}
@@ -228,21 +227,21 @@ function Home ({navigation})
   const PhotosTitleBar = () => {
     return (
 
-        <View style={home_styles.photo_title_bar}>
+        <View style={hs.photo_title_bar}>
 
           <View style={{flex:1}}>
             { photosTitle === "Albums" ? (
-              <Ionicons name="ios-close" color={sc.teal} style={home_styles.close_icon}/>
+              <Ionicons name="ios-close" color={sc.teal} style={hs.close_icon}/>
             ) : (
               <TouchableOpacity style={{alignItems:'center'}} onPress={() => setPhotosTitle("Albums")}>
-                <Ionicons name="ios-arrow-back" style={home_styles.back_icon}/>
+                <Ionicons name="ios-arrow-back" style={hs.back_icon}/>
               </TouchableOpacity>
             )
             }
           </View>
 
           <View style={{flex:3, alignItems:'center'}}>
-            <Text numberOfLines={1} style={home_styles.photo_title_bar_text}>{photosTitle}</Text>
+            <Text numberOfLines={1} style={hs.photo_title_bar_text}>{photosTitle}</Text>
           </View>
 
           <View style={{flex:1, alignItems:'center'}}/>
@@ -253,23 +252,23 @@ function Home ({navigation})
   // COMPONENT FOR NAVIGATION BAR ==============================================================================================
   const NavigationPanel = () => {
     return (
-      <View style={home_styles.nav_panel_outer}>
+      <View style={hs.nav_panel_outer}>
 
-        { isCameraScreen ? ( <View style={home_styles.nav_selection_camera}/> )
-                         : ( <View style={home_styles.nav_selection_photos}/> )
+        { isCameraScreen ? ( <View style={hs.nav_selection_camera}/> )
+                         : ( <View style={hs.nav_selection_photos}/> )
         }
 
-        <View style={home_styles.nav_panel_inner}>
+        <View style={hs.nav_panel_inner}>
 
           <TouchableOpacity onPress={() => setCameraScreen(true)}>
-            <View style={home_styles.nav_button}>
-              <Text style={home_styles.nav_button_text}>Camera</Text>
+            <View style={hs.nav_button}>
+              <Text style={hs.nav_button_text}>Camera</Text>
             </View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => setCameraScreen(false)}>
-            <View style={home_styles.nav_button}>
-              <Text style={home_styles.nav_button_text}>Photos</Text>
+            <View style={hs.nav_button}>
+              <Text style={hs.nav_button_text}>Photos</Text>
             </View>
           </TouchableOpacity>
 
@@ -281,7 +280,7 @@ function Home ({navigation})
   // COMPONENT FOR OVERLAYING PHOTOS PAGE ======================================================================================
   const PhotosPageOverlay = () => {
     return (
-      <View style={home_styles.photo_selection_page}>
+      <View style={hs.photo_selection_page}>
 
         <PhotosTitleBar/>
 
@@ -301,10 +300,10 @@ function Home ({navigation})
 
     let albumViews = [
       <TouchableOpacity key="Recents" onPress={() => setPhotosTitle("Recents")}>
-        <View style={home_styles.album_card}>
-          <Image source={{uri: global.albumThumbnailURIs[0]}} style={home_styles.image}/>
-          <Text style={home_styles.album_name_text}>Recents</Text>
-          <Text style={home_styles.album_image_count_text}>{123456} images</Text>
+        <View style={hs.album_card}>
+          <Image source={{uri: global.albumThumbnailURIs[0]}} style={hs.image}/>
+          <Text style={hs.album_name_text}>Recents</Text>
+          <Text style={hs.album_image_count_text}>{123456} images</Text>
         </View>
         <View height={sc.margin_width}/>
       </TouchableOpacity>
@@ -312,10 +311,10 @@ function Home ({navigation})
     for (let i=0; i < global.albums.length; i++) {
       albumViews.push(
         <TouchableOpacity key={global.albums[i].id} onPress={() => setPhotosTitle(global.albums[i].title)}>
-          <View style={home_styles.album_card}>
-            <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={home_styles.image}/>
-            <Text style={home_styles.album_name_text}>{ global.albums[i].title }</Text>
-            <Text style={home_styles.album_image_count_text}>{ global.albums[i].assetCount } images</Text>
+          <View style={hs.album_card}>
+            <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={hs.image}/>
+            <Text style={hs.album_name_text}>{ global.albums[i].title }</Text>
+            <Text style={hs.album_image_count_text}>{ global.albums[i].assetCount } images</Text>
           </View>
           <View height={sc.margin_width}/>
         </TouchableOpacity>
@@ -328,47 +327,47 @@ function Home ({navigation})
   const ShowPhotos = () => {
     return (
       <View>
-        <View style={home_styles.image_row}>
-          <Image source={{uri: global.recentURIs[0]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[1]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[2]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[3]}} style={home_styles.image}/>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[0]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[1]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[2]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[3]}} style={hs.image}/>
         </View>
-        <View style={home_styles.image_row}>
-          <Image source={{uri: global.recentURIs[4]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[5]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[6]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[7]}} style={home_styles.image}/>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[4]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[5]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[6]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[7]}} style={hs.image}/>
         </View>
-        <View style={home_styles.image_row}>
-          <Image source={{uri: global.recentURIs[8]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[9]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[10]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[11]}} style={home_styles.image}/>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[8]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[9]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[10]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[11]}} style={hs.image}/>
         </View>
-        <View style={home_styles.image_row}>
-          <Image source={{uri: global.recentURIs[12]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[13]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[14]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[15]}} style={home_styles.image}/>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[12]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[13]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[14]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[15]}} style={hs.image}/>
         </View>
-        <View style={home_styles.image_row}>
-          <Image source={{uri: global.recentURIs[16]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[17]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[18]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[19]}} style={home_styles.image}/>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[16]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[17]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[18]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[19]}} style={hs.image}/>
         </View>
-        <View style={home_styles.image_row}>
-          <Image source={{uri: global.recentURIs[20]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[21]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[22]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[23]}} style={home_styles.image}/>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[20]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[21]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[22]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[23]}} style={hs.image}/>
         </View>
-        <View style={home_styles.image_row}>
-          <Image source={{uri: global.recentURIs[24]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[25]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[26]}} style={home_styles.image}/>
-          <Image source={{uri: global.recentURIs[27]}} style={home_styles.image}/>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[24]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[25]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[26]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[27]}} style={hs.image}/>
         </View>
       </View>
     );
@@ -378,7 +377,7 @@ function Home ({navigation})
   return (
     <View onLayout={onLayoutRootView} style={{flex: 1}}>
 
-      <Camera style={home_styles.camera_view} ref={(r) => { camera = r }}>
+      <Camera style={hs.camera_view} ref={(r) => { camera = r }}>
         <PictureFrameProgressBar/>
         <TakePictureButton/>
       </Camera>

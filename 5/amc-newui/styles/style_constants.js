@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 
-// CONSTANTS FOR VARIOUS ELEMENTS ==============================================
+// CONSTANTS FOR ALL PAGES =====================================================
 export const teal   = 'rgba(  0,  75,  95, 1)'; //global.colors.teal;
 export const orange = 'rgba(242, 154, 124, 1)'; //global.colors.orange;
 export const white  = 'rgba(255, 255, 255, 1)'; //global.colors.white;
@@ -13,7 +13,13 @@ export const screen_height = screen_dimensions.height; //  iPhone 12 Mini: 812
 
 export const title_bar_height = screen_height*0.11;
 
-export const take_pic_button_diameter = screen_height*0.12;
-
 export const margin_width = 5;
 export const card_width  = screen_width - (2*margin_width);
+
+// CONSTANTS FOR CAMERA/PHOTOS PAGE --------------------------------------------
+export const take_pic_button_diameter = screen_height*0.12;
+
+// CONSTANTS FOR PREDICTIONS PAGE ----------------------------------------------
+export const more_results_height = 120;
+
+// CONSTANTS FOR MOVEMENTS PAGE ------------------------------------------------
