@@ -6,12 +6,7 @@ const image_frame_side_length = sc.screen_width*0.9;
 const image_frame_border_thickness = image_frame_side_length;
 const image_frame_top_offset = image_frame_side_length*-0.5;
 
-const navigation_bar_height = sc.screen_height*0.1;
-
-const photos_page_spacing = 5;
-const photos_page_image_size = (sc.screen_width - 5*photos_page_spacing) / 4;
-
-const card_height = photos_page_image_size;
+const card_height = sc.photos_image_size;
 
 export const hs = StyleSheet.create({
   camera_title_bar: {
@@ -71,22 +66,22 @@ export const hs = StyleSheet.create({
   // PHOTO BUTTON STYLES -------------------------------------------------------
   button_panel: {
     position: 'absolute',
-    bottom: navigation_bar_height + 15,
+    bottom: sc.navigation_bar_height + 15,
     width: sc.screen_width,
     height: sc.take_pic_button_diameter,
     alignItems: 'center'
   },
-  //
+  // NAVIGATION PANEL STYLES ---------------------------------------------------
   nav_panel_outer: {
     position: 'absolute',
     bottom: 0,
     width: sc.screen_width,
-    height: navigation_bar_height,
+    height: sc.navigation_bar_height,
     backgroundColor: sc.white
   },
   nav_panel_inner: {
     width: sc.screen_width,
-    height: navigation_bar_height * (7/8),
+    height: sc.navigation_bar_height * (7/8),
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -101,24 +96,25 @@ export const hs = StyleSheet.create({
   },
   nav_selection_camera: {
     width: sc.screen_width/2,
-    height: navigation_bar_height/8,
-    borderTopRightRadius: navigation_bar_height/16,
-    borderBottomRightRadius: navigation_bar_height/16,
+    height: sc.navigation_bar_height/8,
+    borderTopRightRadius: sc.navigation_bar_height/16,
+    borderBottomRightRadius: sc.navigation_bar_height/16,
     backgroundColor: sc.teal
   },
   nav_selection_photos: {
     left: sc.screen_width/2,
-    height: navigation_bar_height/8,
+    height: sc.navigation_bar_height/8,
     width: sc.screen_width/2,
-    borderTopLeftRadius: navigation_bar_height/16,
-    borderBottomLeftRadius: navigation_bar_height/16,
+    borderTopLeftRadius: sc.navigation_bar_height/16,
+    borderBottomLeftRadius: sc.navigation_bar_height/16,
     backgroundColor: sc.teal
   },
+  // PHOTO SELECTION PAGE STYLES -----------------------------------------------
   photo_selection_page: {
     position: 'absolute',
-    bottom: navigation_bar_height,
+    bottom: sc.navigation_bar_height,
     width:sc.screen_width,
-    height: sc.screen_height - navigation_bar_height,
+    height: sc.screen_height - sc.navigation_bar_height,
     backgroundColor: sc.white,
   },
   photo_title_bar: {
@@ -136,26 +132,14 @@ export const hs = StyleSheet.create({
     color: sc.black,
     fontFamily:'ArgentumSansLight'
   },
-  image_row: {
-    width: sc.screen_width,
-    height: (sc.screen_width - 25)/4 + 5,
-    paddingTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  photo_button: {
+    width:  sc.photos_image_size,
+    height: sc.photos_image_size,
+    backgroundColor: '#446688',
+    marginLeft: sc.margin_width,
+    marginTop: sc.margin_width,
   },
-  image: {
-    width:  photos_page_image_size,
-    height: photos_page_image_size,
-  },
-  image_blank: {
-    width:  photos_page_image_size,
-    height: photos_page_image_size,
-    backgroundColor: sc.grey,
-  },
-  // ALBUM STYLES -------------------------------------------------------
+  // ALBUM STYLES --------------------------------------------------------------
   album_card: {
     alignSelf: 'center',
     width: sc.card_width,
@@ -169,6 +153,10 @@ export const hs = StyleSheet.create({
     },
     shadowOpacity: 0.35,
     shadowRadius: 10
+  },
+  album_image: {
+    width:  sc.photos_image_size,
+    height: sc.photos_image_size,
   },
   album_name_text: {
     left: sc.card_width*0.04,

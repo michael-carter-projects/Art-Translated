@@ -8,11 +8,11 @@ import * as SplashScreen     from 'expo-splash-screen';
 import { StatusBar }         from 'expo-status-bar';
 import { Ionicons }          from '@expo/vector-icons';
 
-import   React, { useState, useEffect, useCallback }                 from 'react';
-import { Image, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as Progress                                                 from 'react-native-progress';
-import Svg, { Circle, Line }                                         from 'react-native-svg';
-import CameraRoll                                                    from "@react-native-community/cameraroll";
+import   React, { useState, useEffect, useCallback }       from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import * as Progress                                       from 'react-native-progress';
+import Svg, { Circle, Line }                               from 'react-native-svg';
+import CameraRoll                                          from "@react-native-community/cameraroll";
 
 import { PredictTree, LoadModelTree } from '../tree/prediction_tree.js';
 
@@ -20,7 +20,6 @@ import    { hs } from '../styles/home_styles.js';
 import * as sc   from '../styles/style_constants.js';
 
 let camera: Camera; // camera ref to allow abort
-
 
 // ON STARTUP ==================================================================================================================
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
@@ -33,8 +32,6 @@ function Home ({navigation})
   const [inProgress,     setInProgress  ] = useState(false);
   const [appIsReady,     setAppIsReady  ] = useState(false);
   const [photosTitle,    setPhotosTitle ] = useState("Albums");
-
-  const [displayImages, setDisplayImages] = useState([]);
 
   // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ============================================================
   async function select_pic_and_predict_async(nav) {
@@ -112,18 +109,9 @@ function Home ({navigation})
         let recentAssets = await MediaLibrary.getAssetsAsync({first:28});
         global.albumThumbnailURIs.push(recentAssets.assets[0].uri);
 
-        var recentURIs = [];
-
         for (let i=0; i < 28; i++) {
-          recentURIs.push({
-            id: i,
-            uri: recentAssets.assets[i].uri
-          });
+          global.recentURIs.push(recentAssets.assets[i].uri);
         }
-
-        setDisplayImages(recentURIs);
-
-        console.log(displayImages);
 
         for (let i=0; i < global.albums.length; i++) {
           let albumAssets = await MediaLibrary.getAssetsAsync({album: global.albums[i].id});
@@ -296,11 +284,11 @@ function Home ({navigation})
 
         <PhotosTitleBar/>
 
-        <View style={{paddingTop:sc.margin_width, paddingBottom: sc.navigation_bar_height+8}}>
+        <ScrollView style={{paddingTop:20}}>
           { photosTitle === "Albums" ? ( <ShowAlbums/> )
                                      : ( <ShowPhotos/> )
           }
-        </View>
+        </ScrollView>
 
         <StatusBar style="dark" />
       </View>
@@ -313,7 +301,7 @@ function Home ({navigation})
     let albumViews = [
       <TouchableOpacity key="Recents" onPress={() => setPhotosTitle("Recents")}>
         <View style={hs.album_card}>
-          <Image source={{uri: global.albumThumbnailURIs[0]}} style={hs.album_image}/>
+          <Image source={{uri: global.albumThumbnailURIs[0]}} style={hs.image}/>
           <Text style={hs.album_name_text}>Recents</Text>
           <Text style={hs.album_image_count_text}>{123456} images</Text>
         </View>
@@ -324,7 +312,7 @@ function Home ({navigation})
       albumViews.push(
         <TouchableOpacity key={global.albums[i].id} onPress={() => setPhotosTitle(global.albums[i].title)}>
           <View style={hs.album_card}>
-            <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={hs.album_image}/>
+            <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={hs.image}/>
             <Text style={hs.album_name_text}>{ global.albums[i].title }</Text>
             <Text style={hs.album_image_count_text}>{ global.albums[i].assetCount } images</Text>
           </View>
@@ -335,237 +323,55 @@ function Home ({navigation})
     return albumViews;
   }
 
-
-
-
-
-
-
-
-
-
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: '1 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: '2 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: '3 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abwefwefb28ba',
-      title: '4 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd9wtrhwrthaa97f63',
-      title: '5 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96uiuyjy-145571e29d72',
-      title: '6 Item',
-    },
-    {
-      id: 'rgb-c1b1-46c2-aed5-3ad53abb28ba',
-      title: '7 Item',
-    },
-    {
-      id: '3ac68afc-eregr-48d3-a4f8-fbd91aa97f63',
-      title: '8 Item',
-    },
-    {
-      id: '58694a0f-3da1-4ergrer71f-bd96-145571e29d72',
-      title: '9 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-e54b6yb-3ad53abwefwefb28ba',
-      title: '10 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd9wtrhwrthaa97f63',
-      title: '11 Item',
-    },
-    {
-      id: '586944a0f-3da1-471f-65n7-145571e29d72',
-      title: '12 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-4645b6hc2-aed5-3ad53abb28ba',
-      title: '1 Item',
-    },
-    {
-      id: '3ac68afc-c605-48dh53-a4f8-fbd91aa97f63',
-      title: '2 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd9d6-145571e29d72',
-      title: '3 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad5sg3abwefwefb28ba',
-      title: '4 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd9wherhtrhwrthaa97f63',
-      title: '5 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96uerhiuyjy-145571e29d72',
-      title: '6 Item',
-    },
-    {
-      id: 'rgb-c1b1-46c2-aed5-3ad53v3abb28ba',
-      title: '7 Item',
-    },
-    {
-      id: '3ac68afc-eregr-48d3-a4f8-f34tvbd91aa97f63',
-      title: '8 Item',
-    },
-    {
-      id: '58694a0f-3da1-4ergrer71f-bd96-3v145571e29d72',
-      title: '9 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-e54b6yb-3a3v4t53abwefwefb28ba',
-      title: '10 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd9wt3rhwrthaa97f63',
-      title: '11 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-65n7-1455734t1e29d72',
-      title: '12 Item',
-    },
-      {
-        id: 'bd7acbea-c1b1234-46c2-aed5-3ad53abb28ba',
-        title: '1 Item',
-      },
-      {
-        id: '3ac68afc-c605-48879d3-a4f8-fbd91aa97f63',
-        title: '2 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-14559571e29d72',
-        title: '3 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-421346c2-aed5-3ad53abwefwefb28ba',
-        title: '4 Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd9wtr576hwrthaa97f63',
-        title: '5 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96uiuyjy-1486975571e29d72',
-        title: '6 Item',
-      },
-      {
-        id: 'rgb-c1b1-46c2-aed5-3ad879853abb28ba',
-        title: '7 Item',
-      },
-      {
-        id: '3ac68afc-eregr-48d3-a4f8-fbd91a34ga97f63',
-        title: '8 Item',
-      },
-      {
-        id: '58694a0f-3da1-4ergrer71f-bd96-145234v571e29d72',
-        title: '9 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-e54b6yb-3ad53a23v45bwefwefb28ba',
-        title: '10 Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd9w234v5trhwrthaa97f63',
-        title: '11 Item',
-      },
-      {
-        id: '586944a0f-3da1-471f-65n7-1455712v34e29d72',
-        title: '12 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-4645b6hc2-aed5-3ad53a234fbb28ba',
-        title: '1 Item',
-      },
-      {
-        id: '3ac68afc-c605-48dh53-a4f8-fbd3f491aa97f63',
-        title: '2 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd9d63f4-145571e29d72',
-        title: '3 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad34f5sg3abwefwefb28ba',
-        title: '4 Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd9w3345fherhtrhwrthaa97f63',
-        title: '5 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96uerh34f5iuyjy-145571e29d72',
-        title: '6 Item',
-      },
-      {
-        id: 'rgb-c1b1-46c2-aed5-3ad53vjytdt73abb28ba',
-        title: '7 Item',
-      },
-      {
-        id: '3ac68afc-eregr-48d3-a4f8-f37nti4tvbd91aa97f63',
-        title: '8 Item',
-      },
-      {
-        id: '58694a0f-3da1-4ergrer71ni7f-bd96-3v145571e29d72',
-        title: '9 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-e54b66rnyb-3a3v4t53abwefwefb28ba',
-        title: '10 Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-frn6bd9wt3rhwrthaa97f63',
-        title: '11 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-65n7-1rnh455734t1e29d72',
-        title: '12 Item',
-      },
-  ];
-
-  const ImgButton = ({ id }) => (
-    <TouchableOpacity>
-      <Image source={{uri: displayImages[id].uri}} style={hs.photo_button}>
-      </Image>
-    </TouchableOpacity>
-  );
-
   // COMPONENT FOR SHOWING PHOTOS IN ALBUM IN PHOTOS PAGE ======================================================================
   const ShowPhotos = () => {
-    let photoViews = [];
-
-    const renderImage = ({ item }) => <ImgButton id={item.id} />;
-
     return (
-      <FlatList data={displayImages} renderItem={renderImage} keyExtractor={item => item.id} numColumns={4} extraData={displayImages}/>
+      <View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[0]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[1]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[2]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[3]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[4]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[5]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[6]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[7]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[8]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[9]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[10]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[11]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[12]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[13]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[14]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[15]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[16]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[17]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[18]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[19]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[20]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[21]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[22]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[23]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[24]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[25]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[26]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[27]}} style={hs.image}/>
+        </View>
+      </View>
     );
   }
-
-
-
-
-
-
-
-
-
-
 
   // WHERE THE MAGIC HAPPENS ===================================================================================================
   return (
