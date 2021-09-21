@@ -1,173 +1,124 @@
-import { StatusBar } from 'expo-status-bar'
+import { StatusBar } from 'expo-status-bar';
+import { Ionicons }  from '@expo/vector-icons';
+import { Entypo }    from '@expo/vector-icons';
 
-import React from 'react'
-import { Dimensions, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Icon } from 'react-native-elements'
+import React from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+
+import    { ps } from '../styles/predictions_styles.js';
+import * as sc   from '../styles/style_constants.js';
 
 // RENDER PREDICTION PAGE ======================================================================================================
 function Predictions ({navigation})
 {
+  // retreive information passed from previous screen --------------------------
   const selected_image_uri = navigation.state.params.selected_image_uri;
-  //const predictions = global.predictions_info;
   const predictions = navigation.state.params.predictions;
 
   return (
-    <ImageBackground source={global.bg} style={{flex: 1, width:"100%", alignItems: 'center'}}>
+    <View style={{flex: 1, alignItems: 'center', backgroundColor: sc.white}}>
 
-      <View height={25}/>
-
-      <View style={styles.outer_view}>
-
-        <Image source={{uri: selected_image_uri}} style={styles.image}/>
-
-        <View height={50}/>
-
-        <TouchableOpacity
-          onPress={ () => navigation.navigate('Movement', {infoMap:predictions[0].map, color1:colors.dark1, color2:colors.dark2})}
-        >
-        <View style={styles.resultbutton1}>
-
-            <View style={styles.result_text}>
-              <Text style={styles.button}>{ predictions[0].map.name }</Text>
-              <Text style={styles.button}>Probability: { predictions[0].prob }%</Text>
-            </View>
-            <View>
-              <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
-            </View>
-
+      <View style={ps.prediction_title_bar}>
+        <View>
+          <TouchableOpacity style={{alignItems:'center'}}>
+            <Ionicons name="ios-close" style={ps.close_icon}/>
+          </TouchableOpacity>
         </View>
-        </TouchableOpacity>
-
-        <View height={25}/>
-
-        <TouchableOpacity
-          onPress={ () => navigation.navigate('Movement', {infoMap: predictions[1].map, color1: colors.med1, color2: colors.med2})}
-        >
-          <View style={styles.resultbutton2}>
-            <View style={styles.result_text}>
-              <Text style={styles.button}>{ predictions[1].map.name }</Text>
-              <Text style={styles.button}>Probability: { predictions[1].prob }%</Text>
-            </View>
-            <View>
-              <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
-            </View>
-          </View>
-        </TouchableOpacity>
-
-        <View height={25}/>
-
-        <TouchableOpacity
-          onPress={ () => navigation.navigate('Movement', {infoMap: predictions[2].map, color1: colors.lite1, color2: colors.lite2})}
-        >
-          <View style={styles.resultbutton3}>
-            <View style={styles.result_text}>
-              <Text style={styles.button}>{ predictions[2].map.name }</Text>
-              <Text style={styles.button}>Probability: { predictions[2].prob }%</Text>
-            </View>
-            <View>
-              <Icon name="arrow-forward" color="#ffffff" size={40} style={{paddingRight:15, paddingTop:3}}></Icon>
-            </View>
-          </View>
-        </TouchableOpacity>
-
+        <View>
+          <Image source={require('../assets/icons/AT.png')} style={ps.art_translate_logo}/>
+        </View>
+        <View>
+          <TouchableOpacity style={{alignItems:'center'}} onPress={ () => navigation.navigate('Home')}>
+            <Ionicons name="ios-camera" style={ps.camera_icon}/>
+          </TouchableOpacity>
+        </View>
+        <StatusBar style="dark" />
       </View>
-      <StatusBar style="light" />
-    </ImageBackground>
+
+
+
+      <ScrollView style={ps.scroll_view}>
+
+        <TouchableOpacity onPress={ () => navigation.navigate('Movement', {infoMap:predictions[0].map, color1:sc.grey, color2:sc.grey, uri:selected_image_uri})}>
+          <View style={ps.first_result_card}>
+            <Image source={{uri: selected_image_uri}} style={ps.first_result_image}/>
+            <View style={ps.first_result_name_view}>
+              <Text style={ps.first_result_name_text}>{predictions[0].map.name}</Text>
+            </View>
+            <Text style={ps.first_result_period_text}>{predictions[0].map.dates}</Text>
+            <View style={ps.first_result_description_view}>
+              <Text style={ps.first_result_description_text}>{predictions[0].map.style}</Text>
+            </View>
+            <Text style={ps.first_result_probability_text}>{parseInt(predictions[0].prob).toString()}% Match</Text>
+            <Text style={ps.first_result_learn_more}>Learn More </Text>
+            <View style={ps.first_result_learn_more_arrow}>
+              <Entypo name="chevron-right" size={24} color={sc.teal}/>
+            </View>
+          </View>
+        </TouchableOpacity>
+
+        <View style={ps.this_could_also_be_view}>
+          <Text style={ps.this_could_also_be_text}>This could also be:</Text>
+        </View>
+
+        <TouchableOpacity onPress={ () => navigation.navigate('Movement', {infoMap:predictions[1].map, color1:sc.grey, color2:sc.grey, uri:selected_image_uri})}>
+          <View style={ps.more_results_card}>
+            <Image source={{uri: selected_image_uri}} style={{width: sc.more_results_height, height: sc.more_results_height}}/>
+            <Text style={ps.more_results_name_text}>{predictions[1].map.name}</Text>
+            <View style={ps.more_results_description_view}>
+              <Text style={ps.more_results_description_text}>{predictions[1].map.style}</Text>
+            </View>
+            <Text style={ps.more_results_probability_text}>{parseInt(predictions[1].prob).toString()}% Match</Text>
+            <Text style={ps.small_learn_more}>Learn More </Text>
+            <View style={ps.small_learn_more_arrow}>
+              <Entypo name="chevron-right" size={20} color={sc.teal}/>
+            </View>
+          </View>
+        </TouchableOpacity>
+
+        <View height={15}/>
+
+        <TouchableOpacity onPress={ () => navigation.navigate('Movement', {infoMap: predictions[2].map, color1: sc.grey, color2: sc.grey, uri:selected_image_uri})}>
+          <View style={ps.more_results_card}>
+            <Image source={{uri: selected_image_uri}} style={{width: sc.more_results_height, height: sc.more_results_height}}/>
+            <Text style={ps.more_results_name_text}>{predictions[2].map.name}</Text>
+            <View style={ps.more_results_description_view}>
+              <Text style={ps.more_results_description_text}>{predictions[2].map.style}</Text>
+            </View>
+            <Text style={ps.more_results_probability_text}>{parseInt(predictions[2].prob).toString()}% Match</Text>
+            <Text style={ps.small_learn_more}>Learn More </Text>
+            <View style={ps.small_learn_more_arrow}>
+              <Entypo name="chevron-right" size={20} color={sc.teal}/>
+            </View>
+          </View>
+        </TouchableOpacity>
+
+        <View height={15}/>
+
+        <TouchableOpacity onPress={ () => navigation.navigate('Movement', {infoMap: predictions[3].map, color1: sc.grey, color2: sc.grey, uri:selected_image_uri})}>
+          <View style={ps.more_results_card}>
+            <Image source={{uri: selected_image_uri}} style={{width: sc.more_results_height, height: sc.more_results_height}}/>
+            <Text style={ps.more_results_name_text}>{predictions[3].map.name}</Text>
+            <View style={ps.more_results_description_view}>
+              <Text style={ps.more_results_description_text}>{predictions[3].map.style}</Text>
+            </View>
+            <Text style={ps.more_results_probability_text}>{parseInt(predictions[3].prob).toString()}% Match</Text>
+            <Text style={ps.small_learn_more}>Learn More </Text>
+            <View style={ps.small_learn_more_arrow}>
+              <Entypo name="chevron-right" size={20} color={sc.teal}/>
+            </View>
+          </View>
+        </TouchableOpacity>
+
+
+        <View height={sc.more_results_height}/>
+
+      </ScrollView>
+
+    </View>
   );
 }
 
-Predictions.navigationOptions = navigation => ({
-  title: "Predictions",
-  headerStyle: {
-    backgroundColor: '#333333',
-  },
-  headerTintColor: '#fff',
-});
-
-const win = Dimensions.get('window');
-const image_side = win.width*0.8;
-
-const colors = ({
-  dark1: '#202042',
-  dark2: '#080816',
-  med1:  '#323264',
-  med2:  '#161632',
-  lite1: '#484880',
-  lite2: '#282852',
-});
-
-const buttons = ({
-  height: 75,
-  width: image_side,
-  radius: 15,
-  textSize: 18,
-  bcolor: 'rgba(255, 255, 255, 0)',
-  bwidth: 5
-});
-
-const styles = StyleSheet.create({
-  outer_view: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  image: {
-      alignSelf: 'stretch',
-      width: image_side,
-      height: image_side,
-      borderColor: 'rgba(255, 255, 255, 1)',
-      borderWidth: 5,
-      borderRadius: 15,
-  },
-  result_text: {
-    textAlign: 'left',
-  },
-  resultbutton1: {
-    width:        buttons.width,
-    height:       buttons.height,
-    borderRadius: buttons.radius,
-    borderWidth:  buttons.bwidth,
-    fontSize:     buttons.textSize,
-    backgroundColor: colors.dark1,
-    borderColor:     colors.dark2,
-    paddingLeft: 20,
-    paddingBottom: 3,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  resultbutton2: {
-    width:        buttons.width,
-    height:       buttons.height,
-    borderRadius: buttons.radius,
-    borderWidth:  buttons.bwidth,
-    fontSize:     buttons.textSize,
-    backgroundColor: colors.med1,
-    borderColor:     colors.med2,
-    paddingLeft: 20,
-    paddingBottom: 3,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  resultbutton3: {
-    width:        buttons.width,
-    height:       buttons.height,
-    borderRadius: buttons.radius,
-    borderWidth:  buttons.bwidth,
-    fontSize:     buttons.textSize,
-    backgroundColor: colors.lite1,
-    borderColor:     colors.lite2,
-    paddingLeft: 20,
-    paddingBottom: 3,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  button: {
-    fontSize: 18,
-    fontFamily: 'System',
-    color: '#fff'
-  },
-})
+Predictions.navigationOptions = navigation => ({ headerShown: false });
 
 export default Predictions;

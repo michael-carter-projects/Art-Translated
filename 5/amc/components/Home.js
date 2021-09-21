@@ -1,138 +1,40 @@
 import { Camera }            from 'expo-camera';
 import * as FileSystem       from 'expo-file-system';
+import * as Font             from 'expo-font';
 import * as ImagePicker      from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import * as MediaLibrary     from 'expo-media-library';
 import * as SplashScreen     from 'expo-splash-screen';
 import { StatusBar }         from 'expo-status-bar';
+import { Ionicons }          from '@expo/vector-icons';
 
-import   React, { useState, useEffect, useCallback }                                    from 'react';
-import { Dimensions, Image, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as Progress                                                                    from 'react-native-progress';
+import   React, { useState, useEffect, useCallback }       from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import * as Progress                                       from 'react-native-progress';
+import Svg, { Circle, Line }                               from 'react-native-svg';
+import CameraRoll                                          from "@react-native-community/cameraroll";
 
-import * as tf                          from '@tensorflow/tfjs';
-import * as automl                      from '@tensorflow/tfjs-automl';
-import { decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
+import { PredictTree, LoadModelTree } from '../tree/prediction_tree.js';
+
+import    { hs } from '../styles/home_styles.js';
+import * as sc   from '../styles/style_constants.js';
 
 let camera: Camera; // camera ref to allow abort
 
-
-// CONVERTS BASE64 IMAGE TO TENSORS FOR PREDICTION =============================================================================
-function b64_to_tensor(base64) {
-  const imgBuffer = tf.util.encodeString(base64, 'base64').buffer; // get image buffer from base 64
-  const imgRaw = new Uint8Array(imgBuffer);                      // convert image buffer to array of ints
-  return decodeJpeg(imgRaw);                                   // convert array of ints to image tensors
-}
-
-// INSERTS A PREDICTION INTO A LIST OF PREDICTIONS SORTED BY DESCENDING PROBABILITY ============================================
-function insert_descending(sorted_results, prediction) {
-
-  if (prediction.label === 'renaissancish' || prediction.label === 'abstractish') {
-    return sorted_results;
-  }
-
-  var index = sorted_results.length;
-
-  for (var i=0; i < sorted_results.length; i++) {
-    if (prediction.prob > sorted_results[i].prob) {
-      index = i;
-      break;
-    }
-  }
-  sorted_results.splice(index, 0, prediction)
-  //console.log(sorted_results);
-  return sorted_results;
-}
-
-// GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" } ==================================================
-function get_movement_info(prediction) {
-  // SEARCH MOVEMENT MAP FOR INFO OF MOVEMENT ----------------------------------
-  const label = JSON.stringify(prediction.label);
-
-  for (var i = 0; i < global.movementMap.length; i++) {
-    if (global.movementMap[i].key === label.replace(/['"]+/g, '')) {
-      return { map:  global.movementMap[i],
-               prob: (parseFloat(prediction.prob)*100).toFixed(2)
-             }
-    }
-  }
-}
-
-// GETS LIST OF PREDICTIONS SORTED BY DESCENDING PROBABILITY ABOVE CERTAIN PROBABILITY =========================================
-function get_predictions_info(two, ren, abs, threshold) {
-
-  var sorted_results = [two[0]];
-
-  for (var i=1; i < two.length; i++) {
-    sorted_results = insert_descending(sorted_results, two[i]);
-  }
-  for (var i=0; i < ren.length; i++) {
-    sorted_results = insert_descending(sorted_results, ren[i]);
-  }
-  for (var i=0; i < abs.length; i++) {
-    sorted_results = insert_descending(sorted_results, abs[i]);
-  }
-
-  /*var threshold_index = sorted_results.length-1;
-  for (var i=0; i < sorted_results.length; i++) {
-    if (sorted_results[i].prob < threshold) {
-      threshold_index = i;
-      break;
-    }
-  }
-  sorted_results = sorted_results.slice(0, threshold_index);
-  */
-
-  var sorted_info = [];
-  for (var i=0; i < sorted_results.length; i++) {
-    sorted_info.splice(i, 0, get_movement_info(sorted_results[i]));
-  }
-
-  return sorted_info;
-}
-
-// RUN GIVEN TENSOR IMAGE THROUGH MODEL TREE ===================================================================================
-async function predict_tree(imgTensor) {
-
-  const threshold_FIN = 0.0; // probability with which movement must be predicted to display on page
-
-  const threshold_REN = 0.5; // probability with which "renaissancish" must be predicted to run renaissancish model
-  const threshold_ABS = 0.5; // probability with which "abstractish"   must be predicted to run abstractish model
-
-  var predictionREN = []; // list for storing renaissancish predictions
-  var predictionABS = []; // list for storing abstractish predictions
-
-  console.log("[+] Running Two Dimensional")
-  const predictionTWO = await global.twoDimensionalTF.classify(imgTensor); // run 2D model
-
-  if (predictionTWO[8].prob  > threshold_REN) { // renaissancish = 8
-    predictionREN = await global.renaissancishTF.classify(imgTensor);
-    console.log("[+] Running Renaissancish")
-  }
-  if (predictionTWO[13].prob > threshold_ABS) { // abstractish = 13
-    predictionABS = await global.abstractishTF.classify(imgTensor);
-    console.log("[+] Running Abstractish")
-  }
-
-  //global.predictions_info = get_predictions_info(predictionTWO, predictionREN, predictionABS, threshold_FIN);
-  return get_predictions_info(predictionTWO, predictionREN, predictionABS, threshold_FIN);
-}
-
-
 // ON STARTUP ==================================================================================================================
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
-//ImagePicker.requestMediaLibraryPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
+MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
-// ON SCREEN ===================================================================================================================
+// RENDER HOME SCREEN ==========================================================================================================
 function Home ({navigation})
 {
-  const [inProgress, setInProgress] = useState(false);
-  const [progress,   setProgress  ] = useState(0);
-  const [appIsReady, setAppIsReady] = useState(false);
+  const [isCameraScreen, setCameraScreen] = useState(true );
+  const [inProgress,     setInProgress  ] = useState(false);
+  const [appIsReady,     setAppIsReady  ] = useState(false);
+  const [photosTitle,    setPhotosTitle ] = useState("Albums");
 
-
-  // SELECT AN IMAGE, MAKE A PREDICTION, STORE AS GLOBAL VARIABLE ================================================================
-  async function selectPicAndPredictMovementAsync(nav)
-  {
+  // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ============================================================
+  async function select_pic_and_predict_async(nav) {
     // PICK AN IMAGE FROM GALLERY OR CAMERA ROLL AND ALLOW USER TO CROP -----------------------
     let photo = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -149,67 +51,75 @@ function Home ({navigation})
       );
 
       // CONVERT BASE^$ IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-      // await predict_tree(b64_to_tensor(base64));
-      const predictions = await predict_tree(b64_to_tensor(base64));
+      const predictions = await PredictTree(base64);
 
-      //nav.navigate('Predictions', {selected_image_uri: uri}); // navigate to Predictions page
       nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
 
       setInProgress(false); // reset inProgress hook to false
     }
   }
-  // SELECT IMAGE, MAKE A PREDICTION, STORE AS GLOBAL VARIABLE ===================================================================
-  async function takePicAndPredictMovementAsync(nav)
-  {
-    if (!camera) return // stop execution if camera is undefined/null
-    const photo = await camera.takePictureAsync(); // take picture using camera
-    setInProgress(true); // set inProgress hook to true for progress bar
 
-    // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
-    const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
-      photo.uri,
-      [{crop:   {originX:0, originY:0, width:photo.width, height:photo.width}},
-       {resize: {width:224}}],
-      {base64: true}
-    );
+  // SELECT IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ===============================================================
+  async function take_pic_and_predict_async(nav) {
+    if (camera) { // skip execution if camera is undefined/null
 
-    // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ------------------------------------
-    //await predict_tree(b64_to_tensor(base64));
-    const predictions = await predict_tree(b64_to_tensor(base64));
+      let photo = await camera.takePictureAsync(); // take picture using camera
+      setInProgress(true); // set inProgress hook to true for progress bar
 
-    //nav.navigate('Predictions', {selected_image_uri: uri}); // navigate to Predictions page
-    nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+      // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
+      const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
+        photo.uri,
+        [{crop:   {originX:30, originY:300, width:photo.width*0.9, height:photo.width*0.9}},
+         {resize: {width:224}}],
+        {base64: true}
+      );
 
-    setInProgress(false); // reset inProgress hook to false
+      // MAKE PREDICTION ------------------------------------------------------------------------
+      const predictions = await PredictTree(base64);
+
+      nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+
+      setInProgress(false); // reset inProgress hook to false
+    }
+    else {
+      console.log('CAMERA ACCESS NOT GRANTED?')
+    }
   }
 
-
-  // LOAD ML MODEL TREE DURING SPLASH SCREEN =====================================================================================
+  // LOAD ML MODEL TREE DURING SPLASH SCREEN ===================================================================================
   useEffect(() => {
     async function prepare() {
       try {
-        // Keep the splash screen visible while we fetch resources
-        await SplashScreen.preventAutoHideAsync();
+        await SplashScreen.preventAutoHideAsync();  // Keep the splash screen visible while we fetch resources
 
-        global.bg = require('../assets/backgrounds/bg3.png');
+        // LOAD FONTS ----------------------------------------------------------
+        await Font.loadAsync({
+          ArgentumSansLight: require('../assets/fonts/argentum-sans.light.ttf'),
+          ArgentumSansRegular: require('../assets/fonts/argentum-sans.regular.ttf'),
+        });
+        console.log("[+] Fonts loaded")
 
-        const tfReady = await tf.ready();
+        // LOAD MODEL TREE -----------------------------------------------------
+        await LoadModelTree();
 
-        const twoDimensionalModel   = await require("../assets/models/twodimensional/model.json");
-        const twoDimensionalWeights = await require("../assets/models/twodimensional/weights.bin");
-        const twoDimensionalTF = await tf.loadGraphModel(bundleResourceIO(twoDimensionalModel, twoDimensionalWeights));
-        global.twoDimensionalTF = new automl.ImageClassificationModel(twoDimensionalTF, global.twoDimensionalDict);
+        // LOAD ALBUM THUMBNAILS -----------------------------------------------
+        global.albums = await MediaLibrary.getAlbumsAsync();
+        console.log("[+] Albums list loaded");
 
-        const abstractishModel   = await require("../assets/models/abstractish/model.json");
-        const abstractishWeights = await require("../assets/models/abstractish/weights.bin");
-        const abstractishTF = await tf.loadGraphModel(bundleResourceIO(abstractishModel, abstractishWeights));
-        global.abstractishTF = new automl.ImageClassificationModel(abstractishTF, global.abstractishDict);
+        let recentAssets = await MediaLibrary.getAssetsAsync({first:28});
+        global.albumThumbnailURIs.push(recentAssets.assets[0].uri);
 
-        const renaissancishModel   = await require("../assets/models/renaissancish/model.json");
-        const renaissancishWeights = await require("../assets/models/renaissancish/weights.bin");
-        const renaissancishTF = await tf.loadGraphModel(bundleResourceIO(renaissancishModel, renaissancishWeights));
-        global.renaissancishTF = new automl.ImageClassificationModel(renaissancishTF, global.renaissancishDict);
+        for (let i=0; i < 28; i++) {
+          global.recentURIs.push(recentAssets.assets[i].uri);
+        }
 
+        for (let i=0; i < global.albums.length; i++) {
+          let albumAssets = await MediaLibrary.getAssetsAsync({album: global.albums[i].id});
+          global.albumThumbnailURIs.push(albumAssets.assets[0].uri);
+        }
+        console.log('[+] '+ global.albumThumbnailURIs.length.toString() + ' album thumbnails generated');
+
+        console.log("ALL ASSETS LOADED")
       } catch (e) {
         console.warn(e);
       } finally {
@@ -218,6 +128,7 @@ function Home ({navigation})
     }
 
     prepare();
+
   }, []);
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -228,167 +139,258 @@ function Home ({navigation})
     return null;
   }
 
+  // COMPONENT FOR RENDERING CAMERA TITLE BAR ==================================================================================
+  const CameraTitleBar = () => {
+    return (
+      <View style={hs.camera_title_bar}>
 
-  // RENDER THE VIEWS FOR THE HOME PAGE ========================================================================================
-  return (
-
-    <ImageBackground onLayout={onLayoutRootView} source={global.bg} style={{flex: 1, width:"100%", alignItems: 'center'}}>
-
-        <View height={25}/>
-
-        <View style={styles.photo_outline_outer}>
-            <Camera style={{flex: 1, width:"100%", alignItems: 'center', overflow:'hidden'}} ref={(r) => { camera = r }}>
-              <View style={styles.photo_outline}/>
-            </Camera>
+        <View style={{flex:1, alignItems:'center'}}>
+          <Ionicons name="ios-close" color={sc.white} style={hs.close_icon}/>
         </View>
 
-        <View height={25}/>
+        <View style={{flex:1}}>
+          <TouchableOpacity style={{alignItems:'center'}} onPress={ () => navigation.navigate('TreeInfo')}>
+            <Ionicons name="md-help-circle" style={hs.help_button}/>
+          </TouchableOpacity>
+        </View>
+
+        <StatusBar style="light" />
+      </View>
+    );
+  }
+
+  // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
+  const PictureFrameProgressBar = () => {
+    return (
+      <View style={hs.transparent_frame}>
+        <View style={hs.photo_outline}/>
 
         { inProgress ?
           (
-            <View style={{alignItems:'center', paddingTop: 40, justifyContent:'space-between'}}>
-              <Text style={{fontSize:24, color:'rgba(255,255,255,1)', fontFamily:'System'}}>
-                analyzing... beep boop
+            <View style={{alignItems:'center', paddingTop: 20, justifyContent:'space-between'}}>
+              <Text style={hs.progress_bar_text}>
+                analyzing...
               </Text>
               <Text/>
               <Progress.Bar
                 animationType={'timing'}
                 borderRadius={15}
                 borderWidth={5}
-                color={'rgba(255, 255, 255, 1)'}
+                color={sc.white}
                 height={10}
                 indeterminate={true}
-                width={image_side}
+                width={sc.card_width/2}
               />
             </View>
           ) : (null)
         }
+      </View>
+    );
+  }
 
-        <View style={styles.button_panel}>
-
-          <View style={{flex: 1, alignItems: 'center'}} >
-            <View style={styles.circlesContainer}>
-              <Image
-                source={require('../assets/buttons/icon_gallery.gif')}
-                style={{ top: 20, width: 70, height: 70 }}
-              />
-              <TouchableOpacity style={styles.nav_button}
-                onPress={ () => {selectPicAndPredictMovementAsync(navigation);}}
-              />
-            </View>
-          </View>
-
-          <View style={{flex: 1, alignItems: 'center'}} >
-            <View style={styles.circlesContainer}>
-              <View style={styles.take_pic_button_outer_ring} />
-              <TouchableOpacity style={styles.take_pic_button}
-                onPress={ () => {takePicAndPredictMovementAsync(navigation);}}
-              />
-            </View>
-          </View>
-
-          <View style={{flex: 1, alignItems: 'center'}} >
-            <View style={styles.circlesContainer}>
-              <Image
-                source={require('../assets/buttons/icon_info.png')}
-                style={{ top: 30, width: 55, height: 52 }}
-              />
-              <TouchableOpacity style={styles.nav_button}
-                onPress={ () => navigation.navigate('TreeInfo') }
-              />
-            </View>
-          </View>
+  // COMPONENT FOR TAKE PICTURE BUTTON =========================================================================================
+  const TakePictureButton = () => {
+    return (
+        <View style={hs.button_panel}>
+          <Svg>
+            <Circle
+              cx={sc.screen_width/2}
+              cy={sc.take_pic_button_diameter/2}
+              r={sc.take_pic_button_diameter/2}
+              fill={sc.white}
+            />
+            <Circle
+              cx={sc.screen_width/2}
+              cy={sc.take_pic_button_diameter/2}
+              r={sc.take_pic_button_diameter/2 - 4}
+              fill={sc.teal}
+            />
+            <Circle
+              cx={sc.screen_width/2}
+              cy={sc.take_pic_button_diameter/2}
+              r={sc.take_pic_button_diameter/2 - 8}
+              fill={sc.orange}
+            />
+            <Circle
+              cx={sc.screen_width/2}
+              cy={sc.take_pic_button_diameter/2}
+              r={sc.take_pic_button_diameter/2 - 10}
+              fill={sc.white}
+              onPress={() => take_pic_and_predict_async(navigation)}
+            />
+          </Svg>
         </View>
+    );
+  }
 
-      <StatusBar style="light" />
+  // COMPONENT FOR PHOTOS PAGE TITLE BAR =======================================================================================
+  const PhotosTitleBar = () => {
+    return (
 
-    </ImageBackground>
+        <View style={hs.photo_title_bar}>
+
+          <View style={{flex:1}}>
+            { photosTitle === "Albums" ? (
+              <Ionicons name="ios-close" color={sc.teal} style={hs.close_icon}/>
+            ) : (
+              <TouchableOpacity style={{alignItems:'center'}} onPress={() => setPhotosTitle("Albums")}>
+                <Ionicons name="ios-arrow-back" style={hs.back_icon}/>
+              </TouchableOpacity>
+            )
+            }
+          </View>
+
+          <View style={{flex:3, alignItems:'center'}}>
+            <Text numberOfLines={1} style={hs.photo_title_bar_text}>{photosTitle}</Text>
+          </View>
+
+          <View style={{flex:1, alignItems:'center'}}/>
+        </View>
+    );
+  }
+
+  // COMPONENT FOR NAVIGATION BAR ==============================================================================================
+  const NavigationPanel = () => {
+    return (
+      <View style={hs.nav_panel_outer}>
+
+        { isCameraScreen ? ( <View style={hs.nav_selection_camera}/> )
+                         : ( <View style={hs.nav_selection_photos}/> )
+        }
+
+        <View style={hs.nav_panel_inner}>
+
+          <TouchableOpacity onPress={() => setCameraScreen(true)}>
+            <View style={hs.nav_button}>
+              <Text style={hs.nav_button_text}>Camera</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setCameraScreen(false)}>
+            <View style={hs.nav_button}>
+              <Text style={hs.nav_button_text}>Photos</Text>
+            </View>
+          </TouchableOpacity>
+
+        </View>
+      </View>
+    );
+  }
+
+  // COMPONENT FOR OVERLAYING PHOTOS PAGE ======================================================================================
+  const PhotosPageOverlay = () => {
+    return (
+      <View style={hs.photo_selection_page}>
+
+        <PhotosTitleBar/>
+
+        <ScrollView style={{paddingTop:20}}>
+          { photosTitle === "Albums" ? ( <ShowAlbums/> )
+                                     : ( <ShowPhotos/> )
+          }
+        </ScrollView>
+
+        <StatusBar style="dark" />
+      </View>
+    );
+  }
+
+  // COMPONENT FOR SHOWING LIST OF ALBUMS IN PHOTOS PAGE =======================================================================
+  const ShowAlbums = () => {
+
+    let albumViews = [
+      <TouchableOpacity key="Recents" onPress={() => setPhotosTitle("Recents")}>
+        <View style={hs.album_card}>
+          <Image source={{uri: global.albumThumbnailURIs[0]}} style={hs.image}/>
+          <Text style={hs.album_name_text}>Recents</Text>
+          <Text style={hs.album_image_count_text}>{123456} images</Text>
+        </View>
+        <View height={sc.margin_width}/>
+      </TouchableOpacity>
+    ];
+    for (let i=0; i < global.albums.length; i++) {
+      albumViews.push(
+        <TouchableOpacity key={global.albums[i].id} onPress={() => setPhotosTitle(global.albums[i].title)}>
+          <View style={hs.album_card}>
+            <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={hs.image}/>
+            <Text style={hs.album_name_text}>{ global.albums[i].title }</Text>
+            <Text style={hs.album_image_count_text}>{ global.albums[i].assetCount } images</Text>
+          </View>
+          <View height={sc.margin_width}/>
+        </TouchableOpacity>
+      );
+    }
+    return albumViews;
+  }
+
+  // COMPONENT FOR SHOWING PHOTOS IN ALBUM IN PHOTOS PAGE ======================================================================
+  const ShowPhotos = () => {
+    return (
+      <View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[0]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[1]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[2]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[3]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[4]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[5]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[6]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[7]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[8]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[9]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[10]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[11]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[12]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[13]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[14]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[15]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[16]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[17]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[18]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[19]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[20]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[21]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[22]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[23]}} style={hs.image}/>
+        </View>
+        <View style={hs.image_row}>
+          <Image source={{uri: global.recentURIs[24]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[25]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[26]}} style={hs.image}/>
+          <Image source={{uri: global.recentURIs[27]}} style={hs.image}/>
+        </View>
+      </View>
+    );
+  }
+
+  // WHERE THE MAGIC HAPPENS ===================================================================================================
+  return (
+    <View onLayout={onLayoutRootView} style={{flex: 1}}>
+
+      <Camera style={hs.camera_view} ref={(r) => { camera = r }}>
+        <PictureFrameProgressBar/>
+        <TakePictureButton/>
+      </Camera>
+
+      { isCameraScreen ? ( <CameraTitleBar/>    )
+                       : ( <PhotosPageOverlay/> )
+      }
+
+      <NavigationPanel/>
+    </View>
   );
 }
 
-Home.navigationOptions = navigation => ({
-  title: "Art Movement Image Classifer",
-  headerStyle: {
-    backgroundColor: '#333333',
-  },
-  headerTintColor: '#fff',
-});
-
-
-// STYLES FOR VARIOUS ELEMENTS =================================================================================================
-const BASE_SIZE=110
-const win = Dimensions.get('window');
-const image_side = win.width*0.9;
-
-const styles = StyleSheet.create({
-  image: {
-      alignSelf: 'center',
-      width: image_side,
-      height: image_side,
-      borderColor: 'rgba(255, 255, 255, 1)',
-      borderWidth: 5,
-      borderRadius: 15,
-  },
-  photo_outline_outer: {
-    width: image_side,
-    height: image_side,
-    borderColor: 'rgba(255, 255, 255, 1)',
-    borderWidth: 5,
-    borderRadius: 15,
-  },
-  photo_outline: {
-    width: image_side,
-    height: image_side,
-    borderColor: 'rgba(255, 255, 255, 1)',
-    borderWidth: 5,
-    borderRadius: 15,
-    position: 'absolute',
-    top: -5,
-  },
-  button_panel: {
-    position: 'absolute',
-    bottom: 0,
-    flexDirection: 'row',
-    flex: 1,
-    width: '100%',
-    padding: 20,
-    justifyContent: 'space-between',
-    backgroundColor: 'rgba(0, 0, 0, 0.0)'
-  },
-  circlesContainer:{
-        width: BASE_SIZE,
-        height: BASE_SIZE,
-        alignItems: 'center',
-  },
-  take_pic_button_outer_ring:{
-      top:BASE_SIZE*0.14, // The amount remaining
-      left:BASE_SIZE*0.14,
-      position: 'absolute',
-      width:BASE_SIZE*0.72,
-      height:BASE_SIZE*0.72,
-      borderWidth:4,
-      borderColor: '#FFFFFF',
-      borderRadius: BASE_SIZE/2,
-      backgroundColor: 'rgba(0, 0, 0, 0)'
-  },
-  take_pic_button:{
-      top:BASE_SIZE*0.2,
-      left:BASE_SIZE*0.2,
-      position: 'absolute',
-      width:BASE_SIZE*0.6,
-      height:BASE_SIZE*0.6, // 60% of the base size
-      borderRadius: BASE_SIZE*0.6/2,
-      backgroundColor: '#FFFFFF'
-  },
-  nav_button: {
-      top:BASE_SIZE*0.2,
-      left:BASE_SIZE*0.2,
-      position: 'absolute',
-      width:BASE_SIZE*0.6,
-      height:BASE_SIZE*0.6, // 60% of the base size
-      borderRadius: BASE_SIZE*0.6/2,
-      backgroundColor: 'rgba(0, 0, 0, 0)'
-  }
-})
+Home.navigationOptions = navigation => ({ headerShown: false });
 
 export default Home;
