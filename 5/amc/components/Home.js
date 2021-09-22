@@ -32,23 +32,38 @@ function Home ({navigation})
   const [isCameraScreen, setCameraScreen] = useState(true );
   const [inProgress,     setInProgress  ] = useState(false);
   const [appIsReady,     setAppIsReady  ] = useState(false);
+
   const [photosTitle,    setPhotosTitle ] = useState("Albums");
+  const [albumID,        setAlbumID     ] = useState();
 
-  const [displayImages, setDisplayImages] = useState();
-  const [lastAsset, setLastAsset] = useState();
-  const [refreshing, setRefreshing] = useState(false);
-  const [showRefreshingIndicator, setShowRefreshingIndicator] = useState(false);
+  const [displayImages,  setDisplayImages ] = useState();
+  const [lastAsset,      setLastAsset     ] = useState();
+  const [refreshing,     setRefreshing    ] = useState(false);
+  const [showRefreshing, setShowRefreshing] = useState(false);
 
-  const total_images_loaded = useRef(0);
+  const total_images_loaded   = useRef(0);
   const total_images_in_album = useRef(0);
+  const recents_image_count   = useRef(0);
 
 
-  const getInitialData = async () => {
 
-    const recentAssets = await MediaLibrary.getAssetsAsync({first:193});
+  const fetch_initial_images = async (album_id) => {
+
+    var recentAssets = null;
+
+    if (album_id === null) {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:albumID});
+    }
+    else if (album_id === "recents") {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36});
+    }
+    else {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album_id});
+    }
+
     if (!recentAssets) return;
     var recentURIs = [];
-    for (let i=0; i < 193; i++) {
+    for (let i=0; i < 36; i++) {
       if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
         recentURIs.push({
           id: total_images_loaded.current,
@@ -62,21 +77,31 @@ function Home ({navigation})
     setLastAsset(recentAssets.endCursor);
   }
 
-  const fetch_images = async (reset: boolean) => {
+  const refresh_fetch_images = async () => {
+    total_images_loaded.current = 0;
+    fetch_initial_images(null);
+    return;
+  }
 
-    if (reset === true) {
-      total_images_loaded.current = 0;
-      getInitialData();
-      return;
-    }
+  const fetch_more_images = async () => {
+
+    console.log("fetch_more_images")
 
     // Make sure to return if no more data from API
     if (total_images_loaded.current !== 0 && total_images_loaded.current >= total_images_in_album.current) return null;
-    const recentAssets = await MediaLibrary.getAssetsAsync({ first:193, after:lastAsset});
+
+    var recentAssets = null;
+    if (albumID === "recents") {
+      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset});
+    }
+    else {
+      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset, album:albumID});
+    }
+
     if (!recentAssets) return;
     var recentURIs = displayImages;
     recentURIs.pop(); // remove "undefined" that shows up at the end of data[]
-    for (let i=0; i < 193; i++) {
+    for (let i=0; i < 36; i++) {
       if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
         recentURIs.push({
           id: total_images_loaded.current,
@@ -91,19 +116,25 @@ function Home ({navigation})
   }
 
   const onEndReached = async () => {
-    //console.log("END REACHED!", displayImages.length, " images loaded")
-    const newDisplayImages = await fetch_images(false);
+
+    const newDisplayImages = await fetch_more_images();
     if(newDisplayImages === null) return
     setDisplayImages(displayImages.concat(newDisplayImages.data))
   }
 
   const onRefresh = useCallback(async () => {
 
-    setShowRefreshingIndicator(true);
-    fetch_images(true);
-    setShowRefreshingIndicator(false);
+    setShowRefreshing(true);
+    refresh_fetch_images();
+    setShowRefreshing(false);
   }, [refreshing]);
 
+  const openAlbum = async (album) => {
+
+    await fetch_initial_images(album.id);
+    setPhotosTitle(album.title);
+    setAlbumID(album.id);
+  };
 
 
   // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ============================================================
@@ -175,18 +206,15 @@ function Home ({navigation})
         // LOAD ALBUM THUMBNAILS -----------------------------------------------
         global.albums = await MediaLibrary.getAlbumsAsync();
 
-        let recentAssets = await MediaLibrary.getAssetsAsync({first:193});
-        global.albumThumbnailURIs.push(recentAssets.assets[0].uri);
+        let recentAssets = await MediaLibrary.getAssetsAsync({first:36});
+        recents_image_count.current = recentAssets.totalCount;
 
+        global.albumThumbnailURIs.push(recentAssets.assets[0].uri);
         for (let i=0; i < global.albums.length; i++) {
           let albumAssets = await MediaLibrary.getAssetsAsync({album: global.albums[i].id});
           global.albumThumbnailURIs.push(albumAssets.assets[0].uri);
         }
         console.log('[+] Loaded '+ global.albumThumbnailURIs.length.toString() + ' album thumbnails');
-
-        // LOAD FIRST PAGE OF IMAGES -------------------------------------------
-        getInitialData()
-        console.log('[+] Loaded first page of recent images')
 
         // LOAD MODEL TREE -----------------------------------------------------
         await LoadModelTree();
@@ -374,18 +402,18 @@ function Home ({navigation})
   const ShowAlbums = () => {
 
     let albumViews = [
-      <TouchableOpacity key="Recents" onPress={() => setPhotosTitle("Recents")}>
+      <TouchableOpacity key="Recents" onPress={() => openAlbum({id:"recents", title:"Recents"})}>
         <View style={hs.album_card}>
           <Image source={{uri: global.albumThumbnailURIs[0]}} style={hs.album_image}/>
           <Text style={hs.album_name_text}>Recents</Text>
-          <Text style={hs.album_image_count_text}>{123456} images</Text>
+          <Text style={hs.album_image_count_text}>{recents_image_count.current} images</Text>
         </View>
         <View height={sc.margin_width}/>
       </TouchableOpacity>
     ];
     for (let i=0; i < global.albums.length; i++) {
       albumViews.push(
-        <TouchableOpacity key={global.albums[i].id} onPress={() => setPhotosTitle(global.albums[i].title)}>
+        <TouchableOpacity key={global.albums[i].id} onPress={() => openAlbum(global.albums[i])}>
           <View style={hs.album_card}>
             <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={hs.album_image}/>
             <Text style={hs.album_name_text}>{ global.albums[i].title }</Text>
@@ -398,14 +426,11 @@ function Home ({navigation})
     return albumViews;
   }
 
-
-
-
-
-  function Item(item) {
+  // COMPONENT FOR SHOWING SINGLE PHOTO PHOTOS PAGE ============================================================================
+  const ImgButton = (props) => {
   	return (
   		<TouchableOpacity>
-  			<Image source={{uri:item.title.uri}} style={hs.photo_button}/>
+  			<Image source={{uri:props.img.uri}} style={hs.photo_button}/>
   		</TouchableOpacity>
   	);
   }
@@ -414,30 +439,31 @@ function Home ({navigation})
   const ShowPhotos = () => {
 
     return (
-      <SafeAreaView>
-        <FlatList
-          data={displayImages}
-          refreshing={refreshing}
-          refreshControl={
-            <RefreshControl refreshing={showRefreshingIndicator} onRefresh={onRefresh} />
-          }
-          onEndReached={() => {
-            if(refreshing) return;
-            setRefreshing(true)
-            onEndReached().then(() => {
-              setRefreshing(false)
-            })
-          }}
-          onEndReachedThreshold={1}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <Item title={item} />}
-          numColumns={sc.images_per_row}
-          ListFooterComponent={<ActivityIndicator size={"large"} />}
-        />
-      </SafeAreaView>
+      <FlatList
+        data={displayImages}
+        refreshing={refreshing}
+        refreshControl={
+          <RefreshControl
+            refreshing={showRefreshing}
+            onRefresh={onRefresh}
+          />
+        }
+        onEndReached={() => {
+          if(refreshing || total_images_in_album.current < 36) return;
+          setRefreshing(true)
+          onEndReached().then(() => {
+            setRefreshing(false)
+          })
+        }}
+        onEndReachedThreshold={0}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({ item }) => <ImgButton img={item} />}
+        numColumns={sc.images_per_row}
+
+      />
     );
   }
-
+  // ListFooterComponent={<ActivityIndicator size={"large"} />}
 
 
 
