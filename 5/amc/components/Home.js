@@ -8,8 +8,8 @@ import * as SplashScreen     from 'expo-splash-screen';
 import { StatusBar }         from 'expo-status-bar';
 import { Ionicons }          from '@expo/vector-icons';
 
-import   React, { useState, useEffect, useCallback }                 from 'react';
-import { Image, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import   React, { useState, useEffect, useCallback, useRef }                 from 'react';
+import { ActivityIndicator, Image, FlatList, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as Progress                                                 from 'react-native-progress';
 import Svg, { Circle, Line }                                         from 'react-native-svg';
 import CameraRoll                                                    from "@react-native-community/cameraroll";
@@ -34,7 +34,77 @@ function Home ({navigation})
   const [appIsReady,     setAppIsReady  ] = useState(false);
   const [photosTitle,    setPhotosTitle ] = useState("Albums");
 
-  const [displayImages, setDisplayImages] = useState([]);
+  const [displayImages, setDisplayImages] = useState();
+  const [lastAsset, setLastAsset] = useState();
+  const [refreshing, setRefreshing] = useState(false);
+  const [showRefreshingIndicator, setShowRefreshingIndicator] = useState(false);
+
+  const total_images_loaded = useRef(0);
+  const total_images_in_album = useRef(0);
+
+
+  const getInitialData = async () => {
+
+    const recentAssets = await MediaLibrary.getAssetsAsync({first:193});
+    if (!recentAssets) return;
+    var recentURIs = [];
+    for (let i=0; i < 193; i++) {
+      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
+        recentURIs.push({
+          id: total_images_loaded.current,
+          uri: recentAssets.assets[i].uri,
+        });
+        total_images_loaded.current++;
+      }
+    }
+    total_images_in_album.current = recentAssets.totalCount;
+    setDisplayImages(recentURIs);
+    setLastAsset(recentAssets.endCursor);
+  }
+
+  const fetch_images = async (reset: boolean) => {
+
+    if (reset === true) {
+      total_images_loaded.current = 0;
+      getInitialData();
+      return;
+    }
+
+    // Make sure to return if no more data from API
+    if (total_images_loaded.current !== 0 && total_images_loaded.current >= total_images_in_album.current) return null;
+    const recentAssets = await MediaLibrary.getAssetsAsync({ first:193, after:lastAsset});
+    if (!recentAssets) return;
+    var recentURIs = displayImages;
+    recentURIs.pop(); // remove "undefined" that shows up at the end of data[]
+    for (let i=0; i < 193; i++) {
+      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
+        recentURIs.push({
+          id: total_images_loaded.current,
+          uri: recentAssets.assets[i].uri,
+        });
+        total_images_loaded.current++;
+      }
+    }
+    setDisplayImages(recentURIs);
+    setLastAsset(recentAssets.endCursor);
+    return displayImages
+  }
+
+  const onEndReached = async () => {
+    //console.log("END REACHED!", displayImages.length, " images loaded")
+    const newDisplayImages = await fetch_images(false);
+    if(newDisplayImages === null) return
+    setDisplayImages(displayImages.concat(newDisplayImages.data))
+  }
+
+  const onRefresh = useCallback(async () => {
+
+    setShowRefreshingIndicator(true);
+    fetch_images(true);
+    setShowRefreshingIndicator(false);
+  }, [refreshing]);
+
+
 
   // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ============================================================
   async function select_pic_and_predict_async(nav) {
@@ -89,7 +159,7 @@ function Home ({navigation})
     }
   }
 
-  // LOAD ML MODEL TREE DURING SPLASH SCREEN ===================================================================================
+  // LOAD ASSETS DURING SPLASH SCREEN ==========================================================================================
   useEffect(() => {
     async function prepare() {
       try {
@@ -102,42 +172,35 @@ function Home ({navigation})
         });
         console.log("[+] Fonts loaded")
 
-        // LOAD MODEL TREE -----------------------------------------------------
-        await LoadModelTree();
-
         // LOAD ALBUM THUMBNAILS -----------------------------------------------
         global.albums = await MediaLibrary.getAlbumsAsync();
-        console.log("[+] Albums list loaded");
 
-        let recentAssets = await MediaLibrary.getAssetsAsync({first:28});
+        let recentAssets = await MediaLibrary.getAssetsAsync({first:193});
         global.albumThumbnailURIs.push(recentAssets.assets[0].uri);
-
-        var recentURIs = [];
-
-        for (let i=0; i < 28; i++) {
-          recentURIs.push({
-            id: i,
-            uri: recentAssets.assets[i].uri
-          });
-        }
-
-        setDisplayImages(recentURIs);
-
-        console.log(displayImages);
 
         for (let i=0; i < global.albums.length; i++) {
           let albumAssets = await MediaLibrary.getAssetsAsync({album: global.albums[i].id});
           global.albumThumbnailURIs.push(albumAssets.assets[0].uri);
         }
-        console.log('[+] '+ global.albumThumbnailURIs.length.toString() + ' album thumbnails generated');
+        console.log('[+] Loaded '+ global.albumThumbnailURIs.length.toString() + ' album thumbnails');
 
-        console.log("ALL ASSETS LOADED")
+        // LOAD FIRST PAGE OF IMAGES -------------------------------------------
+        getInitialData()
+        console.log('[+] Loaded first page of recent images')
+
+        // LOAD MODEL TREE -----------------------------------------------------
+        await LoadModelTree();
+
+        console.log("ALL ASSETS LOADED ==========================")
+        console.log("============================================")
+
       } catch (e) {
         console.warn(e);
       } finally {
         setAppIsReady(true);
       }
     }
+
 
     prepare();
 
@@ -339,221 +402,39 @@ function Home ({navigation})
 
 
 
-
-
-
-
-
-  const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: '1 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: '2 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: '3 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abwefwefb28ba',
-      title: '4 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd9wtrhwrthaa97f63',
-      title: '5 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96uiuyjy-145571e29d72',
-      title: '6 Item',
-    },
-    {
-      id: 'rgb-c1b1-46c2-aed5-3ad53abb28ba',
-      title: '7 Item',
-    },
-    {
-      id: '3ac68afc-eregr-48d3-a4f8-fbd91aa97f63',
-      title: '8 Item',
-    },
-    {
-      id: '58694a0f-3da1-4ergrer71f-bd96-145571e29d72',
-      title: '9 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-e54b6yb-3ad53abwefwefb28ba',
-      title: '10 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd9wtrhwrthaa97f63',
-      title: '11 Item',
-    },
-    {
-      id: '586944a0f-3da1-471f-65n7-145571e29d72',
-      title: '12 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-4645b6hc2-aed5-3ad53abb28ba',
-      title: '1 Item',
-    },
-    {
-      id: '3ac68afc-c605-48dh53-a4f8-fbd91aa97f63',
-      title: '2 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd9d6-145571e29d72',
-      title: '3 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad5sg3abwefwefb28ba',
-      title: '4 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd9wherhtrhwrthaa97f63',
-      title: '5 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96uerhiuyjy-145571e29d72',
-      title: '6 Item',
-    },
-    {
-      id: 'rgb-c1b1-46c2-aed5-3ad53v3abb28ba',
-      title: '7 Item',
-    },
-    {
-      id: '3ac68afc-eregr-48d3-a4f8-f34tvbd91aa97f63',
-      title: '8 Item',
-    },
-    {
-      id: '58694a0f-3da1-4ergrer71f-bd96-3v145571e29d72',
-      title: '9 Item',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-e54b6yb-3a3v4t53abwefwefb28ba',
-      title: '10 Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd9wt3rhwrthaa97f63',
-      title: '11 Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-65n7-1455734t1e29d72',
-      title: '12 Item',
-    },
-      {
-        id: 'bd7acbea-c1b1234-46c2-aed5-3ad53abb28ba',
-        title: '1 Item',
-      },
-      {
-        id: '3ac68afc-c605-48879d3-a4f8-fbd91aa97f63',
-        title: '2 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-14559571e29d72',
-        title: '3 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-421346c2-aed5-3ad53abwefwefb28ba',
-        title: '4 Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd9wtr576hwrthaa97f63',
-        title: '5 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96uiuyjy-1486975571e29d72',
-        title: '6 Item',
-      },
-      {
-        id: 'rgb-c1b1-46c2-aed5-3ad879853abb28ba',
-        title: '7 Item',
-      },
-      {
-        id: '3ac68afc-eregr-48d3-a4f8-fbd91a34ga97f63',
-        title: '8 Item',
-      },
-      {
-        id: '58694a0f-3da1-4ergrer71f-bd96-145234v571e29d72',
-        title: '9 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-e54b6yb-3ad53a23v45bwefwefb28ba',
-        title: '10 Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd9w234v5trhwrthaa97f63',
-        title: '11 Item',
-      },
-      {
-        id: '586944a0f-3da1-471f-65n7-1455712v34e29d72',
-        title: '12 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-4645b6hc2-aed5-3ad53a234fbb28ba',
-        title: '1 Item',
-      },
-      {
-        id: '3ac68afc-c605-48dh53-a4f8-fbd3f491aa97f63',
-        title: '2 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd9d63f4-145571e29d72',
-        title: '3 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad34f5sg3abwefwefb28ba',
-        title: '4 Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd9w3345fherhtrhwrthaa97f63',
-        title: '5 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96uerh34f5iuyjy-145571e29d72',
-        title: '6 Item',
-      },
-      {
-        id: 'rgb-c1b1-46c2-aed5-3ad53vjytdt73abb28ba',
-        title: '7 Item',
-      },
-      {
-        id: '3ac68afc-eregr-48d3-a4f8-f37nti4tvbd91aa97f63',
-        title: '8 Item',
-      },
-      {
-        id: '58694a0f-3da1-4ergrer71ni7f-bd96-3v145571e29d72',
-        title: '9 Item',
-      },
-      {
-        id: 'bd7acbea-c1b1-46c2-e54b66rnyb-3a3v4t53abwefwefb28ba',
-        title: '10 Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-frn6bd9wt3rhwrthaa97f63',
-        title: '11 Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-65n7-1rnh455734t1e29d72',
-        title: '12 Item',
-      },
-  ];
-
-  const ImgButton = ({ id }) => (
-    <TouchableOpacity>
-      <Image source={{uri: displayImages[id].uri}} style={hs.photo_button}>
-      </Image>
-    </TouchableOpacity>
-  );
+  function Item(item) {
+  	return (
+  		<TouchableOpacity>
+  			<Image source={{uri:item.title.uri}} style={hs.photo_button}/>
+  		</TouchableOpacity>
+  	);
+  }
 
   // COMPONENT FOR SHOWING PHOTOS IN ALBUM IN PHOTOS PAGE ======================================================================
   const ShowPhotos = () => {
-    let photoViews = [];
-
-    const renderImage = ({ item }) => <ImgButton id={item.id} />;
 
     return (
-      <FlatList data={displayImages} renderItem={renderImage} keyExtractor={item => item.id} numColumns={4} extraData={displayImages}/>
+      <SafeAreaView>
+        <FlatList
+          data={displayImages}
+          refreshing={refreshing}
+          refreshControl={
+            <RefreshControl refreshing={showRefreshingIndicator} onRefresh={onRefresh} />
+          }
+          onEndReached={() => {
+            if(refreshing) return;
+            setRefreshing(true)
+            onEndReached().then(() => {
+              setRefreshing(false)
+            })
+          }}
+          onEndReachedThreshold={1}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => <Item title={item} />}
+          numColumns={sc.images_per_row}
+          ListFooterComponent={<ActivityIndicator size={"large"} />}
+        />
+      </SafeAreaView>
     );
   }
 

@@ -135,7 +135,7 @@ export const hs = StyleSheet.create({
   photo_button: {
     width:  sc.photos_image_size,
     height: sc.photos_image_size,
-    backgroundColor: '#446688',
+    backgroundColor: sc.white,
     marginLeft: sc.margin_width,
     marginTop: sc.margin_width,
   },

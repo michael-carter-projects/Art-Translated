@@ -21,7 +21,7 @@ export const take_pic_button_diameter = screen_height*0.12;
 
 export const navigation_bar_height = screen_height*0.1;
 
-const images_per_row = 4;
+export const images_per_row = 4;
 const total_margin = (images_per_row+1)*margin_width;
 export const photos_image_size = (screen_width - total_margin) / images_per_row;
 
