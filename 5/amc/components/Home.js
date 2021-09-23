@@ -34,7 +34,7 @@ function Home ({navigation})
   const [appIsReady,     setAppIsReady  ] = useState(false);
 
   const [photosTitle,    setPhotosTitle ] = useState("Albums");
-  const [albumID,        setAlbumID     ] = useState();
+  const [album,          setAlbum       ] = useState();
 
   const [displayImages,  setDisplayImages ] = useState();
   const [lastAsset,      setLastAsset     ] = useState();
@@ -44,151 +44,6 @@ function Home ({navigation})
   const total_images_loaded   = useRef(0);
   const total_images_in_album = useRef(0);
   const recents_image_count   = useRef(0);
-
-
-
-  const fetch_initial_images = async (album_id) => {
-
-    var recentAssets = null;
-
-    if (album_id === null) {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:albumID});
-    }
-    else if (album_id === "recents") {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36});
-    }
-    else {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album_id});
-    }
-
-    if (!recentAssets) return;
-    var recentURIs = [];
-    for (let i=0; i < 36; i++) {
-      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
-        recentURIs.push({
-          id: total_images_loaded.current,
-          uri: recentAssets.assets[i].uri,
-        });
-        total_images_loaded.current++;
-      }
-    }
-    total_images_in_album.current = recentAssets.totalCount;
-    setDisplayImages(recentURIs);
-    setLastAsset(recentAssets.endCursor);
-  }
-
-  const refresh_fetch_images = async () => {
-    total_images_loaded.current = 0;
-    fetch_initial_images(null);
-    return;
-  }
-
-  const fetch_more_images = async () => {
-
-    console.log("fetch_more_images")
-
-    // Make sure to return if no more data from API
-    if (total_images_loaded.current !== 0 && total_images_loaded.current >= total_images_in_album.current) return null;
-
-    var recentAssets = null;
-    if (albumID === "recents") {
-      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset});
-    }
-    else {
-      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset, album:albumID});
-    }
-
-    if (!recentAssets) return;
-    var recentURIs = displayImages;
-    recentURIs.pop(); // remove "undefined" that shows up at the end of data[]
-    for (let i=0; i < 36; i++) {
-      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
-        recentURIs.push({
-          id: total_images_loaded.current,
-          uri: recentAssets.assets[i].uri,
-        });
-        total_images_loaded.current++;
-      }
-    }
-    setDisplayImages(recentURIs);
-    setLastAsset(recentAssets.endCursor);
-    return displayImages
-  }
-
-  const onEndReached = async () => {
-
-    const newDisplayImages = await fetch_more_images();
-    if(newDisplayImages === null) return
-    setDisplayImages(displayImages.concat(newDisplayImages.data))
-  }
-
-  const onRefresh = useCallback(async () => {
-
-    setShowRefreshing(true);
-    refresh_fetch_images();
-    setShowRefreshing(false);
-  }, [refreshing]);
-
-  const openAlbum = async (album) => {
-
-    await fetch_initial_images(album.id);
-    setPhotosTitle(album.title);
-    setAlbumID(album.id);
-  };
-
-
-  // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ============================================================
-  async function select_pic_and_predict_async(nav) {
-    // PICK AN IMAGE FROM GALLERY OR CAMERA ROLL AND ALLOW USER TO CROP -----------------------
-    let photo = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true, quality:1 });
-
-    // IF THE USER DID NOT CANCEL IMAGE SELECTION, MAKE PREDICTION ----------------------------
-    if (!photo.cancelled)
-    {
-      setInProgress(true); // set inProgress hook to true for progress bar
-
-      // RESIZE IMAGE and CONVERT TO BASE 64 --------------------------------------------------
-      const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
-        photo.uri, [{resize: {width:224}}], {base64: true}
-      );
-
-      // CONVERT BASE^$ IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-      const predictions = await PredictTree(base64);
-
-      nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
-
-      setInProgress(false); // reset inProgress hook to false
-    }
-  }
-
-  // SELECT IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ===============================================================
-  async function take_pic_and_predict_async(nav) {
-    if (camera) { // skip execution if camera is undefined/null
-
-      let photo = await camera.takePictureAsync(); // take picture using camera
-      setInProgress(true); // set inProgress hook to true for progress bar
-
-      // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
-      const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
-        photo.uri,
-        [{crop:   {originX:30, originY:300, width:photo.width*0.9, height:photo.width*0.9}},
-         {resize: {width:224}}],
-        {base64: true}
-      );
-
-      // MAKE PREDICTION ------------------------------------------------------------------------
-      const predictions = await PredictTree(base64);
-
-      nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
-
-      setInProgress(false); // reset inProgress hook to false
-    }
-    else {
-      console.log('CAMERA ACCESS NOT GRANTED?')
-    }
-  }
 
   // LOAD ASSETS DURING SPLASH SCREEN ==========================================================================================
   useEffect(() => {
@@ -242,6 +97,151 @@ function Home ({navigation})
     return null;
   }
 
+
+
+  // FETCH THE FIRST 36 IMAGES IN AN ALBUM =====================================================================================
+  const fetch_initial_images = async (album_id) => {
+
+    var recentAssets = null;
+
+    if (album_id === null) {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album.id});
+    }
+    else if (album_id === "recents") {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36});
+    }
+    else {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album_id});
+    }
+
+    if (!recentAssets) return;
+    var recentURIs = [];
+    for (let i=0; i < 36; i++) {
+      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
+        recentURIs.push({
+          id: total_images_loaded.current,
+          uri: recentAssets.assets[i].uri,
+        });
+        total_images_loaded.current++;
+      }
+    }
+    total_images_in_album.current = recentAssets.totalCount;
+    setDisplayImages(recentURIs);
+    setLastAsset(recentAssets.endCursor);
+  }
+  // FETCH THE "NEXT" 36 IMAGES IN THE CURRENT ALBUM ===========================================================================
+  const fetch_more_images = async () => {
+
+    console.log("fetch_more_images")
+
+    // Make sure to return if no more data from API
+    if (total_images_loaded.current !== 0 && total_images_loaded.current >= total_images_in_album.current) return null;
+
+    var recentAssets = null;
+    if (album.id === "recents") {
+      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset});
+    }
+    else {
+      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset, album:album.id});
+    }
+
+    if (!recentAssets) return;
+    var recentURIs = displayImages;
+    recentURIs.pop(); // remove "undefined" that shows up at the end of data[]
+    for (let i=0; i < 36; i++) {
+      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
+        recentURIs.push({
+          id: total_images_loaded.current,
+          uri: recentAssets.assets[i].uri,
+        });
+        total_images_loaded.current++;
+      }
+    }
+    setDisplayImages(recentURIs);
+    setLastAsset(recentAssets.endCursor);
+    return displayImages;
+  }
+  // HANDLES WHETHER OR NOT TO GET MORE IMAGES AND UPDATES DISPLAYIMAGES HOOK ==================================================
+  const get_next_images = async () => {
+
+    const newDisplayImages = await fetch_more_images();
+    if(newDisplayImages === null) return
+    setDisplayImages(displayImages.concat(newDisplayImages.data))
+  }
+  // RUN WHEN END OF IMAGE SCROLL IS REACHED ===================================================================================
+  const on_end_reached = async () => {
+
+    if (refreshing || total_images_in_album.current < 36) return;
+    setRefreshing(true)
+    get_next_images().then(() => {
+      setRefreshing(false)
+    })
+  }
+  // RUN WHEN USER CLICKS ON AN ALBUM ==========================================================================================
+  const open_album = async (album) => {
+
+    await fetch_initial_images(album.id);
+    setPhotosTitle(album.title);
+    setAlbum(album);
+  };
+  // RUN WHEN USE "REFRESHES" THE PHOTOS PAGE ==================================================================================
+  /*const on_refresh = useCallback(async () => {
+
+    setShowRefreshing(true);
+    total_images_loaded.current = 0;
+    console.log(album);
+
+    await fetch_initial_images(album.id);
+    setShowRefreshing(false);
+  }, [refreshing]);*/
+
+
+
+  // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ============================================================
+  async function select_pic_and_predict_async(nav, uri) {
+
+    //setInProgress(true); // set inProgress hook to true for progress bar
+
+    // RESIZE IMAGE and CONVERT TO BASE 64 --------------------------------------------------
+    const { newUri, width, height, base64 } = await ImageManipulator.manipulateAsync(
+      uri, [{resize: {width:224}}], {base64: true}
+    );
+    // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
+    const predictions = await PredictTree(base64);
+
+    nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+
+    //setInProgress(false); // reset inProgress hook to false
+  }
+  // SELECT IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ===============================================================
+  async function take_pic_and_predict_async(nav) {
+    if (camera) { // skip execution if camera is undefined/null
+
+      let photo = await camera.takePictureAsync(); // take picture using camera
+      setInProgress(true); // set inProgress hook to true for progress bar
+
+      // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
+      const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
+        photo.uri,
+        [{crop:   {originX:30, originY:300, width:photo.width*0.9, height:photo.width*0.9}},
+         {resize: {width:224}}],
+        {base64: true}
+      );
+
+      // MAKE PREDICTION ------------------------------------------------------------------------
+      const predictions = await PredictTree(base64);
+
+      nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+
+      setInProgress(false); // reset inProgress hook to false
+    }
+    else {
+      console.log('CAMERA ACCESS NOT GRANTED?')
+    }
+  }
+
+
+
   // COMPONENT FOR RENDERING CAMERA TITLE BAR ==================================================================================
   const CameraTitleBar = () => {
     return (
@@ -261,7 +261,6 @@ function Home ({navigation})
       </View>
     );
   }
-
   // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
   const PictureFrameProgressBar = () => {
     return (
@@ -290,7 +289,6 @@ function Home ({navigation})
       </View>
     );
   }
-
   // COMPONENT FOR TAKE PICTURE BUTTON =========================================================================================
   const TakePictureButton = () => {
     return (
@@ -325,7 +323,6 @@ function Home ({navigation})
         </View>
     );
   }
-
   // COMPONENT FOR PHOTOS PAGE TITLE BAR =======================================================================================
   const PhotosTitleBar = () => {
     return (
@@ -351,7 +348,6 @@ function Home ({navigation})
         </View>
     );
   }
-
   // COMPONENT FOR NAVIGATION BAR ==============================================================================================
   const NavigationPanel = () => {
     return (
@@ -379,7 +375,6 @@ function Home ({navigation})
       </View>
     );
   }
-
   // COMPONENT FOR OVERLAYING PHOTOS PAGE ======================================================================================
   const PhotosPageOverlay = () => {
     return (
@@ -397,12 +392,11 @@ function Home ({navigation})
       </View>
     );
   }
-
   // COMPONENT FOR SHOWING LIST OF ALBUMS IN PHOTOS PAGE =======================================================================
   const ShowAlbums = () => {
 
     let albumViews = [
-      <TouchableOpacity key="Recents" onPress={() => openAlbum({id:"recents", title:"Recents"})}>
+      <TouchableOpacity key="Recents" onPress={() => open_album({id:"recents", title:"Recents"})}>
         <View style={hs.album_card}>
           <Image source={{uri: global.albumThumbnailURIs[0]}} style={hs.album_image}/>
           <Text style={hs.album_name_text}>Recents</Text>
@@ -413,7 +407,7 @@ function Home ({navigation})
     ];
     for (let i=0; i < global.albums.length; i++) {
       albumViews.push(
-        <TouchableOpacity key={global.albums[i].id} onPress={() => openAlbum(global.albums[i])}>
+        <TouchableOpacity key={global.albums[i].id} onPress={() => open_album(global.albums[i])}>
           <View style={hs.album_card}>
             <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={hs.album_image}/>
             <Text style={hs.album_name_text}>{ global.albums[i].title }</Text>
@@ -423,54 +417,38 @@ function Home ({navigation})
         </TouchableOpacity>
       );
     }
-    return albumViews;
+    return (
+      <ScrollView style={{paddingTop:10, height:sc.screen_height-sc.title_bar_height-sc.navigation_bar_height}}>
+        {albumViews}
+      </ScrollView>
+    );
   }
-
   // COMPONENT FOR SHOWING SINGLE PHOTO PHOTOS PAGE ============================================================================
   const ImgButton = (props) => {
   	return (
-  		<TouchableOpacity>
+  		<TouchableOpacity onPress={() => select_pic_and_predict_async(navigation, props.img.uri)}>
   			<Image source={{uri:props.img.uri}} style={hs.photo_button}/>
   		</TouchableOpacity>
   	);
   }
-
   // COMPONENT FOR SHOWING PHOTOS IN ALBUM IN PHOTOS PAGE ======================================================================
   const ShowPhotos = () => {
 
     return (
-      <FlatList
-        data={displayImages}
-        refreshing={refreshing}
-        refreshControl={
-          <RefreshControl
-            refreshing={showRefreshing}
-            onRefresh={onRefresh}
-          />
-        }
-        onEndReached={() => {
-          if(refreshing || total_images_in_album.current < 36) return;
-          setRefreshing(true)
-          onEndReached().then(() => {
-            setRefreshing(false)
-          })
-        }}
-        onEndReachedThreshold={0}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => <ImgButton img={item} />}
-        numColumns={sc.images_per_row}
-
-      />
+        <FlatList
+          data={displayImages}
+          onEndReached={on_end_reached}
+          onEndReachedThreshold={0}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => <ImgButton img={item} />}
+          numColumns={sc.images_per_row}
+          style={{height:sc.screen_height-sc.title_bar_height-sc.navigation_bar_height}}
+        />
     );
   }
+  // refreshing={refreshing}
+  // refreshControl={<RefreshControl refreshing={showRefreshing} onRefresh={on_refresh}/>}
   // ListFooterComponent={<ActivityIndicator size={"large"} />}
-
-
-
-
-
-
-
 
 
 
