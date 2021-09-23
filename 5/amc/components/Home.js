@@ -8,11 +8,10 @@ import * as SplashScreen     from 'expo-splash-screen';
 import { StatusBar }         from 'expo-status-bar';
 import { Ionicons }          from '@expo/vector-icons';
 
-import   React, { useState, useEffect, useCallback, useRef }                 from 'react';
+import   React, { useState, useEffect, useCallback, useRef }         from 'react';
 import { ActivityIndicator, Image, FlatList, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as Progress                                                 from 'react-native-progress';
-import Svg, { Circle, Line }                                         from 'react-native-svg';
-import CameraRoll                                                    from "@react-native-community/cameraroll";
+import Svg, { Circle }                                               from 'react-native-svg';
 
 import { PredictTree, LoadModelTree } from '../tree/prediction_tree.js';
 
@@ -27,10 +26,28 @@ Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
 
-function ImgButton(item) {
+
+// SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ==============================================================
+async function select_pic_and_predict_async(nav, uri) {
+
+  //setInProgress(true); // set inProgress hook to true for progress bar
+
+  // RESIZE IMAGE and CONVERT TO BASE 64 --------------------------------------------------
+  const { newUri, width, height, base64 } = await ImageManipulator.manipulateAsync(
+    uri, [{resize: {width:224}}], {base64: true}
+  );
+  // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
+  const predictions = await PredictTree(base64);
+
+  nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+
+  //setInProgress(false); // reset inProgress hook to false
+}
+// RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================
+function ImgButton(props) {
 	return (
 		<TouchableOpacity onPress={() => select_pic_and_predict_async(props.nav, props.img.uri)}>
-			<Image source={{uri:item.img.uri}} style={hs.photo_button}/>
+			<Image source={{uri:props.img.uri}} style={hs.photo_button}/>
 		</TouchableOpacity>
 	);
 }
@@ -58,22 +75,17 @@ function Home ({navigation})
   // FETCH THE FIRST 36 IMAGES IN AN ALBUM =====================================================================================
   const fetch_initial_images = async (album_id) => {
 
-    var recentAssets = null;
-
-    if (album_id === null) {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album.id});
-    }
-    else if (album_id === "recents") {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36});
-    }
-    else {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album_id});
+    if (album_id === "recents") {
+      var recentAssets = await MediaLibrary.getAssetsAsync({first:36});
+    } else {
+      var recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album_id});
     }
 
     if (!recentAssets) return;
     var recentURIs = [];
+
     for (let i=0; i < 36; i++) {
-      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
+      if (recentAssets.assets[i] !== undefined) {
         recentURIs.push({
           id: total_images_loaded.current,
           uri: recentAssets.assets[i].uri,
@@ -88,31 +100,29 @@ function Home ({navigation})
   // FETCH THE "NEXT" 36 IMAGES IN THE CURRENT ALBUM ===========================================================================
   const fetch_more_images = async (reset: boolean) => {
 
-    console.log("fetch more images!")
-
-
+    // RETREIVE FIRST PAGE OF PHOTOS FROM LIBRARY AGAIN AND RESET PAGE --------------------------------------
     if (reset === true) {
       total_images_loaded.current = 0;
       fetch_initial_images(album.id);
       return;
     }
 
-    // Make sure to return if no more data from API
-    if (total_images_loaded.current !== 0 && total_images_loaded.current >= total_images_in_album.current) return null;
+    // ENSURE FUNCTION RETURNS NOTHING WHEN THERE ARE NO MORE IMAGES TO LOAD --------------------------------
+    if (total_images_loaded.current >= total_images_in_album.current) return;
 
-    var recentAssets = null;
+    // FETCH THE NEXT 36 IMAGES IN THE ALBUM ----------------------------------------------------------------
     if (album.id === "recents") {
-      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset});
+      var recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset});
+    } else {
+      var recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset, album:album.id});
     }
-    else {
-      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset, album:album.id});
-    }
+    if (!recentAssets) return; // if MediaLibrary did not return properly, return nothing
 
-    if (!recentAssets) return;
-    var recentURIs = displayImages;
-    recentURIs.pop(); // remove "undefined" that shows up at the end of data[]
+    var recentURIs = displayImages; // copy displayImages to local variable
+    recentURIs.pop(); // remove "undefined" that shows up at the end of displayImages list
+
     for (let i=0; i < 36; i++) {
-      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
+      if (recentAssets.assets[i] !== undefined) {
         recentURIs.push({
           id: total_images_loaded.current,
           uri: recentAssets.assets[i].uri,
@@ -120,23 +130,26 @@ function Home ({navigation})
         total_images_loaded.current++;
       }
     }
+
+    // UPDATE HOOKS THAT CONTROL PHOTO SCROLL ---------------------------------------------------------------
     setDisplayImages(recentURIs);
     setLastAsset(recentAssets.endCursor);
+
     return displayImages;
   }
   // HANDLES WHETHER OR NOT TO GET MORE IMAGES AND UPDATES DISPLAYIMAGES HOOK ==================================================
-  const get_next_images = async () => {
+  const update_flatlist = async () => {
 
     const newDisplayImages = await fetch_more_images(false);
-    if(newDisplayImages === null) return
-    setDisplayImages(displayImages.concat(newDisplayImages.data))
+    if(newDisplayImages === null) return;
+    setDisplayImages(displayImages.concat(newDisplayImages));
   }
   // RUN WHEN END OF IMAGE SCROLL IS REACHED ===================================================================================
   const on_end_reached = async () => {
 
     if (refreshing || total_images_in_album.current < 36) return;
     setRefreshing(true)
-    get_next_images().then(() => {
+    update_flatlist().then(() => {
       setRefreshing(false)
     })
   }
@@ -153,7 +166,6 @@ function Home ({navigation})
     await fetch_more_images(true);
     setShowRefreshing(false);
   }, [refreshing]);
-
 
 
 
@@ -209,23 +221,6 @@ function Home ({navigation})
   }
 
 
-
-  // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ============================================================
-  async function select_pic_and_predict_async(nav, uri) {
-
-    //setInProgress(true); // set inProgress hook to true for progress bar
-
-    // RESIZE IMAGE and CONVERT TO BASE 64 --------------------------------------------------
-    const { newUri, width, height, base64 } = await ImageManipulator.manipulateAsync(
-      uri, [{resize: {width:224}}], {base64: true}
-    );
-    // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-    const predictions = await PredictTree(base64);
-
-    nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
-
-    //setInProgress(false); // reset inProgress hook to false
-  }
   // SELECT IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ===============================================================
   async function take_pic_and_predict_async(nav) {
     if (camera) { // skip execution if camera is undefined/null
@@ -252,7 +247,6 @@ function Home ({navigation})
       console.log('CAMERA ACCESS NOT GRANTED?')
     }
   }
-
 
 
   // COMPONENT FOR RENDERING CAMERA TITLE BAR ==================================================================================
@@ -421,8 +415,6 @@ function Home ({navigation})
   }
 
 
-
-
   // WHERE THE MAGIC HAPPENS ===================================================================================================
   return (
     <View onLayout={onLayoutRootView} style={{flex: 1}}>
@@ -441,18 +433,18 @@ function Home ({navigation})
               <View style={{paddingTop:sc.margin_width, paddingBottom: sc.navigation_bar_height+8}}>
                 { photosTitle === "Albums"
                   ? ( <ShowAlbums/> )
-                  : ( <FlatList
-                    		data={displayImages}
-                        refreshing={refreshing}
-                        refreshControl={
-                          <RefreshControl refreshing={showRefreshing} onRefresh={on_refresh} />
-                        }
-                    		onEndReached={on_end_reached}
-                    		onEndReachedThreshold={1}
-                    		keyExtractor={(item, index) => item + index}
-                    		renderItem={({ item }) => <ImgButton nav={navigation} img={item} />}
-                    		numColumns={sc.images_per_row}
-        	            />
+                  : (  <SafeAreaView style={{height:sc.screen_height-sc.title_bar_height-sc.navigation_bar_height-8}}>
+                        <FlatList
+                      		data={displayImages}
+                          refreshing={refreshing}
+                          refreshControl={<RefreshControl refreshing={showRefreshing} onRefresh={on_refresh}/>}
+                      		onEndReached={on_end_reached}
+                      		onEndReachedThreshold={1}
+                      		keyExtractor={(item, index) => item + index}
+                      		renderItem={({ item }) => <ImgButton nav={navigation} img={item} />}
+                      		numColumns={sc.images_per_row}
+          	            />
+                      </SafeAreaView>
                     )
                 }
               </View>
@@ -460,7 +452,6 @@ function Home ({navigation})
             </View>
           )
       }
-
       <NavigationPanel/>
     </View>
   );
