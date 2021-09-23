@@ -195,5 +195,4 @@ function Movement ({navigation})
 
 Movement.navigationOptions = navigation => ({ headerShown: false });
 
-
 export default Movement;

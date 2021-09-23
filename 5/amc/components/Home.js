@@ -9,7 +9,7 @@ import { StatusBar }         from 'expo-status-bar';
 import { Ionicons }          from '@expo/vector-icons';
 
 import   React, { useState, useEffect, useCallback, useRef }         from 'react';
-import { ActivityIndicator, Image, FlatList, RefreshControl, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Image, FlatList, RefreshControl, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import * as Progress                                                 from 'react-native-progress';
 import Svg, { Circle }                                               from 'react-native-svg';
 

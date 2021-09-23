@@ -110,11 +110,8 @@ function Predictions ({navigation})
           </View>
         </TouchableOpacity>
 
-
         <View height={sc.more_results_height}/>
-
       </ScrollView>
-
     </View>
   );
 }
