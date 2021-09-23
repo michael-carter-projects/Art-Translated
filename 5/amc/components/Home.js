@@ -26,6 +26,15 @@ let camera: Camera; // camera ref to allow abort
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
+
+function ImgButton(item) {
+	return (
+		<TouchableOpacity onPress={() => select_pic_and_predict_async(props.nav, props.img.uri)}>
+			<Image source={{uri:item.img.uri}} style={hs.photo_button}/>
+		</TouchableOpacity>
+	);
+}
+
 // RENDER HOME SCREEN ==========================================================================================================
 function Home ({navigation})
 {
@@ -44,6 +53,109 @@ function Home ({navigation})
   const total_images_loaded   = useRef(0);
   const total_images_in_album = useRef(0);
   const recents_image_count   = useRef(0);
+
+
+  // FETCH THE FIRST 36 IMAGES IN AN ALBUM =====================================================================================
+  const fetch_initial_images = async (album_id) => {
+
+    var recentAssets = null;
+
+    if (album_id === null) {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album.id});
+    }
+    else if (album_id === "recents") {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36});
+    }
+    else {
+      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album_id});
+    }
+
+    if (!recentAssets) return;
+    var recentURIs = [];
+    for (let i=0; i < 36; i++) {
+      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
+        recentURIs.push({
+          id: total_images_loaded.current,
+          uri: recentAssets.assets[i].uri,
+        });
+        total_images_loaded.current++;
+      }
+    }
+    total_images_in_album.current = recentAssets.totalCount;
+    setDisplayImages(recentURIs);
+    setLastAsset(recentAssets.endCursor);
+  }
+  // FETCH THE "NEXT" 36 IMAGES IN THE CURRENT ALBUM ===========================================================================
+  const fetch_more_images = async (reset: boolean) => {
+
+    console.log("fetch more images!")
+
+
+    if (reset === true) {
+      total_images_loaded.current = 0;
+      fetch_initial_images(album.id);
+      return;
+    }
+
+    // Make sure to return if no more data from API
+    if (total_images_loaded.current !== 0 && total_images_loaded.current >= total_images_in_album.current) return null;
+
+    var recentAssets = null;
+    if (album.id === "recents") {
+      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset});
+    }
+    else {
+      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset, album:album.id});
+    }
+
+    if (!recentAssets) return;
+    var recentURIs = displayImages;
+    recentURIs.pop(); // remove "undefined" that shows up at the end of data[]
+    for (let i=0; i < 36; i++) {
+      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
+        recentURIs.push({
+          id: total_images_loaded.current,
+          uri: recentAssets.assets[i].uri,
+        });
+        total_images_loaded.current++;
+      }
+    }
+    setDisplayImages(recentURIs);
+    setLastAsset(recentAssets.endCursor);
+    return displayImages;
+  }
+  // HANDLES WHETHER OR NOT TO GET MORE IMAGES AND UPDATES DISPLAYIMAGES HOOK ==================================================
+  const get_next_images = async () => {
+
+    const newDisplayImages = await fetch_more_images(false);
+    if(newDisplayImages === null) return
+    setDisplayImages(displayImages.concat(newDisplayImages.data))
+  }
+  // RUN WHEN END OF IMAGE SCROLL IS REACHED ===================================================================================
+  const on_end_reached = async () => {
+
+    if (refreshing || total_images_in_album.current < 36) return;
+    setRefreshing(true)
+    get_next_images().then(() => {
+      setRefreshing(false)
+    })
+  }
+  // RUN WHEN USER CLICKS ON AN ALBUM ==========================================================================================
+  const open_album = async (album) => {
+    await fetch_initial_images(album.id);
+    setPhotosTitle(album.title);
+    setAlbum(album);
+  };
+  // RUN WHEN USE "REFRESHES" THE PHOTOS PAGE ==================================================================================
+  const on_refresh = useCallback(async () => {
+
+    setShowRefreshing(true);
+    await fetch_more_images(true);
+    setShowRefreshing(false);
+  }, [refreshing]);
+
+
+
 
   // LOAD ASSETS DURING SPLASH SCREEN ==========================================================================================
   useEffect(() => {
@@ -84,7 +196,6 @@ function Home ({navigation})
       }
     }
 
-
     prepare();
 
   }, []);
@@ -96,104 +207,6 @@ function Home ({navigation})
   if (!appIsReady) {
     return null;
   }
-
-
-
-  // FETCH THE FIRST 36 IMAGES IN AN ALBUM =====================================================================================
-  const fetch_initial_images = async (album_id) => {
-
-    var recentAssets = null;
-
-    if (album_id === null) {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album.id});
-    }
-    else if (album_id === "recents") {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36});
-    }
-    else {
-      recentAssets = await MediaLibrary.getAssetsAsync({first:36, album:album_id});
-    }
-
-    if (!recentAssets) return;
-    var recentURIs = [];
-    for (let i=0; i < 36; i++) {
-      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
-        recentURIs.push({
-          id: total_images_loaded.current,
-          uri: recentAssets.assets[i].uri,
-        });
-        total_images_loaded.current++;
-      }
-    }
-    total_images_in_album.current = recentAssets.totalCount;
-    setDisplayImages(recentURIs);
-    setLastAsset(recentAssets.endCursor);
-  }
-  // FETCH THE "NEXT" 36 IMAGES IN THE CURRENT ALBUM ===========================================================================
-  const fetch_more_images = async () => {
-
-    console.log("fetch_more_images")
-
-    // Make sure to return if no more data from API
-    if (total_images_loaded.current !== 0 && total_images_loaded.current >= total_images_in_album.current) return null;
-
-    var recentAssets = null;
-    if (album.id === "recents") {
-      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset});
-    }
-    else {
-      recentAssets = await MediaLibrary.getAssetsAsync({ first:36, after:lastAsset, album:album.id});
-    }
-
-    if (!recentAssets) return;
-    var recentURIs = displayImages;
-    recentURIs.pop(); // remove "undefined" that shows up at the end of data[]
-    for (let i=0; i < 36; i++) {
-      if (recentAssets.assets[i] !== undefined && recentAssets.assets[i] !== null) {
-        recentURIs.push({
-          id: total_images_loaded.current,
-          uri: recentAssets.assets[i].uri,
-        });
-        total_images_loaded.current++;
-      }
-    }
-    setDisplayImages(recentURIs);
-    setLastAsset(recentAssets.endCursor);
-    return displayImages;
-  }
-  // HANDLES WHETHER OR NOT TO GET MORE IMAGES AND UPDATES DISPLAYIMAGES HOOK ==================================================
-  const get_next_images = async () => {
-
-    const newDisplayImages = await fetch_more_images();
-    if(newDisplayImages === null) return
-    setDisplayImages(displayImages.concat(newDisplayImages.data))
-  }
-  // RUN WHEN END OF IMAGE SCROLL IS REACHED ===================================================================================
-  const on_end_reached = async () => {
-
-    if (refreshing || total_images_in_album.current < 36) return;
-    setRefreshing(true)
-    get_next_images().then(() => {
-      setRefreshing(false)
-    })
-  }
-  // RUN WHEN USER CLICKS ON AN ALBUM ==========================================================================================
-  const open_album = async (album) => {
-
-    await fetch_initial_images(album.id);
-    setPhotosTitle(album.title);
-    setAlbum(album);
-  };
-  // RUN WHEN USE "REFRESHES" THE PHOTOS PAGE ==================================================================================
-  /*const on_refresh = useCallback(async () => {
-
-    setShowRefreshing(true);
-    total_images_loaded.current = 0;
-    console.log(album);
-
-    await fetch_initial_images(album.id);
-    setShowRefreshing(false);
-  }, [refreshing]);*/
 
 
 
@@ -375,23 +388,6 @@ function Home ({navigation})
       </View>
     );
   }
-  // COMPONENT FOR OVERLAYING PHOTOS PAGE ======================================================================================
-  const PhotosPageOverlay = () => {
-    return (
-      <View style={hs.photo_selection_page}>
-
-        <PhotosTitleBar/>
-
-        <View style={{paddingTop:sc.margin_width, paddingBottom: sc.navigation_bar_height+8}}>
-          { photosTitle === "Albums" ? ( <ShowAlbums/> )
-                                     : ( <ShowPhotos/> )
-          }
-        </View>
-
-        <StatusBar style="dark" />
-      </View>
-    );
-  }
   // COMPONENT FOR SHOWING LIST OF ALBUMS IN PHOTOS PAGE =======================================================================
   const ShowAlbums = () => {
 
@@ -423,32 +419,7 @@ function Home ({navigation})
       </ScrollView>
     );
   }
-  // COMPONENT FOR SHOWING SINGLE PHOTO PHOTOS PAGE ============================================================================
-  const ImgButton = (props) => {
-  	return (
-  		<TouchableOpacity onPress={() => select_pic_and_predict_async(navigation, props.img.uri)}>
-  			<Image source={{uri:props.img.uri}} style={hs.photo_button}/>
-  		</TouchableOpacity>
-  	);
-  }
-  // COMPONENT FOR SHOWING PHOTOS IN ALBUM IN PHOTOS PAGE ======================================================================
-  const ShowPhotos = () => {
 
-    return (
-        <FlatList
-          data={displayImages}
-          onEndReached={on_end_reached}
-          onEndReachedThreshold={0}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <ImgButton img={item} />}
-          numColumns={sc.images_per_row}
-          style={{height:sc.screen_height-sc.title_bar_height-sc.navigation_bar_height}}
-        />
-    );
-  }
-  // refreshing={refreshing}
-  // refreshControl={<RefreshControl refreshing={showRefreshing} onRefresh={on_refresh}/>}
-  // ListFooterComponent={<ActivityIndicator size={"large"} />}
 
 
 
@@ -461,8 +432,33 @@ function Home ({navigation})
         <TakePictureButton/>
       </Camera>
 
-      { isCameraScreen ? ( <CameraTitleBar/>    )
-                       : ( <PhotosPageOverlay/> )
+      { isCameraScreen
+        ? ( <CameraTitleBar/> )
+        : ( <View style={hs.photo_selection_page}>
+
+              <PhotosTitleBar/>
+
+              <View style={{paddingTop:sc.margin_width, paddingBottom: sc.navigation_bar_height+8}}>
+                { photosTitle === "Albums"
+                  ? ( <ShowAlbums/> )
+                  : ( <FlatList
+                    		data={displayImages}
+                        refreshing={refreshing}
+                        refreshControl={
+                          <RefreshControl refreshing={showRefreshing} onRefresh={on_refresh} />
+                        }
+                    		onEndReached={on_end_reached}
+                    		onEndReachedThreshold={1}
+                    		keyExtractor={(item, index) => item + index}
+                    		renderItem={({ item }) => <ImgButton nav={navigation} img={item} />}
+                    		numColumns={sc.images_per_row}
+        	            />
+                    )
+                }
+              </View>
+              <StatusBar style="dark" />
+            </View>
+          )
       }
 
       <NavigationPanel/>
