@@ -30,11 +30,18 @@ export const ps = StyleSheet.create({
     fontSize: 55,
     color: sc.teal
   },
+  back_icon: {
+    position: 'absolute',
+    left: sc.title_bar_height*0.3,
+    bottom: sc.title_bar_height*-0.45,
+    fontSize: 37,
+    color: sc.teal
+  },
   art_translate_logo: {
     alignSelf:'center',
     top: 25,
     resizeMode: 'contain',
-    width:sc.title_bar_height/1.6
+    width: sc.title_bar_height/1.6
   },
   camera_icon: {
     position: 'absolute',

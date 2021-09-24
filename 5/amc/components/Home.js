@@ -13,7 +13,7 @@ import { ActivityIndicator, Image, FlatList, RefreshControl, SafeAreaView, Scrol
 import * as Progress                                                 from 'react-native-progress';
 import Svg, { Circle }                                               from 'react-native-svg';
 
-import { PredictTree, LoadModelTree } from '../tree/prediction_tree.js';
+import { run_predict_tree, load_model_tree } from '../tree/prediction_tree.js';
 
 import    { hs } from '../styles/home_styles.js';
 import * as sc   from '../styles/style_constants.js';
@@ -26,7 +26,6 @@ Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
 
-
 // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ==============================================================
 async function select_pic_and_predict_async(nav, uri) {
 
@@ -37,7 +36,7 @@ async function select_pic_and_predict_async(nav, uri) {
     uri, [{resize: {width:224}}], {base64: true}
   );
   // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-  const predictions = await PredictTree(base64);
+  const predictions = await run_predict_tree(base64);
 
   nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
 
@@ -53,8 +52,8 @@ function ImgButton(props) {
 }
 
 // RENDER HOME SCREEN ==========================================================================================================
-function Home ({navigation})
-{
+function Home ({navigation}) {
+
   const [isCameraScreen, setCameraScreen] = useState(true );
   const [inProgress,     setInProgress  ] = useState(false);
   const [appIsReady,     setAppIsReady  ] = useState(false);
@@ -196,7 +195,7 @@ function Home ({navigation})
         console.log('[+] Loaded '+ global.albumThumbnailURIs.length.toString() + ' album thumbnails');
 
         // LOAD MODEL TREE -----------------------------------------------------
-        await LoadModelTree();
+        await load_model_tree();
 
         console.log("ALL ASSETS LOADED ==========================")
         console.log("============================================")
@@ -237,7 +236,7 @@ function Home ({navigation})
       );
 
       // MAKE PREDICTION ------------------------------------------------------------------------
-      const predictions = await PredictTree(base64);
+      const predictions = await run_predict_tree(base64);
 
       nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
 
@@ -338,7 +337,7 @@ function Home ({navigation})
 
           <View style={{flex:1}}>
             { photosTitle === "Albums" ? (
-              <Ionicons name="ios-close" color={sc.teal} style={hs.close_icon}/>
+              null
             ) : (
               <TouchableOpacity style={{alignItems:'center'}} onPress={() => setPhotosTitle("Albums")}>
                 <Ionicons name="ios-arrow-back" style={hs.back_icon}/>

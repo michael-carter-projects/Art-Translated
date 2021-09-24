@@ -1,7 +1,6 @@
 // iwuehfiwuehfiwuehfiwuegfiwuegf
-global.albums = [{title:"Recents"}];
+global.albums = [{id: "recents", title:"Recents"}];
 global.albumThumbnailURIs = [];
-global.recentURIs = [];
 
 // REALEY MODEL INFO ===========================================================
 global.twoDimensionalTF = null;
@@ -104,6 +103,7 @@ global.movementMap = [
     themes: "null",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/grotesque.png'),
   },
   {
     key: 'byzantine',
@@ -114,6 +114,7 @@ global.movementMap = [
     themes: "null",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/byzantine.jpg'),
   },
   {
     key: 'egyptian',
@@ -124,6 +125,7 @@ global.movementMap = [
     themes: "null",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/egyptian.jpg'),
   },
   {
     key: 'vanitas',
@@ -134,6 +136,7 @@ global.movementMap = [
     themes: "null",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/vanitas.jpg'),
   },
   {
     key: 'academicism',
@@ -144,6 +147,7 @@ global.movementMap = [
     themes: "History, Technical expertise, Beauty, impressive execution of subject. Platonic forms, or ideals, behind ordinary depictions one would glimpse something abstract, some eternal truth. Beauty is truth, truth beauty. A full and complete idea.",
     start_reason: "Nationalism. Advance cultural standings of nation-states. Increase skill of country artisans. Political control of the arts. ",
     end_reason: "null",
+    img: require('./assets/mvmt_images/academicism.jpg'),
   },
   {
     key:  "mannerism-painting",
@@ -155,6 +159,7 @@ global.movementMap = [
     themes: "Cool, detached.",
     start_reason: "To advance from the Renaissance style. ",
     end_reason: "null",
+    img: require('./assets/mvmt_images/mannerism.jpg'),
   },
   {
     key: 'early-renaissance-painting',
@@ -165,6 +170,7 @@ global.movementMap = [
     themes: "Individualism, humanism, Classics, Classical Orators and philosophers, prominance of the individual. Intellectual and spiritual awakening. Every person's life had value and dignity, Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A moral narrative.",
     start_reason: "Expanded on religious subject matter to more real, human subjects. Discovey of classic liturature, sculpture.",
     end_reason: "null",
+    img: require('./assets/mvmt_images/early-renaissance.jpg'),
   },
   {
     key:  "high-renaissance-painting",
@@ -176,6 +182,7 @@ global.movementMap = [
     themes: "Individualism, humanism, Classics, Classical Orators and philosophers, prominance of the individual. Intellectual and spiritual awakening. Every persons life had value and dignity. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A moral narrative.",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/high-renaissance.jpg'),
   },
   {
     key:  "renaissance",
@@ -198,6 +205,7 @@ global.movementMap = [
     themes: "Religious themes, religious passion, with direct and emotional involvement, Catholicism, Awe, Surprise, Grandeur, emotional stimulus to piety, popularity, emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith.",
     start_reason: "Communicated post-1542 Catholic church doctrine. Countered the simplicity and austerity of Protestant architecture. Needed less strict rules but more popular appeal and declared that the arts communicating religious themes with direct and emotional involvement.",
     end_reason: "null",
+    img: require('./assets/mvmt_images/baroque.jpg'),
   },
   {
     key:  "northern-renaissance-painting",
@@ -209,6 +217,7 @@ global.movementMap = [
     themes: "Domestic scenes, satire, philosophical, humour, merchants at work, peasants in the fields and play, fantastical landscapes, dogs, cats, birds, children, household goods, nature, anatomy, perspective, architecture, accessories, actual life of the present, the life to come, secular society. Emphasis: devotional piety, spirituality, and living a simple life. Sturdy, honest, coarse, sufficient unto themselves, and caring little for what other people did. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. A moral narrative.",
     start_reason: "The political and religious situation of the region. The chaos and upheaval of the church meant that there was no single artistic nucleus. Italian trade, printing. Expanded on religious subject matter to more real, human subjects. Discovey of classic liturature, sculpture. Translation of the Bible. ",
     end_reason: "null",
+    img: require('./assets/mvmt_images/northern-renaissance.jpg'),
   },
   {
     key:  "post-impressionism",
@@ -220,6 +229,7 @@ global.movementMap = [
     themes: "Asthetic beauty. Individuality, convey feelings, state of mind.",
     start_reason: "Reaction against Impressionists' concern for the naturalistic depiction of light and colour, rejecting triviality of subject matter and the loss of structure.",
     end_reason: "null",
+    img: require('./assets/mvmt_images/post_impressionism.jpg'),
   },
   {
     key:  "neoclassicism",
@@ -231,6 +241,7 @@ global.movementMap = [
     themes: "Severe, unemotional, rigid, Greek, Roman, Classical Thought. Homoeroticism, erotic males. Neoclassical art is characterized by its classical form and structure, clarity, and to an degree, realism. Connected to contemporary political events. Orderly and serious in character.  Patriotism, civility and honorableness. Revolutionary, anti-aristocratic. Change. Celebrate ideal forms of its beauty. Noble simplicity and calm grandeur. Republican virtues.",
     start_reason: "Reaction to the overbred frivality, eroticism of Rococo style and the emotional charged Baroque style. A general revival of interest in classical thought.Connected to contemporary political events. A style that was orderly and serious in character. The art of revolution and change such as the French Revolution. Popularity of the Grand Tour to Italy.",
     end_reason: "null",
+    img: require('./assets/mvmt_images/neoclassicism.jpg'),
   },
   {
     key:  "rococo",
@@ -242,6 +253,7 @@ global.movementMap = [
     themes: "Erotic, Mildly Erotic, Romantic, Frivolous, Aristocratic",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/rococo.png'),
   },
   {
     key:  "gothic-book",
@@ -253,6 +265,7 @@ global.movementMap = [
     themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/gothic.png'),
   },
   {
     key:  'gothic-painting',
@@ -264,6 +277,7 @@ global.movementMap = [
     themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/gothic.png'),
   },
   {
     key:  'gothic-polyptych',
@@ -275,6 +289,7 @@ global.movementMap = [
     themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/gothic.png'),
   },
   {
     key:  'gothic-worn',
@@ -286,6 +301,7 @@ global.movementMap = [
     themes: "Religous piety, Old Testiment, New Testiment, Virgin Mary, Saints. Emotional stimulus to piety, uplift the mind to the spiritual, religous conversion, religous education, ritual and cultic practices, the paths of the spiritual realization, to illustrate, supplement and portray in tangible form the principles of Christianity, to conclusively identify biblical, religious scenes, convey religious meaning. Inspire faith. Moral narrative.",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/gothic.png'),
   },
   {
     key: "symbolism",
@@ -296,6 +312,7 @@ global.movementMap = [
     themes: "Contemplative refuge from the world of strife and will. Mysticism, Otherworldliness, Mortality. A sense of the malign power of sexuality. Rejects the reality of life. ",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/symbolism.jpg'),
   },
   {
     key: "cubism",
@@ -306,6 +323,7 @@ global.movementMap = [
     themes: "Deconstruction, abstraction, expressive and allusive abstraction dedicated to complex emotional and sexual themes.",
     start_reason: "A new way of seeing for the modern age. Revitalise boring traditions (e.g. perspective) of Western art.",
     end_reason: "null",
+    img: require('./assets/mvmt_images/cubism.png'),
   },
   {
     key: "expressionism",
@@ -316,6 +334,7 @@ global.movementMap = [
     themes: "Distorted reality for emotional effect to evoke moods or ideas. Expressing the meaning of emotional experience rather than physical reality.",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/expressionism.jpg'),
   },
   {
     key: "impressionism",
@@ -326,26 +345,7 @@ global.movementMap = [
     themes: "null",
     start_reason: "Rebelled against Acacdemic conforming paintings. Too polished and detailed. Idealistic. Emphasized still-lifes,  landscapes and daily life.",
     end_reason: "null",
-  },
-  {
-    key: "dada",
-    name: "Dada",
-    dates: "1915 AD - 1950 AD",
-    style: "Sculpture, Painting, Prints, Mixed Media, Sound media, Collage, Sound poetry, cut-up writing, visual arts, literature, poetry, art manifestos, art theory, theatre, graphic design, readymades, assemblage, Photomontage, Cut-up",
-    commentary: "\"Anti-art.\"; \"Dada philosophy is the sickest, most paralyzing and most destructive thing that has ever originated from the brain of man.\";   If art was to appeal to sensibilities, Dada was intended to offend. \"Dada philosophy is the sickest, most paralyzing and most destructive thing that has ever originated from the brain of man.\" -  American Art News ;  \"reaction to what many of these artists saw as nothing more than an insane spectacle of collective homicide.\"; A savior, a monster, which would lay waste to everything in its path... [It was] a systematic work of destruction and demoralization... In the end it became nothing but an act of sacrilege.\"; Dada is the groundwork to abstract art and sound poetry, a starting point for performance art, a prelude to postmodernism, an influence on pop art, a celebration of antiart to be later embraced for anarcho-political uses in the 1960s and the movement that laid the foundation for Surrealism.",
-    themes: "Nonsense, irrationality, anti-bourgeois, protest, peace, anti-war, anti-nationalism, radical far-left thought. Anti art. Anti colonialism. Believed that the 'reason' and 'logic' of bourgeois capitalist society had led people into war. Protest\"against this world of mutual destruction.\". Opposite of everything which art stood for.  Ignored aesthetics. If art was to appeal to sensibilities, Dada was intended to offend. Addressed a postwar economic and moral crisis. Rejected reason and logic, prizing nonsense, irrationality and intuition. Shock, scandel. Art and culture are considered a type of fetishization where the objects of consumption (including organized systems of thought like philosophy and morality) are chosen, much like a preference for cake or cherries, to fill a void. Rejecting \"retinal art\".",
-    start_reason: "Rejected the logic, reason, and aestheticism of modern capitalist society. Reaction to violence, destruction of WWI. Anti-Art sentiment. detachment from the constraints of reality. Detachment from reality. Rrejection of the tight correlation between words and meaning. Rejected colonialism.",
-    end_reason: "null",
-  },
-  {
-    key: "futurism",
-    name: "Futurism",
-    dates: "1907 AD - 1944 AD",
-    style: "Figurative, Figures in Motion, Speed, movement, glorified science, technology, youth, violence, vehicles, car, airplane, the industrial city,  glorified modernity",
-    commentary: "null",
-    themes: "null",
-    start_reason: "null",
-    end_reason: "null",
+    img: require('./assets/mvmt_images/impressionism.jpg'),
   },
   {
     key: "fauvism",
@@ -356,6 +356,7 @@ global.movementMap = [
     themes: "Disturb complacency.",
     start_reason: "Disturb art history complacency.",
     end_reason: "null",
+    img: require('./assets/mvmt_images/fauvism.jpg'),
   },
   {
     key: "art-deco",
@@ -366,6 +367,7 @@ global.movementMap = [
     themes: "Luxury, glamour, exuberance, and faith in social and technological progress. Modernity.",
     start_reason: "Reaction against Art Nouveau. Inspired by Vienna Succession, Cubism, Nabis, Odilon Redon",
     end_reason: "Beginning of WWII. Rise of the strictly functional and unadorned styles of modernism.",
+    img: require('./assets/mvmt_images/art_deco.jpg'),
   },
   {
     key: 'art-nouveau-modern',
@@ -376,6 +378,7 @@ global.movementMap = [
     themes: "null",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/art_nouveau.jpg'),
   },
   {
     key: 'realism',
@@ -386,6 +389,7 @@ global.movementMap = [
     themes: "social or political awareness, mundane, ugly, sordid, social realism, kitchen sink realism.",
     start_reason: "Rejected Romanticism, History Painting",
     end_reason: "null",
+    img: require('./assets/mvmt_images/naturalism.jpg'),
   },
   {
     key: 'romanticism',
@@ -396,6 +400,7 @@ global.movementMap = [
     themes: "Individualistic, exotic, beautiful and emotionally wrought. Passion, sensitivity, and imagination. Emotion, individualism, Glorification of all the past, Glorification of nature, medieval rather than the classical.  Intense emotion as an authentic source of aesthetic experience, placing new emphasis on such emotions as apprehension, horror and terror, and awe—especially that experienced in confronting the new aesthetic categories of the sublimity and beauty of nature. Revived medievalism Authentically medieval in an attempt to escape population growth, early urban sprawl, and industrialism.  Achievements of \"heroic\" individualists and artists.  Promoted individual imagination. Realism was offered as a polar opposite to Romanticism. Strong belief and interest in the importance of nature. Effect of nature upon the artist when he is surrounded by it, preferably alone. Distrustful of the human world, close connection with nature was mentally and morally healthy. Uses personal voice of the artist. A new and restless spirit, seeking violently to burst through old and cramping forms. A nervous preoccupation with perpetually changing inner states of consciousness, a longing for the unbounded and the indefinable, for perpetual movement and change, an effort to return to the forgotten sources of life, a passionate effort at self-assertion both individual and collective, a search after means of expressing an unappeasable yearning for unattainable goals\". Horror, passion, and awe, when experienced in the face of nature’s sublime landscape, offered an artistic antidote to the perceived disconnect from spirituality occurring as the theory of evolution took hold around the world. This nostalgia inspired the Romantics to shift the spotlight onto the individual’s imagination and his or her interpretation of the world. Patriotism, nationalism, struggle for independence",
     start_reason: "Reaction against a restrained Classicism and Neoclassicism. Rejections of Industrial Revolution, the aristocratic social and political norms of the Age of Enlightenment, and the scientific rationalization of nature—all components of modernity. Rejection of modernity. Escaping of population growth, early urban sprawl, and industrialism. Rejecting excessive emphasis on the cerebral and instead arguing for heightened emotion.",
     end_reason: "null",
+    img: require('./assets/mvmt_images/romanticism.jpg'),
   },
   {
     key: "surrealism",
@@ -406,5 +411,6 @@ global.movementMap = [
     themes: "Unnerving, illogical, strange unconscious expression, Dream, Unreality, Sureality. Disorienting, hallucinatory quality of a dream; fantastic. Surprise, Unexpected Juxtapositions, non sequiturs. Revolutionary.",
     start_reason: "null",
     end_reason: "null",
+    img: require('./assets/mvmt_images/surrealism.png'),
   },
 ];

@@ -19,14 +19,13 @@ function insert_descending(sorted_results, prediction) {
 
   var index = sorted_results.length;
 
-  for (var i=0; i < sorted_results.length; i++) {
+  for (let i=0; i < sorted_results.length; i++) {
     if (prediction.prob > sorted_results[i].prob) {
       index = i;
       break;
     }
   }
   sorted_results.splice(index, 0, prediction)
-  //console.log(sorted_results);
   return sorted_results;
 }
 
@@ -35,42 +34,83 @@ function get_movement_info(prediction) {
   // SEARCH MOVEMENT MAP FOR INFO OF MOVEMENT ----------------------------------
   const label = JSON.stringify(prediction.label);
 
-  for (var i = 0; i < global.movementMap.length; i++) {
+  for (let i=0; i < global.movementMap.length; i++) {
     if (global.movementMap[i].key === label.replace(/['"]+/g, '')) {
       return { map:  global.movementMap[i],
-               prob: (parseFloat(prediction.prob)*100).toFixed(2)
+               prob: parseInt(prediction.prob*100)
              }
     }
   }
 }
 
+// GIVEN A LIST OF SORTED RESULTS, REMOVES DUPLICATE RESULTS THAT MAP TO THE SAME MOVEMENT =====================================
+function remove_duplicates(sorted_results) {
+
+  // VARIABLES FOR FINDING DUPLICATES ------------------------------------------
+  var gothic_count = 0;
+  var duplicate_indices = [];
+
+  // LOOK THROUGH THE LIST AND RECORD DUPLICATE INDICES ------------------------
+  for (let i=0; i<sorted_results.length; i++) {
+    if (sorted_results[i].label.substring(0, 6) === 'gothic') {
+      gothic_count++;
+      if (gothic_count > 1) {
+        duplicate_indices.push(i);
+      }
+    }
+  }
+  // PUSH ONLY NON_DUPLICATES TO NEW RESULTS -----------------------------------
+  var new_sorted_results = [];
+  for (let i=0; i<sorted_results.length; i++) {
+    if (!duplicate_indices.includes(i)) {
+      new_sorted_results.push(sorted_results[i]);
+    }
+  }
+
+  return new_sorted_results;
+}
+
 // GETS LIST OF PREDICTIONS SORTED BY DESCENDING PROBABILITY ABOVE CERTAIN PROBABILITY =========================================
-function get_predictions_info(two, ren, abs, threshold) {
+function get_predictions_info(two, ren, abs) {
 
     var sorted_results = [two[0]];
 
-    for (var i=1; i < two.length; i++) {
+    // INSERT ALL RESULTS INTO A LIST SORTED BY DESCENDING PROBABILITY ---------
+    for (let i=1; i < two.length; i++) {
       sorted_results = insert_descending(sorted_results, two[i]);
     }
-    for (var i=0; i < ren.length; i++) {
+    for (let i=0; i < ren.length; i++) {
       sorted_results = insert_descending(sorted_results, ren[i]);
     }
-    for (var i=0; i < abs.length; i++) {
+    for (let i=0; i < abs.length; i++) {
       sorted_results = insert_descending(sorted_results, abs[i]);
     }
 
-    /*var threshold_index = sorted_results.length-1;
-    for (var i=0; i < sorted_results.length; i++) {
-      if (sorted_results[i].prob < threshold) {
+    // REMOVE LOWER PROB DUPLICATES OF SAME PREDICTION -------------------------
+    sorted_results = remove_duplicates(sorted_results);
+
+    // LIMIT THE NUMBER OF RESULTS BY SUM OF PROBABILITIES OR COUNT ------------
+    const threshold_percent_sum = 1.2; // max sum of probabilties
+    const threshold_results_num = 10; // max number of results
+    var probability_sum = 0;
+    var results_count = 0;
+    var threshold_index = sorted_results.length;
+
+    for (let i=0; i < sorted_results.length; i++) {
+      probability_sum += sorted_results[i].prob;
+      results_count += 1;
+
+      if (probability_sum > threshold_percent_sum
+       || results_count  == threshold_results_num ) {
         threshold_index = i;
         break;
       }
     }
     sorted_results = sorted_results.slice(0, threshold_index);
-    */
 
+    // GET MOVEMENT INFO FOR ALL RESULTS AND RETURN ----------------------------
     var sorted_info = [];
-    for (var i=0; i < sorted_results.length; i++) {
+    for (let i=0; i < sorted_results.length; i++) {
       sorted_info.splice(i, 0, get_movement_info(sorted_results[i]));
     }
 
@@ -78,11 +118,9 @@ function get_predictions_info(two, ren, abs, threshold) {
   }
 
 // RUN GIVEN TENSOR IMAGE THROUGH MODEL TREE ===================================================================================
-export async function PredictTree(base64)
-{
-  const imgTensor = b64_to_tensor(base64);
+export async function run_predict_tree(base64) {
 
-  const threshold_FIN = 0.0; // probability with which movement must be predicted to display on page
+  const imgTensor = b64_to_tensor(base64); // convert base64 data to tensors
 
   const threshold_REN = 0.5; // probability with which "renaissancish" must be predicted to run renaissancish model
   const threshold_ABS = 0.5; // probability with which "abstractish"   must be predicted to run abstractish model
@@ -102,11 +140,12 @@ export async function PredictTree(base64)
     console.log("[+] Running Abstractish")
   }
 
-  return get_predictions_info(predictionTWO, predictionREN, predictionABS, threshold_FIN);
+  return get_predictions_info(predictionTWO, predictionREN, predictionABS);
 };
 
-export async function LoadModelTree()
-{
+// LOAD ALL MODELS IN MODEL TREE ===============================================================================================
+export async function load_model_tree() {
+
   const tfReady = await tf.ready();
   const twoDimensionalModel   = await require("../assets/models/twodimensional/model.json");
   const twoDimensionalWeights = await require("../assets/models/twodimensional/weights.bin");

@@ -7,25 +7,9 @@ import { Dimensions, Image, ScrollView, StyleSheet, TouchableOpacity, View, Text
 import { Card }                                                            from 'react-native-elements'
 import Svg, { Circle, Line,  }                                         from 'react-native-svg';
 
+import * as sc   from '../styles/style_constants.js';
 
 // STYLES FOR VARIOUS ELEMENTS =================================================================================================
-const win = Dimensions.get('window');
-
-const teal   = 'rgba(  0,  75,  95, 1)'; //global.colors.teal;
-const orange = 'rgba(242, 154, 124, 1)'; //global.colors.orange;
-const white  = 'rgba(255, 255, 255, 1)'; //global.colors.white;
-const grey   = 'rgba(180, 180, 180, 1)'; //global.colors.grey;
-const black  = 'rgba(  0,   0,   0, 1)'; //global.colors.black;
-const clear  = 'rgba(  0,   0,   0, 0)'; //global.clear;
-
-const screen_dimensions = Dimensions.get('window');
-const screen_width  = screen_dimensions.width;   // iPhone 12 Mini: 375
-const screen_height = screen_dimensions.height; //  iPhone 12 Mini: 812
-const title_bar_height = screen_height*0.11;
-const card_width = screen_dimensions.width*0.95;
-
-
-
 const tier6th = win.width/6;
 const center = win.width / 2;
 const tier_height = 100;
@@ -37,42 +21,49 @@ const selection_thickness = 6;
 const styles = StyleSheet.create({
   // PREDICTION PAGE TITLE BAR STYLE -------------------------------------------
   prediction_title_bar: {
-    height: title_bar_height,
-    width: screen_width,
-    backgroundColor: white,
+    height: sc.title_bar_height,
+    width: sc.screen_width,
+    backgroundColor: sc.white,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   close_icon: {
     position: 'absolute',
-    left: title_bar_height*0.3,
-    bottom: title_bar_height*-0.55,
+    left: sc.title_bar_height*0.3,
+    bottom: sc.title_bar_height*-0.55,
     fontSize: 55,
-    color: teal
+    color: sc.teal
+  },
+  back_icon: {
+    position: 'absolute',
+    left: sc.title_bar_height*0.3,
+    bottom: sc.title_bar_height*-0.45,
+    fontSize: 37,
+    color: sc.teal
   },
   art_translate_logo: {
     alignSelf:'center',
     top: 25,
     resizeMode: 'contain',
-    width:title_bar_height/1.6
+    width:sc.title_bar_height/1.6
   },
   camera_icon: {
     position: 'absolute',
-    right: title_bar_height*0.3,
-    bottom: title_bar_height*-0.48,
+    right: sc.title_bar_height*0.3,
+    bottom: sc.title_bar_height*-0.48,
     fontSize:42,
-    color: teal
+    color: sc.teal
   },
   // MODEL INFO BOX STYLES -----------------------------------------------------
   section_title: {
     fontSize: 16,
     textAlign: 'left',
-    color: black,
+    color: sc.black,
     fontFamily: 'ArgentumSansRegular'
   },
   section_content: {
-    color: black,
+    color: sc.black,
     fontSize: 16,
     paddingBottom: 15,
     textAlign: 'left',
@@ -82,11 +73,11 @@ const styles = StyleSheet.create({
 
 function rounded_box(color1, color2) {
   return {
-    width: card_width,
-    height: card_width*0.9,
+    width: sc.card_width,
+    height: sc.card_width*0.9,
     paddingLeft:  15,
     paddingRight: 15,
-    backgroundColor: white,
+    backgroundColor: sc.white,
     shadowOffset: {
       width: -7,
       height: 11
@@ -111,12 +102,11 @@ function print_list(movements) {
 function TreeInfo ({navigation})
 {
   const [modelInfo, setModelInfo] = useState(global.treeInfo.a2o);
-  const [color1, setColor1] = useState(white);
-  const [color2, setColor2] = useState(teal);
+  const [color1, setColor1] = useState(sc.white);
+  const [color2, setColor2] = useState(sc.teal);
   const [index, setIndex] = useState(0);
 
-  function get_model_info(abbr)
-  {
+  function get_model_info(abbr) {
     var model = null;
 
     switch (abbr) {
@@ -124,43 +114,43 @@ function TreeInfo ({navigation})
         model = global.treeInfo.a2o;
         if (index === 0) { setIndex(-1); }
         else             { setIndex(0);  }
-        setColor1(white);
-        setColor2(teal);
+        setColor1(sc.white);
+        setColor2(sc.teal);
         break;
       case 'arc':
         model = global.treeInfo.arc;
         if (index === 1) { setIndex(-1); }
         else             { setIndex(1);  }
-        setColor1(white);
-        setColor2(teal);
+        setColor1(sc.white);
+        setColor2(sc.teal);
         break;
       case 'two':
         model = global.treeInfo.two;
         if (index === 2) { setIndex(-1); }
         else             { setIndex(2);  }
-        setColor1(white);
-        setColor2(teal);
+        setColor1(sc.white);
+        setColor2(sc.teal);
         break;
       case 'obj':
         model = global.treeInfo.obj;
         if (index === 3) { setIndex(-1); }
         else             { setIndex(3);  }
-        setColor1(white);
-        setColor2(teal);
+        setColor1(sc.white);
+        setColor2(sc.teal);
         break;
       case 'abs':
         model = global.treeInfo.abs;
         if (index === 4) { setIndex(-1); }
         else             { setIndex(4);  }
-        setColor1(white);
-        setColor2(teal);
+        setColor1(sc.white);
+        setColor2(sc.teal);
         break;
       case 'ren':
         model = global.treeInfo.ren;
         if (index === 5) { setIndex(-1); }
         else             { setIndex(5);  }
-        setColor1(white);
-        setColor2(teal);
+        setColor1(sc.white);
+        setColor2(sc.teal);
         break;
       default:
         model = null;
@@ -176,8 +166,8 @@ function TreeInfo ({navigation})
 
         <View style={styles.prediction_title_bar}>
           <View>
-            <TouchableOpacity style={{alignItems:'center'}}>
-              <Ionicons name="ios-close" style={styles.close_icon}/>
+            <TouchableOpacity style={{alignItems:'center'}} onPress={() => navigation.navigate('Home')}>
+              <Ionicons name="ios-arrow-back" style={styles.back_icon}/>
             </TouchableOpacity>
           </View>
           <View>
@@ -201,49 +191,49 @@ function TreeInfo ({navigation})
 
         <Svg height="40%" width="100%">
 
-          <Line x1={center} y1={tier_height/2+radius} x2={tier6th*1} y2={tier_height*1.5-radius} stroke={teal} strokeWidth={border_thickness} />
-          <Line x1={center} y1={tier_height/2+radius} x2={tier6th*3} y2={tier_height*1.5-radius} stroke={teal} strokeWidth={border_thickness} />
-          <Line x1={center} y1={tier_height/2+radius} x2={tier6th*5} y2={tier_height*1.5-radius} stroke={teal} strokeWidth={border_thickness} />
+          <Line x1={center} y1={tier_height/2+radius} x2={tier6th*1} y2={tier_height*1.5-radius} stroke={sc.teal} strokeWidth={border_thickness} />
+          <Line x1={center} y1={tier_height/2+radius} x2={tier6th*3} y2={tier_height*1.5-radius} stroke={sc.teal} strokeWidth={border_thickness} />
+          <Line x1={center} y1={tier_height/2+radius} x2={tier6th*5} y2={tier_height*1.5-radius} stroke={sc.teal} strokeWidth={border_thickness} />
           { (index === 0) ? (
             <Circle
               cx={center}
               cy={tier_height/2}
               r={radius+border_thickness}
-              stroke={orange}
+              stroke={sc.orange}
               strokeWidth={selection_thickness}
-              fill={clear}
+              fill={sc.clear}
             />
           ) : (null)}
           <Circle
             cx={center}
             cy={tier_height/2}
             r={radius}
-            stroke={teal}
+            stroke={sc.teal}
             strokeWidth={border_thickness}
-            fill={clear}
+            fill={sc.clear}
             onPress={()=>get_model_info('a2o')}
           />
 
 
-          <Line x1={center} y1={tier_height*1.5+radius} x2={tier6th*2} y2={tier_height*2.5-radius} stroke={teal} strokeWidth={border_thickness} />
-          <Line x1={center} y1={tier_height*1.5+radius} x2={tier6th*4} y2={tier_height*2.5-radius} stroke={teal} strokeWidth={border_thickness} />
+          <Line x1={center} y1={tier_height*1.5+radius} x2={tier6th*2} y2={tier_height*2.5-radius} stroke={sc.teal} strokeWidth={border_thickness} />
+          <Line x1={center} y1={tier_height*1.5+radius} x2={tier6th*4} y2={tier_height*2.5-radius} stroke={sc.teal} strokeWidth={border_thickness} />
           { (index === 1) ? (
             <Circle
               cx={tier6th}
               cy={tier_height*1.5}
               r={radius+border_thickness}
-              stroke={orange}
+              stroke={sc.orange}
               strokeWidth={selection_thickness}
-              fill={clear}
+              fill={sc.clear}
             />
           ) : (null)}
           <Circle
             cx={tier6th}
             cy={tier_height*1.5}
             r={radius}
-            stroke={teal}
+            stroke={sc.teal}
             strokeWidth={border_thickness}
-            fill={clear}
+            fill={sc.clear}
             onPress={()=>get_model_info('arc')}
           />
           { (index === 2) ? (
@@ -251,18 +241,18 @@ function TreeInfo ({navigation})
               cx={tier6th*3}
               cy={tier_height*1.5}
               r={radius+border_thickness}
-              stroke={orange}
+              stroke={sc.orange}
               strokeWidth={selection_thickness}
-              fill={clear}
+              fill={sc.clear}
             />
           ) : (null)}
           <Circle
             cx={tier6th*3}
             cy={tier_height * 1.5}
             r={radius}
-            stroke={teal}
+            stroke={sc.teal}
             strokeWidth={border_thickness}
-            fill={clear}
+            fill={sc.clear}
             onPress={()=>get_model_info('two')}
           />
           { (index === 3) ? (
@@ -270,18 +260,18 @@ function TreeInfo ({navigation})
               cx={tier6th*5}
               cy={tier_height*1.5}
               r={radius+border_thickness}
-              stroke={orange}
+              stroke={sc.orange}
               strokeWidth={selection_thickness}
-              fill={clear}
+              fill={sc.clear}
             />
           ) : (null)}
           <Circle
             cx={tier6th*5}
             cy={tier_height * 1.5}
             r={radius}
-            stroke={teal}
+            stroke={sc.teal}
             strokeWidth={border_thickness}
-            fill={clear}
+            fill={sc.clear}
             onPress={()=>get_model_info('obj')}
           />
           { (index === 4) ? (
@@ -289,18 +279,18 @@ function TreeInfo ({navigation})
               cx={tier6th*2}
               cy={tier_height * 2.5}
               r={radius+border_thickness}
-              stroke={orange}
+              stroke={sc.orange}
               strokeWidth={selection_thickness}
-              fill={clear}
+              fill={sc.clear}
             />
           ) : (null)}
           <Circle
             cx={tier6th*2}
             cy={tier_height * 2.5}
             r={radius}
-            stroke={teal}
+            stroke={sc.teal}
             strokeWidth={border_thickness}
-            fill={clear}
+            fill={sc.clear}
             onPress={()=>get_model_info('abs')}
           />
           { (index === 5) ? (
@@ -308,18 +298,18 @@ function TreeInfo ({navigation})
               cx={tier6th*4}
               cy={tier_height * 2.5}
               r={radius+border_thickness}
-              stroke={orange}
+              stroke={sc.orange}
               strokeWidth={selection_thickness}
-              fill={clear}
+              fill={sc.clear}
             />
           ) : (null)}
           <Circle
             cx={tier6th*4}
             cy={tier_height * 2.5}
             r={radius}
-            stroke={teal}
+            stroke={sc.teal}
             strokeWidth={border_thickness}
-            fill={clear}
+            fill={sc.clear}
             onPress={()=>get_model_info('ren')}
           />
         </Svg>
