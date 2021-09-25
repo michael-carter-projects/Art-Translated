@@ -5,8 +5,6 @@ import * as ImagePicker      from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as MediaLibrary     from 'expo-media-library';
 import * as SplashScreen     from 'expo-splash-screen';
-import { StatusBar }         from 'expo-status-bar';
-import { Ionicons }          from '@expo/vector-icons';
 
 import   React, { useState, useEffect, useCallback, useRef }         from 'react';
 import { ActivityIndicator, Image, FlatList, RefreshControl, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
@@ -14,6 +12,9 @@ import * as Progress                                                 from 'react
 import Svg, { Circle }                                               from 'react-native-svg';
 
 import { run_predict_tree, load_model_tree } from '../tree/prediction_tree.js';
+
+import { TitleBar }   from '../helpers/title_bar.js'
+import * as Functions from '../helpers/functions.js'
 
 import    { hs } from '../styles/home_styles.js';
 import * as sc   from '../styles/style_constants.js';
@@ -247,26 +248,6 @@ function Home ({navigation}) {
     }
   }
 
-
-  // COMPONENT FOR RENDERING CAMERA TITLE BAR ==================================================================================
-  const CameraTitleBar = () => {
-    return (
-      <View style={hs.camera_title_bar}>
-
-        <View style={{flex:1, alignItems:'center'}}>
-          <Ionicons name="ios-close" color={sc.white} style={hs.close_icon}/>
-        </View>
-
-        <View style={{flex:1}}>
-          <TouchableOpacity style={{alignItems:'center'}} onPress={ () => navigation.navigate('TreeInfo')}>
-            <Ionicons name="md-help-circle" style={hs.help_button}/>
-          </TouchableOpacity>
-        </View>
-
-        <StatusBar style="light" />
-      </View>
-    );
-  }
   // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
   const PictureFrameProgressBar = () => {
     return (
@@ -326,31 +307,6 @@ function Home ({navigation}) {
               onPress={() => take_pic_and_predict_async(navigation)}
             />
           </Svg>
-        </View>
-    );
-  }
-  // COMPONENT FOR PHOTOS PAGE TITLE BAR =======================================================================================
-  const PhotosTitleBar = () => {
-    return (
-
-        <View style={hs.photo_title_bar}>
-
-          <View style={{flex:1}}>
-            { photosTitle === "Albums" ? (
-              null
-            ) : (
-              <TouchableOpacity style={{alignItems:'center'}} onPress={() => setPhotosTitle("Albums")}>
-                <Ionicons name="ios-arrow-back" style={hs.back_icon}/>
-              </TouchableOpacity>
-            )
-            }
-          </View>
-
-          <View style={{flex:3, alignItems:'center'}}>
-            <Text numberOfLines={1} style={hs.photo_title_bar_text}>{photosTitle}</Text>
-          </View>
-
-          <View style={{flex:1, alignItems:'center'}}/>
         </View>
     );
   }
@@ -416,7 +372,7 @@ function Home ({navigation}) {
 
   // WHERE THE MAGIC HAPPENS ===================================================================================================
   return (
-    <View onLayout={onLayoutRootView} style={{flex: 1}}>
+    <View onLayout={onLayoutRootView} style={{flex: 1, alignItems: 'center'}}>
 
       <Camera style={hs.camera_view} ref={(r) => { camera = r }}>
         <PictureFrameProgressBar/>
@@ -424,13 +380,48 @@ function Home ({navigation}) {
       </Camera>
 
       { isCameraScreen
-        ? ( <CameraTitleBar/> )
+        ? ( <TitleBar
+              bgColor={sc.clear}
+              buttonColor={sc.white}
+              statusColor={'light'}
+              left={null}
+              leftPress={null}
+              middle={null}
+              right={'help'}
+              rightPress={() => navigation.navigate('TreeInfo')}
+            />
+          )
         : ( <View style={hs.photo_selection_page}>
 
-              <PhotosTitleBar/>
+              { photosTitle === 'Albums' ?
+                (
+                  <TitleBar
+                    bgColor={sc.white}
+                    buttonColor={sc.teal}
+                    statusColor={'dark'}
+                    left={null}
+                    leftPress={null}
+                    middle={photosTitle}
+                    right={null}
+                    rightPress={null}
+                  />
+                ) :
+                (
+                  <TitleBar
+                    bgColor={sc.white}
+                    buttonColor={sc.teal}
+                    statusColor={'dark'}
+                    left={'back'}
+                    leftPress={() => setPhotosTitle('Albums')}
+                    middle={photosTitle}
+                    right={'camera'}
+                    rightPress={() => setCameraScreen(true)}
+                  />
+                )
+              }
 
-              <View style={{paddingTop:sc.margin_width, paddingBottom: sc.navigation_bar_height+8}}>
-                { photosTitle === "Albums"
+              <View style={{top:sc.margin_width+sc.title_bar_height, paddingBottom: sc.navigation_bar_height+8}}>
+                { photosTitle === 'Albums'
                   ? ( <ShowAlbums/> )
                   : (  <SafeAreaView style={{height:sc.screen_height-sc.title_bar_height-sc.navigation_bar_height-8}}>
                         <FlatList
@@ -447,7 +438,6 @@ function Home ({navigation}) {
                     )
                 }
               </View>
-              <StatusBar style="dark" />
             </View>
           )
       }

@@ -29,3 +29,13 @@ export const photos_image_size = (screen_width - total_margin) / images_per_row;
 export const more_results_height = 120;
 
 // CONSTANTS FOR MOVEMENTS PAGE ------------------------------------------------
+
+
+// CONSTANTS FOR TREE INFO PAGE ------------------------------------------------
+export const screen_sixth_x = screen_width/6;
+export const screen_center_x = screen_width/2;
+export const tier_height = 80;
+
+export const node_radius = 30;
+export const node_border_thickness = 3;
+export const node_selection_thickness = 6;

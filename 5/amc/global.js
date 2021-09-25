@@ -2,6 +2,35 @@
 global.albums = [{id: "recents", title:"Recents"}];
 global.albumThumbnailURIs = [];
 
+// MOVEMENT list
+
+global.all_movements = ['abstract-expressionism',
+                        'academicism',
+                        'art-deco',
+                        'art-nouveau-modern',
+                        'baroque-painting',
+                        'byzantine',
+                        'cubism',
+                        'early-renaissance-painting',
+                        'egyptian',
+                        'expressionism',
+                        'fauvism',
+                        'gothic-painting',
+                        'grotesque-design',
+                        'high-renaissance-painting',
+                        'impressionism',
+                        'mannerism-painting',
+                        'neoclassicism',
+                        'northern-renaissance-painting',
+                        'post-impressionism',
+                        'realism',
+                        'rococo',
+                        'romanticism',
+                        'surrealism',
+                        'symbolism',
+                        'vanitas'];
+
+
 // REALEY MODEL INFO ===========================================================
 global.twoDimensionalTF = null;
 global.twoDimensionalDict = ['romanticism',
@@ -95,6 +124,17 @@ global.image = null;
 // MOVEMENT MAP ================================================================
 global.movementMap = [
   {
+    key: 'abstract-expressionism',
+    name: "Abstract Expressionism",
+    dates: "null",
+    style: "null",
+    commentary: "null",
+    themes: "null",
+    start_reason: "null",
+    end_reason: "null",
+    img: require('./assets/mvmt_images/abstract_expressionism.jpg'),
+  },
+  {
     key: 'grotesque-design',
     name: "Grotesque",
     dates: "null",
@@ -187,7 +227,6 @@ global.movementMap = [
   {
     key:  "renaissance",
     name: "Renaissance",
-    imagePath: "./assets/images/madonna.jpg",
     dates: "null",
     style: "null",
     commentary: "null",

@@ -29,20 +29,6 @@ function insert_descending(sorted_results, prediction) {
   return sorted_results;
 }
 
-// GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" } ==================================================
-function get_movement_info(prediction) {
-  // SEARCH MOVEMENT MAP FOR INFO OF MOVEMENT ----------------------------------
-  const label = JSON.stringify(prediction.label);
-
-  for (let i=0; i < global.movementMap.length; i++) {
-    if (global.movementMap[i].key === label.replace(/['"]+/g, '')) {
-      return { map:  global.movementMap[i],
-               prob: parseInt(prediction.prob*100)
-             }
-    }
-  }
-}
-
 // GIVEN A LIST OF SORTED RESULTS, REMOVES DUPLICATE RESULTS THAT MAP TO THE SAME MOVEMENT =====================================
 function remove_duplicates(sorted_results) {
 
@@ -116,6 +102,20 @@ function get_predictions_info(two, ren, abs) {
 
     return sorted_info;
   }
+
+// GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" } ==================================================
+function get_movement_info(prediction) {
+  // SEARCH MOVEMENT MAP FOR INFO OF MOVEMENT ----------------------------------
+  const label = JSON.stringify(prediction.label);
+
+  for (let i=0; i < global.movementMap.length; i++) {
+    if (global.movementMap[i].key === label.replace(/['"]+/g, '')) {
+      return { map:  global.movementMap[i],
+               prob: parseInt(prediction.prob*100)
+             }
+    }
+  }
+}
 
 // RUN GIVEN TENSOR IMAGE THROUGH MODEL TREE ===================================================================================
 export async function run_predict_tree(base64) {

@@ -14,46 +14,10 @@ const photos_page_image_size = (sc.screen_width - 5*photos_page_spacing) / 4;
 const card_height = photos_page_image_size;
 
 export const ps = StyleSheet.create({
-  // PREDICTION PAGE TITLE BAR STYLE -------------------------------------------
-  prediction_title_bar: {
-    height: sc.title_bar_height,
-    width: sc.screen_width,
-    backgroundColor: sc.white,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  close_icon: {
-    position: 'absolute',
-    left: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.55,
-    fontSize: 55,
-    color: sc.teal
-  },
-  back_icon: {
-    position: 'absolute',
-    left: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.45,
-    fontSize: 37,
-    color: sc.teal
-  },
-  art_translate_logo: {
-    alignSelf:'center',
-    top: 25,
-    resizeMode: 'contain',
-    width: sc.title_bar_height/1.6
-  },
-  camera_icon: {
-    position: 'absolute',
-    right: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.48,
-    fontSize:42,
-    color: sc.teal
-  },
   // SCROLL VIEW STYLE ---------------------------------------------------------
   scroll_view: {
-    paddingTop: 20,
-    width: sc.screen_width,
+    top: sc.title_bar_height,
+    paddingTop: sc.margin_width*3,
     flex: 1,
   },
   // FIRST RESULT STYLES -------------------------------------------------------

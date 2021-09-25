@@ -9,35 +9,6 @@ const image_frame_top_offset = image_frame_side_length*-0.5;
 const card_height = sc.photos_image_size;
 
 export const hs = StyleSheet.create({
-  camera_title_bar: {
-    position: 'absolute',
-    top: 0,
-    height: sc.title_bar_height,
-    width: sc.screen_width,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems:'center',
-  },
-  close_icon: {
-    position: 'absolute',
-    left: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.55,
-    fontSize: 55,
-  },
-  back_icon: {
-    position: 'absolute',
-    left: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.45,
-    fontSize: 37,
-    color: sc.teal
-  },
-  help_button: {
-    position: 'absolute',
-    right: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.48,
-    color: sc.white,
-    fontSize:37
-  },
   // CAMERA & PHOTO FRAME STYLES -----------------------------------------------
   camera_view: {
     flex: 1,

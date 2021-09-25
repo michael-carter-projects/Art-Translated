@@ -1,26 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { Ionicons }  from '@expo/vector-icons';
 import { Entypo }    from '@expo/vector-icons';
 
 import React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
+import { TitleBar }   from '../helpers/title_bar.js'
+import * as Functions from '../helpers/functions.js'
+
 import    { ps } from '../styles/predictions_styles.js';
 import * as sc   from '../styles/style_constants.js';
-
-// GET A "UNIQUE" KEY PROP FOR LIST OF VIEWS IN SHOWRESULTS ====================================================================
-function get_unique_id(predictions, i) {
-  return predictions[i].prob
-       * predictions[i].map.key.length
-       * predictions[i].map.style.length
-       * 0.12381238481276;
-}
 
 // SHOW ALL RESULTS OF PREDICTION ==============================================================================================
 function ShowResults(props) {
 
   var more_results = [
-    <TouchableOpacity key={get_unique_id(props.preds, 0)} onPress={ () => props.nav.navigate('Movement', {infoMap:props.preds[0].map, color1:sc.grey, color2:sc.grey, uri:props.uri})}>
+    <TouchableOpacity key={Functions.get_unique_id(props.preds[0].map.key, 1)} onPress={ () => props.nav.navigate('Movement', {infoMap:props.preds[0].map, color1:sc.grey, color2:sc.grey, uri:props.uri})}>
       <View style={ps.first_result_card}>
         <Image source={props.preds[0].map.img} style={ps.first_result_image}/>
         <View style={ps.first_result_name_view}>
@@ -45,7 +38,7 @@ function ShowResults(props) {
   )
   for (let i=1; i<props.preds.length; i++) {
     more_results.push(
-      <TouchableOpacity key={get_unique_id(props.preds, i)} onPress={() => props.nav.navigate('Movement', {infoMap:props.preds[i].map, color1:sc.grey, color2:sc.grey, uri:props.uri})}>
+      <TouchableOpacity key={Functions.get_unique_id(props.preds[i].map.key, 1)} onPress={() => props.nav.navigate('Movement', {infoMap:props.preds[i].map, color1:sc.grey, color2:sc.grey, uri:props.uri})}>
         <View style={ps.more_results_card}>
           <Image source={props.preds[i].map.img} style={{width: sc.more_results_height, height: sc.more_results_height}}/>
           <Text style={ps.more_results_name_text}>{props.preds[i].map.name}</Text>
@@ -61,11 +54,11 @@ function ShowResults(props) {
       </TouchableOpacity>
     );
     more_results.push(
-      <View key={i*12345} height={15}/>
+      <View key={Functions.get_unique_id(props.preds[i].map.key, 12)} height={15}/>
     );
   }
   more_results.push(
-    <View key={999999} height={sc.more_results_height}/>
+    <View key={Functions.get_unique_id(props.preds[0].map.key, 12)} height={sc.more_results_height}/>
   );
   return more_results;
 }
@@ -80,22 +73,16 @@ function Predictions ({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center', backgroundColor: sc.white}}>
 
-      <View style={ps.prediction_title_bar}>
-        <View>
-          <TouchableOpacity style={{alignItems:'center'}} onPress={() => navigation.navigate('Home')}>
-            <Ionicons name="ios-arrow-back" style={ps.back_icon}/>
-          </TouchableOpacity>
-        </View>
-        <View>
-          <Image source={require('../assets/icons/AT.png')} style={ps.art_translate_logo}/>
-        </View>
-        <View>
-          <TouchableOpacity style={{alignItems:'center'}} onPress={ () => navigation.navigate('Home')}>
-            <Ionicons name="ios-camera" style={ps.camera_icon}/>
-          </TouchableOpacity>
-        </View>
-        <StatusBar style="dark" />
-      </View>
+      <TitleBar
+        bgColor={sc.white}
+        buttonColor={sc.teal}
+        statusColor={'dark'}
+        left={'back'}
+        leftPress={() => navigation.navigate('Home')}
+        middle={'logo'}
+        right={'camera'}
+        rightPress={() => navigation.navigate('Home')}
+      />
 
       <ScrollView style={ps.scroll_view}>
         <ShowResults preds={predictions} nav={navigation} uri={selected_image_uri}/>
