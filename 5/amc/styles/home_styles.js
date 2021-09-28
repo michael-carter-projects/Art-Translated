@@ -11,7 +11,8 @@ const card_height = sc.photos_image_size;
 export const hs = StyleSheet.create({
   // CAMERA & PHOTO FRAME STYLES -----------------------------------------------
   camera_view: {
-    flex: 1,
+    width: sc.screen_width,
+    height: sc.screen_height,
     alignItems: 'center',
     overflow:'hidden'
   },

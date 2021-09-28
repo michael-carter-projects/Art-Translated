@@ -16,29 +16,25 @@ const styles = StyleSheet.create({
   },
   close_icon: {
     position: 'absolute',
-    left: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.55,
+    bottom: sc.title_bar_height*-0.4,
     fontSize: 55,
   },
   back_icon: {
     position: 'absolute',
-    left: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.45,
-    fontSize: 37,
+    bottom: sc.title_bar_height*-0.4,
+    fontSize: 40,
     color: sc.teal
   },
   camera_icon: {
     position: 'absolute',
-    right: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.48,
-    fontSize:42,
+    bottom: sc.title_bar_height*-0.4,
+    fontSize: 42,
     color: sc.teal
   },
   home_icon: {
     position: 'absolute',
-    right: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.48,
-    fontSize:42,
+    bottom: sc.title_bar_height*-0.4,
+    fontSize: 42,
     color: sc.teal
   },
   help_button: {
@@ -50,9 +46,9 @@ const styles = StyleSheet.create({
   },
   art_translate_logo: {
     alignSelf:'center',
-    top: 25,
+    top: 20,
     resizeMode: 'contain',
-    width: sc.title_bar_height/1.6
+    width: sc.title_bar_height/1.8
   },
   title_bar_text: {
     alignSelf: 'center',
