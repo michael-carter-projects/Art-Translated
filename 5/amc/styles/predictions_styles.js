@@ -14,9 +14,13 @@ const photos_page_image_size = (sc.screen_width - 5*photos_page_spacing) / 4;
 const card_height = photos_page_image_size;
 
 export const ps = StyleSheet.create({
+  //
+  no_nav_safe_area: {
+    top: sc.status_bar_height+sc.title_bar_height,
+    height: sc.safe_area_height+sc.navigation_bar_height,
+  },
   // SCROLL VIEW STYLE ---------------------------------------------------------
   scroll_view: {
-    top: sc.title_bar_height,
     paddingTop: sc.margin_width*3,
     flex: 1,
   },

@@ -363,7 +363,7 @@ function Home ({navigation}) {
       );
     }
     return (
-      <ScrollView style={{paddingTop:10, height:sc.screen_height-sc.title_bar_height-sc.navigation_bar_height}}>
+      <ScrollView>
         {albumViews}
       </ScrollView>
     );
@@ -420,21 +420,20 @@ function Home ({navigation}) {
                 )
               }
 
-              <View style={{top:sc.margin_width+sc.title_bar_height, paddingBottom: sc.navigation_bar_height+8}}>
+              <View style={hs.photos_page_safe_area_view}>
                 { photosTitle === 'Albums'
                   ? ( <ShowAlbums/> )
-                  : (  <SafeAreaView style={{height:sc.screen_height-sc.title_bar_height-sc.navigation_bar_height-8}}>
-                        <FlatList
-                      		data={displayImages}
-                          refreshing={refreshing}
-                          refreshControl={<RefreshControl refreshing={showRefreshing} onRefresh={on_refresh}/>}
-                      		onEndReached={on_end_reached}
-                      		onEndReachedThreshold={1}
-                      		keyExtractor={(item, index) => item + index}
-                      		renderItem={({ item }) => <ImgButton nav={navigation} img={item} />}
-                      		numColumns={sc.images_per_row}
-          	            />
-                      </SafeAreaView>
+                  : (
+                      <FlatList
+                    		data={displayImages}
+                        refreshing={refreshing}
+                        refreshControl={<RefreshControl refreshing={showRefreshing} onRefresh={on_refresh}/>}
+                    		onEndReached={on_end_reached}
+                    		onEndReachedThreshold={1}
+                    		keyExtractor={(item, index) => item + index}
+                    		renderItem={({ item }) => <ImgButton nav={navigation} img={item} />}
+                    		numColumns={sc.images_per_row}
+        	            />
                     )
                 }
               </View>

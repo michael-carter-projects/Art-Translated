@@ -71,7 +71,7 @@ function Predictions ({navigation}) {
   const predictions = navigation.state.params.predictions;
 
   return (
-    <View style={{flex: 1, alignItems: 'center', backgroundColor: sc.white}}>
+    <View>
 
       <TitleBar
         bgColor={sc.white}
@@ -84,9 +84,11 @@ function Predictions ({navigation}) {
         rightPress={() => navigation.navigate('Home')}
       />
 
-      <ScrollView style={ps.scroll_view}>
-        <ShowResults preds={predictions} nav={navigation} uri={selected_image_uri}/>
-      </ScrollView>
+      <View style={ps.no_nav_safe_area}>
+        <ScrollView style={ps.scroll_view}>
+          <ShowResults preds={predictions} nav={navigation} uri={selected_image_uri}/>
+        </ScrollView>
+      </View>
     </View>
   );
 }

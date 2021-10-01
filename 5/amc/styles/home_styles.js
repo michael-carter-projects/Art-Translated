@@ -104,6 +104,10 @@ export const hs = StyleSheet.create({
     color: sc.black,
     fontFamily:'ArgentumSansLight'
   },
+  photos_page_safe_area_view: {
+    top: sc.status_bar_height+sc.title_bar_height,
+    height: sc.safe_area_height,
+  },
   photo_button: {
     width:  sc.photos_image_size,
     height: sc.photos_image_size,

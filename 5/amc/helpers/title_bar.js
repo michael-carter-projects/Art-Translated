@@ -7,52 +7,28 @@ import { Image, ScrollView, StyleSheet, TouchableOpacity, View, Text } from 'rea
 import * as sc from '../styles/style_constants.js';
 
 const styles = StyleSheet.create({
-  title_bar: {
+  title_bar_outer: {
     position: 'absolute',
+    height: sc.title_bar_height+sc.status_bar_height,
+    width: sc.screen_width,
+  },
+  status_bar: {
+    height: sc.status_bar_height,
+    width: sc.screen_width,
+  },
+  title_bar: {
     height: sc.title_bar_height,
     width: sc.screen_width,
     flexDirection: 'row',
     alignItems: 'center',
   },
-  close_icon: {
-    position: 'absolute',
-    bottom: sc.title_bar_height*-0.4,
-    fontSize: 55,
-  },
-  back_icon: {
-    position: 'absolute',
-    bottom: sc.title_bar_height*-0.4,
-    fontSize: 40,
-    color: sc.teal
-  },
-  camera_icon: {
-    position: 'absolute',
-    bottom: sc.title_bar_height*-0.4,
-    fontSize: 42,
-    color: sc.teal
-  },
-  home_icon: {
-    position: 'absolute',
-    bottom: sc.title_bar_height*-0.4,
-    fontSize: 42,
-    color: sc.teal
-  },
-  help_button: {
-    position: 'absolute',
-    right: sc.title_bar_height*0.3,
-    bottom: sc.title_bar_height*-0.48,
-    color: sc.white,
-    fontSize:37
-  },
   art_translate_logo: {
     alignSelf:'center',
-    top: 20,
     resizeMode: 'contain',
-    width: sc.title_bar_height/1.8
+    width: sc.title_bar_height
   },
   title_bar_text: {
     alignSelf: 'center',
-    bottom: sc.title_bar_height*-0.25,
     fontSize: 26,
     color: sc.black,
     fontFamily:'ArgentumSansLight'
@@ -64,23 +40,23 @@ function TitleBarButton(props) {
   switch (props.button_name) {
     case 'close':
       return (
-        <Ionicons name="ios-close" style={[styles.close_icon, {color:props.color}]}/>
+        <Ionicons name="ios-close" size={55} color={props.color}/>
       );
     case 'back':
       return (
-        <Ionicons name="ios-arrow-back" style={[styles.back_icon, {color:props.color}]}/>
+        <Ionicons name="ios-arrow-back" size={40} color={props.color}/>
       );
     case 'camera':
       return (
-        <Ionicons name="ios-camera" style={[styles.camera_icon, {color:props.color}]}/>
+        <Ionicons name="ios-camera" size={42} color={props.color}/>
       );
     case 'home':
       return (
-        <Ionicons name="ios-home" style={[styles.home_icon, {color:props.color}]}/>
+        <Ionicons name="ios-home" size={42} color={props.color}/>
       );
     case 'help':
       return (
-        <Ionicons name="md-help-circle" style={[styles.camera_icon, {color:props.color}]}/>
+        <Ionicons name="md-help-circle" size={37} color={props.color}/>
       );
     default:
       return (
@@ -107,21 +83,26 @@ function Title(props) {
 
 export function TitleBar(props) {
   return (
-    <View style={[styles.title_bar, {backgroundColor:props.bgColor}]}>
-      <View style={{flex:1}}>
-        <TouchableOpacity style={{alignItems:'center'}} onPress={props.leftPress}>
-          <TitleBarButton button_name={props.left} color={props.buttonColor}/>
-        </TouchableOpacity>
+    <View style={styles.title_bar_outer}>
+      <View style={styles.status_bar}/>
+
+      <View  style={[styles.title_bar, {backgroundColor:props.color}]}>
+
+        <View style={{flex:1}}>
+          <TouchableOpacity style={{alignItems:'center'}} onPress={props.leftPress}>
+            <TitleBarButton button_name={props.left} color={props.buttonColor}/>
+          </TouchableOpacity>
+        </View>
+        <View style={{flex:3}}>
+          <Title title={props.middle}/>
+        </View>
+        <View style={{flex:1}}>
+          <TouchableOpacity style={{alignItems:'center'}} onPress={props.rightPress}>
+            <TitleBarButton button_name={props.right} color={props.buttonColor}/>
+          </TouchableOpacity>
+        </View>
+        <StatusBar style={props.statusColor} />
       </View>
-      <View style={{flex:3}}>
-        <Title title={props.middle}/>
-      </View>
-      <View style={{flex:1}}>
-        <TouchableOpacity style={{alignItems:'center'}} onPress={props.rightPress}>
-          <TitleBarButton button_name={props.right} color={props.buttonColor}/>
-        </TouchableOpacity>
-      </View>
-      <StatusBar style={props.statusColor} />
     </View>
   )
 }

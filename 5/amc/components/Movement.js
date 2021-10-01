@@ -59,7 +59,7 @@ function Movement ({navigation})
         <Card.Title style={ms.section_title}>Fate</Card.Title>
         <Text style={ms.section_content}>{infoMap.end_reason}</Text>
 
-        <View style={{padding:30}}/>
+        <View style={{height:30}}/>
 
       </ScrollView>
     </View>

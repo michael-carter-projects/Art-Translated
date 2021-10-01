@@ -13,7 +13,7 @@ import * as sc   from '../styles/style_constants.js';
 function TreeInfo ({navigation})
 {
   const [modelInfo, setModelInfo] = useState(global.treeInfo.a2o);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(-1);
 
   // UPDATES MODEL INFO TO BE DISPLAYED ON BOTTOM OF SCREEN ====================
   function get_model_info(abbr) {
@@ -215,7 +215,7 @@ function TreeInfo ({navigation})
   }
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent:'space-between', backgroundColor:'#fff'}}>
+    <View style={ts.tree_info_page_container}>
 
         <TitleBar
           bgColor={sc.clear}
@@ -228,7 +228,7 @@ function TreeInfo ({navigation})
           rightPress={() => navigation.navigate('Home')}
         />
 
-        <View style={[StyleSheet.absoluteFill, {alignItems: 'center', top:sc.title_bar_height}]}>
+        <View style={[StyleSheet.absoluteFill, {top:sc.title_bar_height+sc.status_bar_height, alignItems: 'center'}]}>
 
           <Text style={[ts.node_text, {left:sc.screen_center_x -21, top:sc.tier_height/2  -15}]}>a2o</Text>
           <Text style={[ts.node_text, {left:sc.screen_sixth_x  -19, top:sc.tier_height*1.5-15}]}>arc</Text>
@@ -238,6 +238,8 @@ function TreeInfo ({navigation})
           <Text style={[ts.node_text, {left:sc.screen_sixth_x*4-19, top:sc.tier_height*2.5-15}]}>ren</Text>
 
           <ShowModelTree/>
+
+          <View height={sc.margin_width*3}/>
 
           { (index !== -1) ? (
             <View style={ts.info_box}>

@@ -11,7 +11,9 @@ export const screen_dimensions = Dimensions.get('window');
 export const screen_width  = screen_dimensions.width;   // iPhone 12 Mini: 375
 export const screen_height = screen_dimensions.height; //  iPhone 12 Mini: 812
 
-export const title_bar_height = screen_height*0.12;
+export const status_bar_height = 34;
+export const title_bar_height = screen_height*0.07;
+
 
 export const margin_width = 5;
 export const card_width  = screen_width - (2*margin_width);
@@ -20,6 +22,12 @@ export const card_width  = screen_width - (2*margin_width);
 export const take_pic_button_diameter = screen_height*0.12;
 
 export const navigation_bar_height = screen_height*0.1;
+
+export const safe_area_height = screen_height
+                               -status_bar_height
+                               -title_bar_height
+                               -navigation_bar_height;
+
 
 export const images_per_row = 4;
 const total_margin = (images_per_row+1)*margin_width;

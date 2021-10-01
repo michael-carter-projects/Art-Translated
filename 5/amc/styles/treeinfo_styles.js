@@ -2,6 +2,12 @@ import { StyleSheet } from 'react-native';
 import * as sc from './style_constants.js';
 
 export const ts = StyleSheet.create({
+  tree_info_page_container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent:'space-between',
+    backgroundColor: sc.white
+  },
   // MODEL TREE STYLES ---------------------------------------------------------
   node_text: {
     fontFamily:'ArgentumSansLight',

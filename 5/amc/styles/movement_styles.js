@@ -7,18 +7,12 @@ export const ms = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: sc.white,
-    paddingTop: sc.title_bar_height
-  },
-  // SROLL VIEW STYLE ----------------------------------------------------------
-  scroll_view: {
-    paddingTop: 20,
-    width: sc.screen_width,
-    flex: 1,
+    paddingTop: sc.status_bar_height+sc.title_bar_height
   },
   // MORE RESULTS STYLES -------------------------------------------------------
   movement_card: {
     alignSelf: 'center',
-    width: sc.card_width,
+    width: sc.screen_width,
     height: sc.more_results_card_height,
     fontSize: 18,
     backgroundColor: sc.white,
@@ -41,8 +35,8 @@ export const ms = StyleSheet.create({
   },
   movement_image: {
     alignSelf: 'stretch',
-    width: sc.card_width,
-    height: sc.card_width/2,
+    width: sc.screen_width,
+    height: sc.card_width/1.8,
   },
   movement_name_view: {
     width: sc.card_width*0.6
