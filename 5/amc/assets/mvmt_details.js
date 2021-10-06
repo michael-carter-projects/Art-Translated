@@ -1,7 +1,7 @@
 export const movement_details = {
     egyptian: {
         name: "Egyptian",
-        key_timespan: "-3100",
+        key_timespan: "-3000 - 100",
         quick_take: "Unnatural looking, flat, sideways, looking straight ahead.",
         feelings: "Understand the afterlife. See a religious, ideological view of the world. Understand the cosmic purpose of maintaining order.",
         impact_to_you: "Influenced the Greek artists who influenced all of Western Art.",
@@ -17,6 +17,7 @@ export const movement_details = {
         prominant_formats: "Statues, reliefs, paintings, sculptures, drawings on papyrus, glazed pottery, jewelry, ivories, tombs, monuments, architecural ornamentation, sarcophagus, glazed ceramic ware (faience).",
         new_or_dominant_materials: "Encaustic (Wax and pigment).",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/egyptian.jpg'),
     },
     classical: {
         name: "Classical",
@@ -36,6 +37,7 @@ export const movement_details = {
         prominant_formats: "Relief sculpture, decorative frieze, sculpture in the round, pediments, funeral statuary, chryselephantine statues, terracotta figurines, temple cult statues, public memorials, decorations of buildings, Attic pottery, vases, krators, stela, tombstones, herms",
         new_or_dominant_materials: "Sedentary clay painted with slip (black, white gloss for color), marble, cast bronze, vase painting, friezes.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/classical.jpg'),
     },
     grotesque: {
         name: "Grotesque",
@@ -55,6 +57,7 @@ export const movement_details = {
         prominant_formats: "Frescos, wall painting, ceiling painting, decorative, architecture ornamentation, pottery, etchings, mosaics, engravings, woodwork, book illustration",
         new_or_dominant_materials: "Ornamental roman style wall painting on stucco, fresco. Paint, pottery.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/grotesque.jpg'),
     },
     byzantine: {
         name: "Byzantine",
@@ -74,6 +77,7 @@ export const movement_details = {
         prominant_formats: "Altarpieces, altar paintings, altar screens, frescos, mosaics, ivory relief sculpture usually presented in small portable objects and common objects.",
         new_or_dominant_materials: "Egg tempera paint pigments on specially prepared wooden panels, or on cloth glued onto wooden panels. Silver metal pieces laid over paintings, gold gilding, gold leaf. Mosaics and ceramic tiles.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/byzantine.jpg'),
     },
     gothic: {
         name: "Gothic",
@@ -93,6 +97,7 @@ export const movement_details = {
         prominant_formats: "Church architecture, stained glass, Illuminated manuscripts, painting on wood panel, wood sculpture, stone sculpture, mosaics, frescos, monumental sculptures, altarpieces, alta painting, life-size tomb effigies, grand multi-level tombs, small ivories and small devotional statues.",
         new_or_dominant_materials: "Oil paint, wood panel (oak, walnut), stained glass, hand painted religous books (Illuminations), fresco.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/gothic.jpg'),
     },
     early_renaissance: {
         name: "Early Renaissance",
@@ -112,6 +117,7 @@ export const movement_details = {
         prominant_formats: "NULL",
         new_or_dominant_materials: "Fresco, egg tempera, oil painting.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/early_renaissance.jpg'),
     },
     high_renaissance: {
         name: "High Renaissance",
@@ -131,6 +137,7 @@ export const movement_details = {
         prominant_formats: "Painting, sculpture, architecture, frescos, altarpieces, altar painting, cycles, small works for private religious devotion, decorative ornament, architectural ornamentation",
         new_or_dominant_materials: "Fresco, egg tempera, oil painting, watercolor (first continuous use). Use of canvas.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/high_renaissance.jpg'),
     },
     mannerism: {
         name: "Mannerism",
@@ -150,6 +157,7 @@ export const movement_details = {
         prominant_formats: "Painting, Sculpture",
         new_or_dominant_materials: "Oil paint, marble.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/mannerism.jpg'),
     },
     baroque: {
         name: "Baroque",
@@ -169,6 +177,7 @@ export const movement_details = {
         prominant_formats: "Altarpieces, altar painting, architecture, twisting columns in the interior of churches, classical ornate columns, decorative detail such as festoons or garlands, landscapes, portraits, sculpture. Gropuings of armor, arrows, objects (trophies) and weapons, baskets of fruit or flowers, 3D figures, frames, angels and domes. Twisted columns give a sense of motion and a dramatic new way of reflecting light. Plaques (cartouches) of carved of marble or stone, usually oval and with a rounded surface, which carried images or text in gilded letters, placed as interior decoration or above the doorways of buildings, delivering messages to those below. Trompe-l'œil effects (looks real to your eye). Common objects depicted are: horns of plenty, festoons, plant and fruit garlands, baby angels, female or male mascarons, oval cartouches (plaques), acanthus leaves, classical columns, caryatids and triangular pediments. Elaborate and frequent use of stucco material.",
         new_or_dominant_materials: "Oil paint, marble, stone.",
         image: "Shading, Modesty, Elaborateness",
+        thumbnail: require('../assets/mvmt_images/baroque.jpg'),
     },
     rococo: {
         name: "Rococo",
@@ -188,6 +197,7 @@ export const movement_details = {
         prominant_formats: "null",
         new_or_dominant_materials: "null",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/rococo.jpg'),
     },
     vanitas: {
         name: "Vanitas",
@@ -207,6 +217,7 @@ export const movement_details = {
         prominant_formats: "Painting, Still Life, Engraving",
         new_or_dominant_materials: "Oil paint, print engraving.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/vanitas.jpg'),
     },
     neoclassicism: {
         name: "Neoclassicism",
@@ -226,6 +237,7 @@ export const movement_details = {
         prominant_formats: "Sculpture, painting, architecture, decorative arts",
         new_or_dominant_materials: "Oil paint on canvas.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/neoclassicism.jpg'),
     },
     history_painting: {
         name: "History Painting",
@@ -245,6 +257,7 @@ export const movement_details = {
         prominant_formats: "Painting, Sculpture, Monuments",
         new_or_dominant_materials: "Oil paint, marble, friezes.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/history_painting.jpg'),
     },
     academic_classicism: {
         name: "Academic Classicism",
@@ -264,6 +277,7 @@ export const movement_details = {
         prominant_formats: "Drawings, oil paint on canvas, drawings, sculpture, monumental canvas sizes",
         new_or_dominant_materials: "Drawings, oil paint, marble, stone.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/academic_classicism.jpg'),
     },
     impressionism: {
         name: "Impressionism",
@@ -283,6 +297,7 @@ export const movement_details = {
         prominant_formats: "Painting",
         new_or_dominant_materials: "Zinc tube packaged oil paint (invented 1841) and  watercolor allowed outside painting.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/impressionism.jpg'),
     },
     post_impressionism: {
         name: "Post-Impressionism",
@@ -302,6 +317,7 @@ export const movement_details = {
         prominant_formats: "Painting",
         new_or_dominant_materials: "Oil paint.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/post_impressionism.jpg'),
     },
     art_nouveau: {
         name: "Art Nouveau",
@@ -321,6 +337,7 @@ export const movement_details = {
         prominant_formats: "Posters, decorative arts, furniture.",
         new_or_dominant_materials: "Cast iron, steel, ceramics, glass, wood, reinforced concrete.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/art_nouveau.jpg'),
     },
     cubism: {
         name: "Cubism",
@@ -340,6 +357,7 @@ export const movement_details = {
         prominant_formats: "Painting, sculpture",
         new_or_dominant_materials: "Oil paint, multi-media, collage, papier collé.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/cubism.jpg'),
     },
     art_deco: {
         name: "Art Deco",
@@ -359,6 +377,7 @@ export const movement_details = {
         prominant_formats: "Painting, sculpture, luxury furniture, architecture, decorative goods.",
         new_or_dominant_materials: "Exotic, expensive materials such as ivory, jewels, stones used in luxury furniture, porcelain, glass, metalwork, textiles, and other decorative products. New technologies in: plate glass, mass-production of aluminum, reinforced concrete.",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/art_deco.jpg'),
     },
     expressionism: {
         name: "Expressionism",
@@ -378,6 +397,7 @@ export const movement_details = {
         prominant_formats: "Painting",
         new_or_dominant_materials: "Oil paint, household paint, multiple different industrial and household materials. ",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/expressionism.jpg'),
     },
     abstract_expressionism: {
         name: "Abstract Expressionism",
@@ -397,6 +417,7 @@ export const movement_details = {
         prominant_formats: "Paints of all types, sculpture, mobile, collage",
         new_or_dominant_materials: "Paint, industrial paint, materials, metals, collages, multiple different industrial and household materials. ",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/abstract_expressionism.jpg'),
     },
     fauvism: {
         name: "Fauvism",
@@ -416,6 +437,7 @@ export const movement_details = {
         prominant_formats: "null",
         new_or_dominant_materials: "null",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/fauvism.jpg'),
     },
     northern_renaissance: {
         name: "Northern Renaissance",
@@ -435,6 +457,7 @@ export const movement_details = {
         prominant_formats: "null",
         new_or_dominant_materials: "null",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/northern_renaissance.jpg'),
     },
     realism_naturalism: {
         name: "Realism/Naturalism",
@@ -454,6 +477,7 @@ export const movement_details = {
         prominant_formats: "null",
         new_or_dominant_materials: "null",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/realism_naturalism.jpg'),
     },
     romanticism: {
         name: "Romanticism",
@@ -473,6 +497,7 @@ export const movement_details = {
         prominant_formats: "null",
         new_or_dominant_materials: "null",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/romanticism.jpg'),
     },
     surrealism: {
         name: "Surrealism",
@@ -492,6 +517,7 @@ export const movement_details = {
         prominant_formats: "null",
         new_or_dominant_materials: "null",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/surrealism.jpg'),
     },
     symbolism: {
         name: "Symbolism",
@@ -511,5 +537,6 @@ export const movement_details = {
         prominant_formats: "null",
         new_or_dominant_materials: "null",
         image: "null",
+        thumbnail: require('../assets/mvmt_images/symbolism.jpg'),
     },
 }

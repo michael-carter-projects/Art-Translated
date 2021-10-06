@@ -41,6 +41,7 @@ for mvmt in mvmt_details:
     for fieldname in mvmt_details.get(mvmt).keys():
         f.write('        '+ safe_field_name(fieldname) +': \"'+safe_string(mvmt_details.get(mvmt).get(fieldname))+'\",\n')
 
+    f.write('        thumbnail: require(\'../assets/mvmt_images/'+mvmt+'.jpg\'),\n')
     f.write('    },\n')
 
 f.write('}');

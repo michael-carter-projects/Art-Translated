@@ -11,7 +11,7 @@ import { ActivityIndicator, Image, FlatList, RefreshControl, SafeAreaView, Scrol
 import * as Progress                                                 from 'react-native-progress';
 import Svg, { Circle }                                               from 'react-native-svg';
 
-import { run_predict_tree, load_model_tree } from '../helpers/prediction_tree.js';
+import { run_predict_tree, load_model_tree } from '../assets/model_tree/ModelTree.js';
 
 import { TitleBar }   from '../helpers/title_bar.js'
 import * as Functions from '../helpers/functions.js'

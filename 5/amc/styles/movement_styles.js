@@ -58,7 +58,6 @@ export const ms = StyleSheet.create({
   movement_description_view: {
     left: sc.card_width*0.05,
     width: sc.card_width*0.9,
-    height:sc.card_width*0.26,
   },
   movement_description_text: {
     paddingTop: 12,

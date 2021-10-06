@@ -10,8 +10,7 @@ import    { ps } from '../styles/predictions_styles.js';
 import * as sc   from '../styles/style_constants.js';
 
 function get_image_uri(name) {
-  console.log('../assets/mvmt_images/'+name+'.jpg');
-
+  name = name.replace(' ', '_').toLowerCase();
   return '../assets/mvmt_images/'+name+'.jpg';
 }
 
@@ -24,7 +23,7 @@ function ShowResults(props) {
   var results = [
     <TouchableOpacity key={Functions.get_unique_id(res1info.name, 1)} onPress={ () => props.nav.navigate('Movement', {mvmt_info:res1info, uri:props.uri})}>
       <View style={ps.first_result_card}>
-        <Image source={{uri: get_image_uri(res1info.name)}} style={ps.first_result_image}/>
+        <Image source={res1info.thumbnail} style={ps.first_result_image}/>
         <View style={ps.first_result_name_view}>
           <Text style={ps.first_result_name_text}>{res1info.name}</Text>
         </View>
@@ -51,9 +50,9 @@ function ShowResults(props) {
     var resiprob = props.preds[i].prob;
 
     results.push(
-      <TouchableOpacity key={Functions.get_unique_id(resiinfo.name, 1)} onPress={() => props.nav.navigate('Movement', {mvmt_info:resiinfo, uri:props.uri})}>
+      <TouchableOpacity key={Functions.get_unique_id(resiinfo.name, i)} onPress={() => props.nav.navigate('Movement', {mvmt_info:props.preds[i].info, uri:props.uri})}>
         <View style={ps.more_results_card}>
-          <Image source={resiinfo.img} style={{width: sc.more_results_height, height: sc.more_results_height}}/>
+          <Image source={resiinfo.thumbnail} style={{width: sc.more_results_height, height: sc.more_results_height}}/>
           <Text style={ps.more_results_name_text}>{resiinfo.name}</Text>
           <View style={ps.more_results_description_view}>
             <Text style={ps.more_results_description_text}>{resiinfo.quick_take}</Text>
@@ -67,11 +66,11 @@ function ShowResults(props) {
       </TouchableOpacity>
     );
     results.push(
-      <View key={Functions.get_unique_id(resiinfo.name, 12)} height={15}/>
+      <View key={Functions.get_unique_id(resiinfo.name, 2*i)} height={15}/>
     );
   }
   results.push(
-    <View key={Functions.get_unique_id(res1info.name, 12)} height={sc.more_results_height}/>
+    <View key={Functions.get_unique_id(res1info.name, 2)} height={sc.more_results_height}/>
   );
   return results;
 }

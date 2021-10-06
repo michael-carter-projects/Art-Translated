@@ -2,7 +2,7 @@ import * as tf                          from '@tensorflow/tfjs';
 import * as automl                      from '@tensorflow/tfjs-automl';
 import { decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
-import { movement_details } from '../assets/mvmt_details.js'
+import { movement_details } from '../mvmt_details.js'
 
 // REALEY MODEL INFO ===========================================================
 var twoDimensionalTF = null;
@@ -178,18 +178,18 @@ export async function run_predict_tree(base64) {
 export async function load_model_tree() {
 
   const tfReady = await tf.ready();
-  const twoDimensionalModel   = await require("../assets/models/twodimensional/model.json");
-  const twoDimensionalWeights = await require("../assets/models/twodimensional/weights.bin");
+  const twoDimensionalModel   = await require("./twodimensional/model.json");
+  const twoDimensionalWeights = await require("./twodimensional/weights.bin");
   const twoDimensionalGraph = await tf.loadGraphModel(bundleResourceIO(twoDimensionalModel, twoDimensionalWeights));
   twoDimensionalTF = new automl.ImageClassificationModel(twoDimensionalGraph, twoDimensionalDict);
   console.log('[+] Tensorflow model A loaded');
-  const abstractishModel   = await require("../assets/models/abstractish/model.json");
-  const abstractishWeights = await require("../assets/models/abstractish/weights.bin");
+  const abstractishModel   = await require("./abstractish/model.json");
+  const abstractishWeights = await require("./abstractish/weights.bin");
   const abstractishGraph = await tf.loadGraphModel(bundleResourceIO(abstractishModel, abstractishWeights));
   abstractishTF = new automl.ImageClassificationModel(abstractishGraph, abstractishDict);
   console.log('[+] Tensorflow model B loaded');
-  const renaissancishModel   = await require("../assets/models/renaissancish/model.json");
-  const renaissancishWeights = await require("../assets/models/renaissancish/weights.bin");
+  const renaissancishModel   = await require("./renaissancish/model.json");
+  const renaissancishWeights = await require("./renaissancish/weights.bin");
   const renaissancishGraph = await tf.loadGraphModel(bundleResourceIO(renaissancishModel, renaissancishWeights));
   renaissancishTF = new automl.ImageClassificationModel(renaissancishGraph, renaissancishDict);
   console.log('[+] Tensorflow model C loaded');
