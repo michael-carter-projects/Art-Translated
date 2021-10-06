@@ -27,3 +27,34 @@ export function print_list(word_list, tab) {
 
   return string;
 }
+
+
+function is_lower_case_word(string) {
+
+  const lower_case_words = [
+    'and', 'by', 'for', 'of', 'or', 'to'
+  ]
+
+  for (let i=0; i<lower_case_words.length; i++) {
+    if (string === lower_case_words[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+export function capitalize(string) {
+
+  const words = string.split('_');
+  var new_string = '';
+
+  for(let i=0; i<words.length; i++) {
+    if (!is_lower_case_word(words[i])) {
+      new_string += words[i][0].toUpperCase() + words[i].substring(1) + " ";
+    }
+    else {
+      new_string += words[i] + " ";
+    }
+  }
+  return new_string;
+}

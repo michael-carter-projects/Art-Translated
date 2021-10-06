@@ -22,6 +22,10 @@ import * as sc   from '../styles/style_constants.js';
 let camera: Camera; // camera ref to allow abort
 
 
+// iwuehfiwuehfiwuehfiwuegfiwuegf
+var albums = [{id: "recents", title:"Recents"}];
+var albumThumbnailURIs = [];
+
 // ON STARTUP ==================================================================================================================
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
@@ -183,20 +187,22 @@ function Home ({navigation}) {
         console.log("[+] Fonts loaded")
 
         // LOAD ALBUM THUMBNAILS -----------------------------------------------
-        global.albums = await MediaLibrary.getAlbumsAsync();
+        albums = await MediaLibrary.getAlbumsAsync();
 
         let recentAssets = await MediaLibrary.getAssetsAsync({first:36});
         recents_image_count.current = recentAssets.totalCount;
 
-        global.albumThumbnailURIs.push(recentAssets.assets[0].uri);
-        for (let i=0; i < global.albums.length; i++) {
-          let albumAssets = await MediaLibrary.getAssetsAsync({album: global.albums[i].id});
-          global.albumThumbnailURIs.push(albumAssets.assets[0].uri);
+        albumThumbnailURIs.push(recentAssets.assets[0].uri);
+        for (let i=0; i < albums.length; i++) {
+          let albumAssets = await MediaLibrary.getAssetsAsync({album: albums[i].id});
+          albumThumbnailURIs.push(albumAssets.assets[0].uri);
         }
-        console.log('[+] Loaded '+ global.albumThumbnailURIs.length.toString() + ' album thumbnails');
+        console.log('[+] Loaded '+ albumThumbnailURIs.length.toString() + ' album thumbnails');
 
         // LOAD MODEL TREE -----------------------------------------------------
         await load_model_tree();
+
+
 
         console.log("ALL ASSETS LOADED ==========================")
         console.log("============================================")
@@ -343,20 +349,20 @@ function Home ({navigation}) {
     let albumViews = [
       <TouchableOpacity key="Recents" onPress={() => open_album({id:"recents", title:"Recents"})}>
         <View style={hs.album_card}>
-          <Image source={{uri: global.albumThumbnailURIs[0]}} style={hs.album_image}/>
+          <Image source={{uri: albumThumbnailURIs[0]}} style={hs.album_image}/>
           <Text style={hs.album_name_text}>Recents</Text>
           <Text style={hs.album_image_count_text}>{recents_image_count.current} images</Text>
         </View>
         <View height={sc.margin_width}/>
       </TouchableOpacity>
     ];
-    for (let i=0; i < global.albums.length; i++) {
+    for (let i=0; i < albums.length; i++) {
       albumViews.push(
-        <TouchableOpacity key={global.albums[i].id} onPress={() => open_album(global.albums[i])}>
+        <TouchableOpacity key={albums[i].id} onPress={() => open_album(albums[i])}>
           <View style={hs.album_card}>
-            <Image source={{uri: global.albumThumbnailURIs[i+1]}} style={hs.album_image}/>
-            <Text style={hs.album_name_text}>{ global.albums[i].title }</Text>
-            <Text style={hs.album_image_count_text}>{ global.albums[i].assetCount } images</Text>
+            <Image source={{uri: albumThumbnailURIs[i+1]}} style={hs.album_image}/>
+            <Text style={hs.album_name_text}>{ albums[i].title }</Text>
+            <Text style={hs.album_image_count_text}>{ albums[i].assetCount } images</Text>
           </View>
           <View height={sc.margin_width}/>
         </TouchableOpacity>

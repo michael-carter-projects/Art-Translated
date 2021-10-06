@@ -9,10 +9,85 @@ import * as Functions from '../helpers/functions.js'
 import    { ts } from '../styles/treeinfo_styles.js';
 import * as sc   from '../styles/style_constants.js';
 
+// MOVEMENT list
+const all_movements = ['abstract_expressionism',
+                        'academic_classicism',
+                        'art_deco',
+                        'art_nouveau',
+                        'baroque',
+                        'byzantine',
+                        'cubism',
+                        'early_renaissance',
+                        'egyptian',
+                        'expressionism',
+                        'fauvism',
+                        'gothic',
+                        'grotesque',
+                        'high_renaissance',
+                        'impressionism',
+                        'mannerism',
+                        'neoclassicism',
+                        'northern_renaissance',
+                        'post_impressionism',
+                        'realism',
+                        'rococo',
+                        'romanticism',
+                        'surrealism',
+                        'symbolism',
+                        'vanitas'];
+
+// INFO FOR TREE INFO PAGE =====================================================
+const model_tree_info = {
+  a2o: {
+    name: 'Architecture, 2D, or Object [NOT YET IMPLEMENTED]',
+    type: 'single-label, high-accuracy',
+    desc: ['architecture', 'twodimensional', 'object'],
+    accu: 0.000,
+    size: 0.0
+  },
+  arc: {
+    name: 'Architecture [NOT YET IMPLEMENTED]',
+    type: 'single-label, high-accuracy',
+    desc: ['art-deco', 'gothic', 'romanesque', 'etcetera'],
+    accu: 0.000,
+    size: 0.0
+  },
+  obj: {
+    name: 'Object [NOT YET IMPLEMENTED]',
+    type: 'single-label, high-accuracy',
+    desc: ['gothic', 'egyptian', 'mannerism-late-renaissance', 'etcetera'],
+    accu: 0.000,
+    size: 0.0
+  },
+  two: {
+    name: 'Two Dimensional',
+    type: 'multi-label, high-accuracy',
+    desc: [ 'abstractish', 'art-deco', 'art-nouveau-modern', 'baroque-painting', 'byzantine',
+            'cubism', 'egyptian', 'gothic-book', 'gothic-painting', 'gothic-polyptych',
+            'gothic-worn', 'grotesque-design', 'neoclassicism', 'realism', 'renaissancish',
+            'rococo', 'romanticism', 'surrealism', 'symbolism', 'vanitas'],
+    accu: 0.777,
+    size: 22.0
+  },
+  abs: {
+    name: 'Abstract-ish',
+    type: 'multi-label, high-accuracy',
+    desc: ['expressionism', 'fauvism', 'impressionism', 'post-impressionism'],
+    accu: 0.813,
+    size: 22.0
+  },
+  ren: {
+    name: 'Renaissance-ish',
+    type: 'multi-label, high-accuracy',
+    desc: ['academicism', 'early-renaissance-painting', 'high-renaissance-paintings', 'mannerism-painting', 'northern-renaissance-painting'],
+    accu: 0.849,
+    size: 22.0
+  },
+}
 
 function TreeInfo ({navigation})
 {
-  const [modelInfo, setModelInfo] = useState(global.treeInfo.a2o);
+  const [modelInfo, setModelInfo] = useState(model_tree_info.a2o);
   const [index, setIndex] = useState(-1);
 
   // UPDATES MODEL INFO TO BE DISPLAYED ON BOTTOM OF SCREEN ====================
@@ -21,32 +96,32 @@ function TreeInfo ({navigation})
 
     switch (abbr) {
       case 'a2o':
-        model = global.treeInfo.a2o;
+        model = model_tree_info.a2o;
         if (index === 0) { setIndex(-1); }
         else             { setIndex(0);  }
         break;
       case 'arc':
-        model = global.treeInfo.arc;
+        model = model_tree_info.arc;
         if (index === 1) { setIndex(-1); }
         else             { setIndex(1);  }
         break;
       case 'two':
-        model = global.treeInfo.two;
+        model = model_tree_info.two;
         if (index === 2) { setIndex(-1); }
         else             { setIndex(2);  }
         break;
       case 'obj':
-        model = global.treeInfo.obj;
+        model = model_tree_info.obj;
         if (index === 3) { setIndex(-1); }
         else             { setIndex(3);  }
         break;
       case 'abs':
-        model = global.treeInfo.abs;
+        model = model_tree_info.abs;
         if (index === 4) { setIndex(-1); }
         else             { setIndex(4);  }
         break;
       case 'ren':
-        model = global.treeInfo.ren;
+        model = model_tree_info.ren;
         if (index === 5) { setIndex(-1); }
         else             { setIndex(5);  }
         break;
@@ -69,8 +144,8 @@ function TreeInfo ({navigation})
       </View>
     ];
 
-    for (let i=0; i<global.all_movements.length; i++) {
-      let infoMap = Functions.get_movement_info_from_key(global.all_movements[i]);
+    for (let i=0; i<all_movements.length; i++) {
+      let infoMap = Functions.get_movement_info_from_key(all_movements[i]);
       all_movements.push(
         <View key={Functions.get_unique_id(infoMap.key, 1)} style={{flex:1, flexDirection:'row'}}>
           <Image source={infoMap.img} style={{width:80, height:80}}/>

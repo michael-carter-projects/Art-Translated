@@ -12,12 +12,27 @@ import    { ms } from '../styles/movement_styles.js';
 import * as sc   from '../styles/style_constants.js';
 
 
+
+function ShowDetails(props) {
+
+  var details = [];
+
+  for (var field in props.mvmt_info) {
+    if (field !== 'name' && field != 'key_timespan' && field != 'quick_take' && field != 'image') {
+      if (Object.prototype.hasOwnProperty.call(props.mvmt_info, field)) {
+        details.push(<Card.Title id={Functions.get_unique_id(field, 1)} style={ms.section_title}>{Functions.capitalize(field)}</Card.Title>);
+        details.push(<Text id={Functions.get_unique_id(field, 2)} style={ms.section_content}>{props.mvmt_info[field]}</Text>);
+        details.push(<Card.Divider id={Functions.get_unique_id(field, 3)} />);
+      }
+    }
+  }
+  return details;
+}
+
 function Movement ({navigation})
 {
-  const infoMap = navigation.state.params.infoMap;
-  const color1  = navigation.state.params.color1;
-  const color2  = navigation.state.params.color2;
-  const selected_image_uri = infoMap.img;
+  const mvmt_info = navigation.state.params.mvmt_info;
+  const selected_image_uri = mvmt_info.img;
 
   return (
     <View style={ms.movement_page_container}>
@@ -27,37 +42,23 @@ function Movement ({navigation})
         buttonColor={sc.teal}
         statusColor={'dark'}
         left={'back'}
-        leftPress={() => navigation.navigate('Home')}
+        leftPress={() => navigation.navigate('Predictions')}
         middle={'logo'}
         right={'camera'}
         rightPress={() => navigation.navigate('Home')}
       />
 
-
       <ScrollView style={ms.scroll_view}>
           <Image source={selected_image_uri} style={ms.movement_image}/>
-          <Text style={ms.movement_name_text}>{infoMap.name}</Text>
-          <Text style={ms.movement_period_text}>{infoMap.dates}</Text>
+          <Text style={ms.movement_name_text}>{mvmt_info.name}</Text>
+          <Text style={ms.movement_period_text}>{mvmt_info.key_timespan}</Text>
           <View style={ms.movement_description_view}>
-            <Text style={ms.movement_description_text}>{infoMap.style}</Text>
+            <Text style={ms.movement_description_text}>{mvmt_info.quick_take}</Text>
           </View>
 
         <Text style={{height:30}}/>
 
-        <Card.Title style={ms.section_title}>Commentary</Card.Title>
-        <Text style={ms.section_content}>{infoMap.commentary}</Text>
-        <Card.Divider/>
-
-        <Card.Title style={ms.section_title}>Themes</Card.Title>
-        <Text style={ms.section_content}>{infoMap.themes}</Text>
-        <Card.Divider/>
-
-        <Card.Title style={ms.section_title}>Origin</Card.Title>
-        <Text style={ms.section_content}>{infoMap.start_reason}</Text>
-        <Card.Divider/>
-
-        <Card.Title style={ms.section_title}>Fate</Card.Title>
-        <Text style={ms.section_content}>{infoMap.end_reason}</Text>
+        <ShowDetails mvmt_info={mvmt_info}/>
 
         <View style={{height:30}}/>
 

@@ -2,6 +2,45 @@ import * as tf                          from '@tensorflow/tfjs';
 import * as automl                      from '@tensorflow/tfjs-automl';
 import { decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
+import { movement_details } from '../assets/mvmt_details.js'
+
+// REALEY MODEL INFO ===========================================================
+var twoDimensionalTF = null;
+const twoDimensionalDict = ['romanticism',
+                              'gothic',
+                              'neoclassicism',
+                              'art_nouveau',
+                              'gothic',
+                              'grotesque',
+                              'gothic',
+                              'byzantine',
+                              'renaissancish',
+                              'symbolism',
+                              'gothic',
+                              'cubism',
+                              'realism_naturalism',
+                              'abstractish',
+                              'baroque',
+                              'vanitas',
+                              'surrealism',
+                              'rococo',
+                              'art_deco',
+                              'egyptian'];
+
+// RENAISSANCE MODEL INFO ======================================================
+var renaissancishTF = null;
+const renaissancishDict = ['mannerism',
+                            'northern_renaissance',
+                            'high_renaissance',
+                            'early_renaissance',
+                            'academic_classicism'];
+
+// ABSTRACTISH MODEL INFO ======================================================
+var abstractishTF = null;
+const abstractishDict = ['expressionism',
+                          'fauvism',
+                          'impressionism',
+                          'post_impressionism'];
 
 // CONVERTS BASE64 IMAGE TO TENSORS FOR PREDICTION =============================================================================
 function b64_to_tensor(base64) {
@@ -99,22 +138,14 @@ function get_predictions_info(two, ren, abs) {
     for (let i=0; i < sorted_results.length; i++) {
       sorted_info.splice(i, 0, get_movement_info(sorted_results[i]));
     }
-
     return sorted_info;
   }
 
 // GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" } ==================================================
 function get_movement_info(prediction) {
-  // SEARCH MOVEMENT MAP FOR INFO OF MOVEMENT ----------------------------------
-  const label = JSON.stringify(prediction.label);
-
-  for (let i=0; i < global.movementMap.length; i++) {
-    if (global.movementMap[i].key === label.replace(/['"]+/g, '')) {
-      return { map:  global.movementMap[i],
-               prob: parseInt(prediction.prob*100)
-             }
-    }
-  }
+  return { info: movement_details[prediction.label],
+           prob: parseInt(prediction.prob*100)
+         }
 }
 
 // RUN GIVEN TENSOR IMAGE THROUGH MODEL TREE ===================================================================================
@@ -129,14 +160,14 @@ export async function run_predict_tree(base64) {
   var predictionABS = []; // list for storing abstractish predictions
 
   console.log("[+] Running Two Dimensional")
-  const predictionTWO = await global.twoDimensionalTF.classify(imgTensor); // run 2D model
+  const predictionTWO = await twoDimensionalTF.classify(imgTensor); // run 2D model
 
   if (predictionTWO[8].prob  > threshold_REN) { // renaissancish = 8
-    predictionREN = await global.renaissancishTF.classify(imgTensor);
+    predictionREN = await renaissancishTF.classify(imgTensor);
     console.log("[+] Running Renaissancish")
   }
   if (predictionTWO[13].prob > threshold_ABS) { // abstractish = 13
-    predictionABS = await global.abstractishTF.classify(imgTensor);
+    predictionABS = await abstractishTF.classify(imgTensor);
     console.log("[+] Running Abstractish")
   }
 
@@ -149,17 +180,17 @@ export async function load_model_tree() {
   const tfReady = await tf.ready();
   const twoDimensionalModel   = await require("../assets/models/twodimensional/model.json");
   const twoDimensionalWeights = await require("../assets/models/twodimensional/weights.bin");
-  const twoDimensionalTF = await tf.loadGraphModel(bundleResourceIO(twoDimensionalModel, twoDimensionalWeights));
-  global.twoDimensionalTF = new automl.ImageClassificationModel(twoDimensionalTF, global.twoDimensionalDict);
+  const twoDimensionalGraph = await tf.loadGraphModel(bundleResourceIO(twoDimensionalModel, twoDimensionalWeights));
+  twoDimensionalTF = new automl.ImageClassificationModel(twoDimensionalGraph, twoDimensionalDict);
   console.log('[+] Tensorflow model A loaded');
   const abstractishModel   = await require("../assets/models/abstractish/model.json");
   const abstractishWeights = await require("../assets/models/abstractish/weights.bin");
-  const abstractishTF = await tf.loadGraphModel(bundleResourceIO(abstractishModel, abstractishWeights));
-  global.abstractishTF = new automl.ImageClassificationModel(abstractishTF, global.abstractishDict);
+  const abstractishGraph = await tf.loadGraphModel(bundleResourceIO(abstractishModel, abstractishWeights));
+  abstractishTF = new automl.ImageClassificationModel(abstractishGraph, abstractishDict);
   console.log('[+] Tensorflow model B loaded');
   const renaissancishModel   = await require("../assets/models/renaissancish/model.json");
   const renaissancishWeights = await require("../assets/models/renaissancish/weights.bin");
-  const renaissancishTF = await tf.loadGraphModel(bundleResourceIO(renaissancishModel, renaissancishWeights));
-  global.renaissancishTF = new automl.ImageClassificationModel(renaissancishTF, global.renaissancishDict);
+  const renaissancishGraph = await tf.loadGraphModel(bundleResourceIO(renaissancishModel, renaissancishWeights));
+  renaissancishTF = new automl.ImageClassificationModel(renaissancishGraph, renaissancishDict);
   console.log('[+] Tensorflow model C loaded');
 };

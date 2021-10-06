@@ -11,11 +11,17 @@ def make_json(csvFilePath):
 
         for rows in csvReader:
             key = rows['Name'].lower()
-            key = key.replace(" ", "-")
+            key = key.replace(" ", "_")
+            key = key.replace("-", "_")
+            key = key.replace("/", "_")
             data[key] = rows
 
     return data;
 
+def safe_field_name(string):
+    string = string.lower()
+    string = string.replace(" ", "_")
+    return string
 
 def safe_string(string):
     string = string.replace("\"", "\\\"")
@@ -24,16 +30,16 @@ def safe_string(string):
 
 mvmt_details = make_json('../assets/mvmt_details.csv')
 
-os.remove('../assets/mvmt_details.json')
-f = open('../assets/mvmt_details.json', "a", encoding="utf-8")
+os.remove('../assets/mvmt_details.js')
+f = open('../assets/mvmt_details.js', "a", encoding="utf-8")
 
-f.write('{\n')
+f.write('export const movement_details = {\n')
 
 for mvmt in mvmt_details:
-    f.write('\"'+ mvmt + '\": {\n')
+    f.write('    ' + mvmt + ': {\n')
 
     for fieldname in mvmt_details.get(mvmt).keys():
-        f.write('    \"'+ fieldname +'\": \"'+safe_string(mvmt_details.get(mvmt).get(fieldname))+'\",\n')
+        f.write('        '+ safe_field_name(fieldname) +': \"'+safe_string(mvmt_details.get(mvmt).get(fieldname))+'\",\n')
 
     f.write('    },\n')
 

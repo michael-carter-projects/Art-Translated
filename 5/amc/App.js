@@ -8,8 +8,6 @@ import TreeInfo    from './components/TreeInfo';
 import { createAppContainer   } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import './global.js';
-
 const RootStack = createStackNavigator({
   Home:        { screen: Home        },
   Predictions: { screen: Predictions },

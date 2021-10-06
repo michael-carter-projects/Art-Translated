@@ -44,7 +44,7 @@ export const ms = StyleSheet.create({
   movement_name_text: {
     left: sc.card_width*0.05,
     top: sc.card_width/25,
-    fontSize: 30,
+    fontSize: 34,
     fontFamily: 'ArgentumSansLight',
     color: sc.black
   },
@@ -67,18 +67,20 @@ export const ms = StyleSheet.create({
     fontFamily: 'ArgentumSansLight',
   },
   section_title: {
-    left: sc.card_width*0.05,
+    left: sc.screen_width*0.05,
+    width: sc.screen_width*0.9,
     fontFamily: 'ArgentumSansLight',
     fontSize: 24,
     textAlign: 'left',
     color: sc.black
   },
   section_content: {
-    left: sc.card_width*0.05,
+    left: sc.screen_width*0.05,
+    width: sc.screen_width*0.9,
     fontFamily: 'ArgentumSansLight',
-    color: sc.black,
     fontSize: 18,
-    paddingBottom: 15,
     textAlign: 'left',
+    color: sc.black,
+    paddingBottom: 15,
   },
 })
