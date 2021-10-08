@@ -74,6 +74,7 @@ function Home ({navigation}) {
   const total_images_in_album = useRef(0);
   const recents_image_count   = useRef(0);
 
+  const [takenPhoto, setTakenPhoto] = useState(null);
 
   // FETCH THE FIRST 36 IMAGES IN AN ALBUM =====================================================================================
   const fetch_initial_images = async (album_id) => {
@@ -170,12 +171,12 @@ function Home ({navigation}) {
     setShowRefreshing(false);
   }, [refreshing]);
 
-
-
   // LOAD ASSETS DURING SPLASH SCREEN ==========================================================================================
   useEffect(() => {
     async function prepare() {
       try {
+        console.log("Loading assets....")
+
         await SplashScreen.preventAutoHideAsync();  // Keep the splash screen visible while we fetch resources
 
         // LOAD FONTS ----------------------------------------------------------
@@ -183,7 +184,6 @@ function Home ({navigation}) {
           ArgentumSansLight: require('../assets/fonts/argentum-sans.light.ttf'),
           ArgentumSansRegular: require('../assets/fonts/argentum-sans.regular.ttf'),
         });
-        console.log("[+] Fonts loaded")
 
         // LOAD ALBUM THUMBNAILS -----------------------------------------------
         albums = await MediaLibrary.getAlbumsAsync();
@@ -196,15 +196,10 @@ function Home ({navigation}) {
           let albumAssets = await MediaLibrary.getAssetsAsync({album: albums[i].id});
           albumThumbnailURIs.push(albumAssets.assets[0].uri);
         }
-        console.log('[+] Loaded '+ albumThumbnailURIs.length.toString() + ' album thumbnails');
-
         // LOAD MODEL TREE -----------------------------------------------------
         await load_model_tree();
 
-
-
-        console.log("ALL ASSETS LOADED ==========================")
-        console.log("============================================")
+        console.log("== APP IS READY ==")
 
       } catch (e) {
         console.warn(e);
@@ -225,8 +220,7 @@ function Home ({navigation}) {
     return null;
   }
 
-
-  // SELECT IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ===============================================================
+  // TAKE PHOTO, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION =================================================================
   async function take_pic_and_predict_async(nav) {
     if (camera) { // skip execution if camera is undefined/null
 
@@ -236,11 +230,10 @@ function Home ({navigation}) {
       // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
       const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
         photo.uri,
-        [{crop:   {originX:30, originY:300, width:photo.width*0.9, height:photo.width*0.9}},
+        [{crop:   {originX:photo.width*0.05, originY:870, width:photo.width*0.9, height:photo.width*0.9}},
          {resize: {width:224}}],
         {base64: true}
       );
-
       // MAKE PREDICTION ------------------------------------------------------------------------
       const predictions = await run_predict_tree(base64);
 
@@ -252,9 +245,36 @@ function Home ({navigation}) {
       console.log('CAMERA ACCESS NOT GRANTED?')
     }
   }
+  // TAKE PHOTO AND DISPLAY ON HOME SCREEN FOR DEBUGGING OR FUTURE =============================================================
+  async function take_pic_and_display_async() {
+    if (camera) { // skip execution if camera is undefined/null
+
+      let photo = await camera.takePictureAsync(); // take picture using camera
+
+      // CROP, RESIZE, and CONVERT IMAGE TO BASE 64 ---------------------------------------------
+      const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
+        photo.uri,
+        [{crop:   {originX:photo.width*0.05, originY:870, width:photo.width*0.9, height:photo.width*0.9}},
+         {resize: {width:224}}],
+        {base64: true}
+      );
+      setTakenPhoto(uri);
+    }
+    else {
+      console.log('CAMERA ACCESS NOT GRANTED?')
+    }
+    /*
+    { takenPhoto !== null ? (
+      <View style={{position:'absolute', top: sc.screen_width*0.45}}>
+        <Image source={{uri:takenPhoto}} style={[{resizeMode:'contain'}, hs.photo_outline]}/>
+      </View>
+    ) : ( null )
+    }
+    */
+  }
 
   // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
-  const PictureFrameProgressBar = () => {
+  function PictureFrameProgressBar() {
     return (
       <View style={hs.transparent_frame}>
         <View style={hs.photo_outline}/>
@@ -282,7 +302,7 @@ function Home ({navigation}) {
     );
   }
   // COMPONENT FOR TAKE PICTURE BUTTON =========================================================================================
-  const TakePictureButton = () => {
+  function TakePictureButton() {
     return (
         <View style={hs.button_panel}>
           <Svg>
@@ -316,7 +336,7 @@ function Home ({navigation}) {
     );
   }
   // COMPONENT FOR NAVIGATION BAR ==============================================================================================
-  const NavigationPanel = () => {
+  function NavigationPanel() {
     return (
       <View style={hs.nav_panel_outer}>
 
@@ -343,7 +363,7 @@ function Home ({navigation}) {
     );
   }
   // COMPONENT FOR SHOWING LIST OF ALBUMS IN PHOTOS PAGE =======================================================================
-  const ShowAlbums = () => {
+  function ShowAlbums() {
 
     let albumViews = [
       <TouchableOpacity key="Recents" onPress={() => open_album({id:"recents", title:"Recents"})}>
@@ -381,6 +401,9 @@ function Home ({navigation}) {
 
       <Camera style={hs.camera_view} ref={(r) => { camera = r }}>
         <PictureFrameProgressBar/>
+
+
+
         <TakePictureButton/>
       </Camera>
 

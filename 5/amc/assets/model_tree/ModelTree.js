@@ -159,16 +159,16 @@ export async function run_predict_tree(base64) {
   var predictionREN = []; // list for storing renaissancish predictions
   var predictionABS = []; // list for storing abstractish predictions
 
-  console.log("[+] Running Two Dimensional")
+  //console.log("[+] Running Two Dimensional")
   const predictionTWO = await twoDimensionalTF.classify(imgTensor); // run 2D model
 
   if (predictionTWO[8].prob  > threshold_REN) { // renaissancish = 8
     predictionREN = await renaissancishTF.classify(imgTensor);
-    console.log("[+] Running Renaissancish")
+    //console.log("[+] Running Renaissancish")
   }
   if (predictionTWO[13].prob > threshold_ABS) { // abstractish = 13
     predictionABS = await abstractishTF.classify(imgTensor);
-    console.log("[+] Running Abstractish")
+    //console.log("[+] Running Abstractish")
   }
 
   return get_predictions_info(predictionTWO, predictionREN, predictionABS);
@@ -182,15 +182,15 @@ export async function load_model_tree() {
   const twoDimensionalWeights = await require("./twodimensional/weights.bin");
   const twoDimensionalGraph = await tf.loadGraphModel(bundleResourceIO(twoDimensionalModel, twoDimensionalWeights));
   twoDimensionalTF = new automl.ImageClassificationModel(twoDimensionalGraph, twoDimensionalDict);
-  console.log('[+] Tensorflow model A loaded');
+  //console.log('[+] Tensorflow model A loaded');
   const abstractishModel   = await require("./abstractish/model.json");
   const abstractishWeights = await require("./abstractish/weights.bin");
   const abstractishGraph = await tf.loadGraphModel(bundleResourceIO(abstractishModel, abstractishWeights));
   abstractishTF = new automl.ImageClassificationModel(abstractishGraph, abstractishDict);
-  console.log('[+] Tensorflow model B loaded');
+  //console.log('[+] Tensorflow model B loaded');
   const renaissancishModel   = await require("./renaissancish/model.json");
   const renaissancishWeights = await require("./renaissancish/weights.bin");
   const renaissancishGraph = await tf.loadGraphModel(bundleResourceIO(renaissancishModel, renaissancishWeights));
   renaissancishTF = new automl.ImageClassificationModel(renaissancishGraph, renaissancishDict);
-  console.log('[+] Tensorflow model C loaded');
+  //console.log('[+] Tensorflow model C loaded');
 };
