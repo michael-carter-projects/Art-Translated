@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import * as sc from './style_constants.js';
 
-// STYLES FOR VARIOUS ELEMENTS ON HOME PAGE ====================================================================================
+// STYLES FOR PREDICTIONS PAGE =================================================
 const image_frame_side_length = sc.screen_width*0.9;
 const image_frame_border_thickness = image_frame_side_length;
 const image_frame_top_offset = image_frame_side_length*-0.5;

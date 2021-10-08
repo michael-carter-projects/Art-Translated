@@ -4,7 +4,6 @@ import React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 import { TitleBar }   from '../helpers/title_bar.js'
-import * as Functions from '../helpers/functions.js'
 
 import    { ps } from '../styles/predictions_styles.js';
 import * as sc   from '../styles/style_constants.js';
@@ -17,7 +16,7 @@ function ShowResults(props) {
   const res1prob = props.preds[0].prob;
 
   var results = [
-    <TouchableOpacity key={Functions.get_unique_id(res1info.name, 1)} onPress={ () => props.nav.navigate('Movement', {mvmt_info:res1info, uri:props.uri})}>
+    <TouchableOpacity key={0} onPress={ () => props.nav.navigate('Movement', {mvmt_info:res1info, prev:'Predictions', uri:props.uri})}>
       <View style={ps.first_result_card}>
         <Image source={res1info.thumbnail} style={ps.first_result_image}/>
         <View style={ps.first_result_name_view}>
@@ -36,7 +35,7 @@ function ShowResults(props) {
     </TouchableOpacity>
   ];
   results.push(
-    <View key={888888} style={ps.this_could_also_be_view}>
+    <View key={1} style={ps.this_could_also_be_view}>
       <Text style={ps.this_could_also_be_text}>This could also be:</Text>
     </View>
   )
@@ -46,7 +45,7 @@ function ShowResults(props) {
     var resiprob = props.preds[i].prob;
 
     results.push(
-      <TouchableOpacity key={Functions.get_unique_id(resiinfo.name, i)} onPress={() => props.nav.navigate('Movement', {mvmt_info:props.preds[i].info, uri:props.uri})}>
+      <TouchableOpacity key={2*i+2} onPress={() => props.nav.navigate('Movement', {mvmt_info:props.preds[i].info, prev:'Predictions', uri:props.uri})}>
         <View style={ps.more_results_card}>
           <Image source={resiinfo.thumbnail} style={{width: sc.more_results_height, height: sc.more_results_height}}/>
           <Text style={ps.more_results_name_text}>{resiinfo.name}</Text>
@@ -62,11 +61,11 @@ function ShowResults(props) {
       </TouchableOpacity>
     );
     results.push(
-      <View key={Functions.get_unique_id(resiinfo.name, 2*i)} height={15}/>
+      <View key={2*i+3} height={15}/>
     );
   }
   results.push(
-    <View key={Functions.get_unique_id(res1info.name, 2)} height={sc.more_results_height}/>
+    <View key={props.preds.length*2+2} height={sc.more_results_height}/>
   );
   return results;
 }

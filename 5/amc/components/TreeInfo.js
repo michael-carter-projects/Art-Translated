@@ -9,8 +9,10 @@ import * as Functions from '../helpers/functions.js'
 import    { ts } from '../styles/treeinfo_styles.js';
 import * as sc   from '../styles/style_constants.js';
 
-// MOVEMENT list
-const all_movements = ['abstract_expressionism',
+import { movement_details } from '../assets/mvmt_details.js'
+
+// LIST OF ALL MOVEMENT NAMES ==================================================
+const alph_movement_names = ['abstract_expressionism',
                         'academic_classicism',
                         'art_deco',
                         'art_nouveau',
@@ -29,14 +31,14 @@ const all_movements = ['abstract_expressionism',
                         'neoclassicism',
                         'northern_renaissance',
                         'post_impressionism',
-                        'realism',
+                        'realism_naturalism',
                         'rococo',
                         'romanticism',
                         'surrealism',
                         'symbolism',
                         'vanitas'];
 
-// INFO FOR TREE INFO PAGE =====================================================
+// MODEL TREE STATS ============================================================
 const model_tree_info = {
   a2o: {
     name: 'Architecture, 2D, or Object [NOT YET IMPLEMENTED]',
@@ -84,6 +86,7 @@ const model_tree_info = {
     size: 22.0
   },
 }
+
 
 function TreeInfo ({navigation})
 {
@@ -135,25 +138,27 @@ function TreeInfo ({navigation})
   }
 
   // RETURNS A LIST OF ART MOVEMENT BUTTONS ====================================
-  function ShowAllMovements() {
+  function ShowAllMovements(props) {
 
     var all_movements = [
-      <View key={1} style={{flex:1}}>
+      <View key={0} style={{flex:1}}>
         <Card.Title style={ts.section_title}>All Art Movements</Card.Title>
         <Card.Divider/>
       </View>
     ];
 
-    for (let i=0; i<all_movements.length; i++) {
-      let infoMap = Functions.get_movement_info_from_key(all_movements[i]);
+    for (let i=0; i<alph_movement_names.length; i++) {
+      let mvmt_info = movement_details[alph_movement_names[i]];
       all_movements.push(
-        <View key={Functions.get_unique_id(infoMap.key, 1)} style={{flex:1, flexDirection:'row'}}>
-          <Image source={infoMap.img} style={{width:80, height:80}}/>
-          <Text style={[ts.section_content, {left:20}]}>{infoMap.name}</Text>
-        </View>
+        <TouchableOpacity key={2*i+1} onPress={() => props.nav.navigate('Movement', {mvmt_info:mvmt_info, prev:'TreeInfo'})}>
+          <View  style={{flex:1, flexDirection:'row'}}>
+            <Image source={mvmt_info.thumbnail} style={{width:80, height:80}}/>
+            <Text style={[ts.section_content, {left:20}]}>{mvmt_info.name}</Text>
+          </View>
+        </TouchableOpacity>
       );
       all_movements.push(
-        <Card.Divider key={Functions.get_unique_id(infoMap.key, 3)}/>
+        <Card.Divider key={2*i+2}/>
       );
     }
     return all_movements;
@@ -335,7 +340,7 @@ function TreeInfo ({navigation})
             <View style={ts.info_box}>
               <ScrollView>
                 <Text/>
-                <ShowAllMovements/>
+                <ShowAllMovements nav={navigation}/>
               </ScrollView>
             </View>
             )

@@ -163,6 +163,7 @@ function Movement ({navigation})
   }
 
   const mvmt_info = navigation.state.params.mvmt_info;
+  const previous_page = navigation.state.params.prev;
   const movement_thumbnail = mvmt_info.thumbnail;
 
   return (
@@ -173,7 +174,7 @@ function Movement ({navigation})
         buttonColor={sc.teal}
         statusColor={'dark'}
         left={'back'}
-        leftPress={() => navigation.navigate('Predictions')}
+        leftPress={() => navigation.navigate(previous_page)}
         middle={'logo'}
         right={'camera'}
         rightPress={() => navigation.navigate('Home')}

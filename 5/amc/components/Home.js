@@ -14,7 +14,6 @@ import Svg, { Circle }                                               from 'react
 import { run_predict_tree, load_model_tree } from '../assets/model_tree/ModelTree.js';
 
 import { TitleBar }   from '../helpers/title_bar.js'
-import * as Functions from '../helpers/functions.js'
 
 import    { hs } from '../styles/home_styles.js';
 import * as sc   from '../styles/style_constants.js';
