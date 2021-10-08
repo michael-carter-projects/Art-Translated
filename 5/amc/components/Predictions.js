@@ -9,10 +9,6 @@ import * as Functions from '../helpers/functions.js'
 import    { ps } from '../styles/predictions_styles.js';
 import * as sc   from '../styles/style_constants.js';
 
-function get_image_uri(name) {
-  name = name.replace(' ', '_').toLowerCase();
-  return '../assets/mvmt_images/'+name+'.jpg';
-}
 
 // SHOW ALL RESULTS OF PREDICTION ==============================================================================================
 function ShowResults(props) {

@@ -20,9 +20,7 @@ export const card_width  = screen_width - (2*margin_width);
 
 // CONSTANTS FOR CAMERA/PHOTOS PAGE --------------------------------------------
 export const take_pic_button_diameter = screen_height*0.12;
-
 export const navigation_bar_height = screen_height*0.1;
-
 export const safe_area_height = screen_height
                                -status_bar_height
                                -title_bar_height
@@ -37,7 +35,12 @@ export const photos_image_size = (screen_width - total_margin) / images_per_row;
 export const more_results_height = 120;
 
 // CONSTANTS FOR MOVEMENTS PAGE ------------------------------------------------
-export const more_results_card_height = 110;
+export const image_viewer_overlay_width = screen_width*0.85;
+export const image_viewer_overlay_height = screen_height*0.7;
+export const image_viewer_overlay_top_offset = title_bar_height*2;
+export const image_viewer_overlay_left_offset = screen_width*0.075;
+export const image_viewer_control_panel_height = title_bar_height*1.2;
+export const image_viewer_border_radius = 30;
 
 // CONSTANTS FOR TREE INFO PAGE ------------------------------------------------
 export const screen_sixth_x = screen_width/6;
