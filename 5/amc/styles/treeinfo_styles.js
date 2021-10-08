@@ -25,7 +25,6 @@ export const ts = StyleSheet.create({
   section_content: {
     color: sc.black,
     fontSize: 18,
-    paddingBottom: 15,
     textAlign: 'left',
     fontFamily: 'ArgentumSansLight'
   },

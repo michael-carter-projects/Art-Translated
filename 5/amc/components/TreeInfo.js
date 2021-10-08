@@ -143,7 +143,7 @@ function TreeInfo ({navigation})
     var all_movements = [
       <View key={0} style={{flex:1}}>
         <Card.Title style={ts.section_title}>All Art Movements</Card.Title>
-        <Card.Divider/>
+        <Card.Divider marginBottom={0}/>
       </View>
     ];
 
@@ -151,14 +151,14 @@ function TreeInfo ({navigation})
       let mvmt_info = movement_details[alph_movement_names[i]];
       all_movements.push(
         <TouchableOpacity key={2*i+1} onPress={() => props.nav.navigate('Movement', {mvmt_info:mvmt_info, prev:'TreeInfo'})}>
-          <View  style={{flex:1, flexDirection:'row'}}>
-            <Image source={mvmt_info.thumbnail} style={{width:80, height:80}}/>
-            <Text style={[ts.section_content, {left:20}]}>{mvmt_info.name}</Text>
+          <View  style={{flex:1, flexDirection:'row', marginBottom:sc.margin_width, marginTop:sc.margin_width}}>
+            <Image source={mvmt_info.thumbnail} style={{width:50, height:50}}/>
+            <Text style={[ts.section_content, {left:15}]}>{mvmt_info.name}</Text>
           </View>
         </TouchableOpacity>
       );
       all_movements.push(
-        <Card.Divider key={2*i+2}/>
+        <Card.Divider key={2*i+2} marginBottom={0}/>
       );
     }
     return all_movements;
