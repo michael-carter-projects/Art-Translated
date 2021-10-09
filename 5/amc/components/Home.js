@@ -40,10 +40,9 @@ async function select_pic_and_predict_async(nav, uri) {
     uri, [{resize: {width:224}}], {base64: true}
   );
   // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-  const predictions = await run_predict_tree(base64);
-
-  nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
-
+  //const predictions = await run_predict_tree(base64);
+  //nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
+  nav.navigate('Crop', {selected_image_uri: uri});
   //setInProgress(false); // reset inProgress hook to false
 }
 // RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================
@@ -221,6 +220,7 @@ function Home ({navigation}) {
   if (!appIsReady) {
     return null;
   }
+
 
   // TAKE PHOTO, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION =================================================================
   async function take_pic_and_predict_async(nav) {

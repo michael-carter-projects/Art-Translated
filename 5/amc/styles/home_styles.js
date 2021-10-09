@@ -28,6 +28,7 @@ export const hs = StyleSheet.create({
     height: image_frame_side_length*3,
     borderColor: 'rgba(255, 255, 255, 0.3)',
     borderWidth: image_frame_border_thickness,
+    alignSelf: 'center',
   },
   // PROGRESS BAR STUFF --------------------------------------------------------
   progress_bar_text: {
