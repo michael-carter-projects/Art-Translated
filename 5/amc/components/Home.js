@@ -76,6 +76,8 @@ function Home ({navigation}) {
 
   const [takenPhoto, setTakenPhoto] = useState(null);
 
+  const [cropping, setCropping] = useState(false);
+
   // FETCH THE FIRST 36 IMAGES IN AN ALBUM =====================================================================================
   const fetch_initial_images = async (album_id) => {
 
@@ -401,9 +403,6 @@ function Home ({navigation}) {
 
       <Camera style={hs.camera_view} ref={(r) => { camera = r }}>
         <PictureFrameProgressBar/>
-
-
-
         <TakePictureButton/>
       </Camera>
 

@@ -20,15 +20,8 @@ def get_movement(blobname):
         if blobname[l] == '/':
             slashes.append(l)
 
-    # print(blobname[            :slashes[0]]) # 1_a20
-    # print(blobname[slashes[0]+1:slashes[1]]) # 2_arch, 3_2D, 4_obj
-    # print(blobname[slashes[1]+1:slashes[2]]) # 5_abs, 6_ren, art_deco, art_nouveau, etc.
     if (len(slashes) <= 3):
-        #print(blobname[slashes[2]+1:]) # image name
         return blobname[slashes[1]+1:slashes[2]]
-    #else:
-        #print(blobname[slashes[2]+1:slashes[3]]) # abs or ren movement
-        #print(blobname[slashes[3]+1:])           # image name """
     return blobname[slashes[2]+1:slashes[3]]
 
 
@@ -77,8 +70,6 @@ def write_csv_file(filename, bucketname, l, pct_train, pct_valid):
     write_csv_header(filename) # write the header of the .csv file
 
     movement_size_dict = get_movement_sizes(bucketname, l) # get the number of images in each movement
-    #movement_count = 0 # stores the tentative count of images in the current movement
-    #prev_movement = "" # stores the name of the movement associated with the previous file
     img_count = 0;
 
     blobs = storage.Client().list_blobs(bucketname) # get all filepaths in the GCP bucket/folder
@@ -89,27 +80,11 @@ def write_csv_file(filename, bucketname, l, pct_train, pct_valid):
     for blob in blobs:                                                  # loop through every file path
         movement_name = get_movement(blob.name) # retreive category and movement
 
-        #if (movement_name != prev_movement): # if we have started a new movement,
-        #    prev_movement = movement_name   # update the previous movement to current one
-        #    movement_count = 0             # and reset the movement image count
-
-        #num_images = movement_size_dict[movement_name] # number of images in current movement
-        #num_train = int((pct_train/100) * num_images) # convert percentages
-        #num_valid = int((pct_valid/100) * num_images) # to integer counts
-
-        #if movement_count in range(0, num_train):                         # .csv 0 -- dataset
-        #    dataset = "TRAIN"                                            #     assign images to
-        #elif movement_count in range(num_train, num_train + num_valid): #     TRAIN, VALIDATE, or TEST
-        #    dataset = "UNASSIGNED"                                     #     datasets according to the
-        #else:                                                         #     percentages set above
-        #    dataset = "TEST"                                         #
-
         dataset = "UNASSIGNED"                                       # .csv 0 -- dataset
         directory = "gs://" + bucketname + "/" + blob.name          # .csv 1 -- google cloud directory
         label = movement_name                                      # .csv 2 -- AutoML classification label
 
         csv_list = [dataset, directory, label] # create list of values for next line of .csv file
-        #movement_count += 1                   # increment the number of images in current movement
 
         write_csv_line(filename, csv_list) # write the values to a new line of the file
 
@@ -121,4 +96,4 @@ def write_csv_file(filename, bucketname, l, pct_train, pct_valid):
 """ ============================================================================================================================
 WHERE THE MAGIC HAPPENS
 """
-write_csv_file('automl_ffa_training_data.csv', "art-translated", 60012, 80, 10)
+write_csv_file('atd_freeforall_3.csv', "art-translated", 61170, 80, 10)
