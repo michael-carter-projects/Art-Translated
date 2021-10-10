@@ -33,17 +33,15 @@ MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NO
 // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ==============================================================
 async function select_pic_and_predict_async(nav, uri) {
 
-  //setInProgress(true); // set inProgress hook to true for progress bar
-
   // RESIZE IMAGE and CONVERT TO BASE 64 --------------------------------------------------
   const { newUri, width, height, base64 } = await ImageManipulator.manipulateAsync(
     uri, [{resize: {width:224}}], {base64: true}
   );
   // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-  //const predictions = await run_predict_tree(base64);
-  //nav.navigate('Predictions', {selected_image_uri: uri, predictions: predictions}); // navigate to Predictions page
-  nav.navigate('Crop', {selected_image_uri: uri});
-  //setInProgress(false); // reset inProgress hook to false
+
+  Image.getSize(uri, (width, height) => {
+    nav.navigate('Crop', {selected_image_uri: uri, width: width, height: height});
+  });  
 }
 // RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================
 function ImgButton(props) {

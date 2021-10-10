@@ -2,11 +2,8 @@ import { StyleSheet } from 'react-native';
 import * as sc from './style_constants.js';
 
 // STYLES FOR VARIOUS ELEMENTS ON HOME PAGE ====================================================================================
-const image_frame_side_length = sc.screen_width*0.9;
-const image_frame_border_thickness = image_frame_side_length;
-const image_frame_top_offset = image_frame_side_length*-0.5;
 
-const card_height = sc.photos_image_size;
+
 
 export const hs = StyleSheet.create({
   // CAMERA & PHOTO FRAME STYLES -----------------------------------------------
@@ -17,17 +14,17 @@ export const hs = StyleSheet.create({
     overflow:'hidden'
   },
   photo_outline: {
-    width: image_frame_side_length,
-    height: image_frame_side_length,
+    width: sc.image_frame_side_length,
+    height: sc.image_frame_side_length,
     borderColor: sc.white,
     borderWidth: 2,
   },
   transparent_frame: {
-    top: image_frame_top_offset,
-    width: image_frame_side_length*3,
-    height: image_frame_side_length*3,
+    top: sc.image_frame_top_offset,
+    width: sc.image_frame_side_length*3,
+    height: sc.image_frame_side_length*3,
     borderColor: 'rgba(255, 255, 255, 0.3)',
-    borderWidth: image_frame_border_thickness,
+    borderWidth: sc.image_frame_border_thickness,
     alignSelf: 'center',
   },
   // PROGRESS BAR STUFF --------------------------------------------------------
@@ -120,7 +117,7 @@ export const hs = StyleSheet.create({
   album_card: {
     alignSelf: 'center',
     width: sc.card_width,
-    height: card_height,
+    height: sc.photos_image_size,
     fontSize: 18,
     backgroundColor: sc.white,
     flexDirection: 'row',
@@ -143,7 +140,7 @@ export const hs = StyleSheet.create({
   },
   album_image_count_text: {
     position: 'absolute',
-    left: sc.card_width*0.04+card_height,
+    left: sc.card_width*0.04+sc.photos_image_size,
     top: sc.card_width*0.1,
     fontSize: 16,
     fontFamily: 'ArgentumSansLight',

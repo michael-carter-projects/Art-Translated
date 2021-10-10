@@ -26,6 +26,12 @@ export const safe_area_height = screen_height
                                -title_bar_height
                                -navigation_bar_height;
 
+export const no_nav_view_height = screen_height - status_bar_height - title_bar_height;
+
+export const image_frame_side_length = screen_width*0.9;
+export const image_frame_border_thickness = image_frame_side_length;
+export const image_frame_top_offset = image_frame_side_length*-0.5;
+
 
 export const images_per_row = 4;
 const total_margin = (images_per_row+1)*margin_width;
