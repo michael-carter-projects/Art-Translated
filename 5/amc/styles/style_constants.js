@@ -32,6 +32,9 @@ export const image_frame_side_length = screen_width*0.9;
 export const image_frame_border_thickness = image_frame_side_length;
 export const image_frame_top_offset = image_frame_side_length*-0.5;
 
+export const title_bar_to_top_of_frame = (image_frame_side_length+image_frame_top_offset -title_bar_height -status_bar_height)+2
+
+
 
 export const images_per_row = 4;
 const total_margin = (images_per_row+1)*margin_width;

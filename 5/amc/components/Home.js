@@ -29,6 +29,41 @@ var albumThumbnailURIs = [];
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
+function get_initial_dimensions(actual_image_width, actual_image_height) {
+
+  const image_aspect_ratio = actual_image_width / actual_image_height;
+  const view_aspect_ratio = sc.screen_width / sc.no_nav_view_height;
+
+  if (image_aspect_ratio > view_aspect_ratio) {
+    var pixel_ratio = actual_image_width / sc.screen_width;
+    var scaled_height = actual_image_height / pixel_ratio;
+    var initialZoomScale = sc.no_nav_view_height / scaled_height;
+    return {
+      width: initialZoomScale * sc.screen_width,
+      height: sc.no_nav_view_height,
+      marginLeft: (initialZoomScale * sc.screen_width - sc.screen_width) / 2,
+      marginRight: (initialZoomScale * sc.screen_width - sc.screen_width) / 2,
+    };
+  }
+  else if (image_aspect_ratio < view_aspect_ratio) {
+    var pixel_ratio = actual_image_height / sc.no_nav_view_height;
+    var scaled_width = actual_image_width / pixel_ratio;
+    var initialZoomScale = sc.screen_width / scaled_width;
+    return {
+      width: sc.screen_width,
+      height: initialZoomScale * sc.no_nav_view_height,
+      marginTop: (initialZoomScale*sc.no_nav_view_height-sc.no_nav_view_height)/2,
+      marginBottom: (initialZoomScale*sc.no_nav_view_height-sc.no_nav_view_height)/2,
+    };
+  }
+  else {
+   return {
+     width: sc.screen_width,
+     height: sc.no_nav_view_height,
+    }
+  }
+}
+
 
 // SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ==============================================================
 async function select_pic_and_predict_async(nav, uri) {
@@ -41,7 +76,7 @@ async function select_pic_and_predict_async(nav, uri) {
 
   Image.getSize(uri, (width, height) => {
     nav.navigate('Crop', {selected_image_uri: uri, width: width, height: height});
-  });  
+  });
 }
 // RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================
 function ImgButton(props) {

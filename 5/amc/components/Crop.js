@@ -25,12 +25,11 @@ function Crop ({navigation}) {
   const [ratio, setRatio] = useState(1);
 
   const selected_image_uri = navigation.state.params.selected_image_uri;
-  const [actual_image_width, setActualImageWidth] = useState(navigation.state.params.width);
+  const [actual_image_width,  setActualImageWidth ] = useState(navigation.state.params.width);
   const [actual_image_height, setActualImageHeight] = useState(navigation.state.params.height);
 
-  var pixelRatio = 1;
-
-
+  var xOffset = 0;
+  var yOffset = 0;
 
   // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
   function PictureFrame() {
@@ -40,29 +39,124 @@ function Crop ({navigation}) {
       </View>
     );
   }
+  // RETRIEVES THE DIMENSIONS OF THE IMAGE INSIDE THE SCROLLVIEW ===============================================================
+  function get_image_dimensions() {
 
+    const image_aspect_ratio = actual_image_width / actual_image_height;
+    const view_aspect_ratio = sc.screen_width / sc.no_nav_view_height;
+
+    if (image_aspect_ratio > view_aspect_ratio) {
+      var pixel_ratio = actual_image_width / sc.screen_width;
+      var scaled_height = actual_image_height / pixel_ratio;
+      var initialZoomScale = sc.no_nav_view_height / scaled_height;
+      return {
+        width: initialZoomScale * sc.screen_width,
+        height: sc.no_nav_view_height,
+      };
+    }
+    else if (image_aspect_ratio < view_aspect_ratio) {
+
+      var pixel_ratio = actual_image_height / sc.no_nav_view_height;
+      var scaled_width = actual_image_width / pixel_ratio;
+      var initialZoomScale = sc.screen_width / scaled_width;
+      return {
+        width: sc.screen_width,
+        height: initialZoomScale * sc.no_nav_view_height,
+      };
+    }
+    else {
+     return {
+       width: sc.screen_width,
+       height: sc.no_nav_view_height,
+      }
+    }
+  }
+  // RETREIVES THE AMOUNT A USER WILL BE ABLE TO ZOOM OUT ON AN IMAGE ==========================================================
+  function get_minimum_zoom_scale() {
+    const image_aspect_ratio = actual_image_width / actual_image_height;
+    if (image_aspect_ratio > 1) {
+      return (sc.image_frame_side_length-4) / sc.no_nav_view_height;
+    }
+    else {
+      return 0.9;
+    }
+  }
+  // RETREIVE VALUES FOR TOP BOTTOM LEFT RIGHT INSETS (BLACK SPACE AROUND IMAGE) ===============================================
+  function get_scrollview_inset() {
+
+    const image_aspect_ratio = actual_image_width / actual_image_height;
+    const view_aspect_ratio = sc.screen_width / sc.no_nav_view_height;
+
+    if (image_aspect_ratio > view_aspect_ratio) {
+      var pixel_ratio = actual_image_width / sc.screen_width;
+      var scaled_height = actual_image_height / pixel_ratio;
+      var initialZoomScale = sc.no_nav_view_height / scaled_height;
+
+      xOffset = ((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05;
+      yOffset = sc.title_bar_to_top_of_frame;
+
+      return {
+        top: sc.title_bar_to_top_of_frame,
+        bottom: (sc.no_nav_view_height - sc.image_frame_side_length) - sc.title_bar_to_top_of_frame+4,
+        left: ((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05,
+        right: ((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05,
+      };
+    }
+    else {
+      var pixel_ratio = actual_image_height / sc.no_nav_view_height;
+      var scaled_width = actual_image_width / pixel_ratio;
+      var initialZoomScale = sc.screen_width / scaled_width;
+
+      xOffset = sc.screen_width*0.05+2;
+      yOffset = sc.title_bar_to_top_of_frame;
+
+      return {
+        top: sc.title_bar_to_top_of_frame,
+        bottom: (initialZoomScale * sc.no_nav_view_height) - sc.image_frame_side_length - sc.title_bar_to_top_of_frame+4,
+        left: sc.screen_width*0.05 +2,
+        right: sc.screen_width*0.05 +2,
+      };
+    }
+  }
+  // RETREIVE DIMENSIONS OF THE SCROLLVIEW TO BE USED FOR CROPPING =============================================================
+  function get_scrollview_dimensions() {
+
+    const image_aspect_ratio = actual_image_width / actual_image_height;
+    const view_aspect_ratio = sc.screen_width / sc.no_nav_view_height;
+
+    if (image_aspect_ratio > view_aspect_ratio) {
+      var pixel_ratio = actual_image_width / sc.screen_width;
+      var scaled_height = actual_image_height / pixel_ratio;
+      var initialZoomScale = sc.no_nav_view_height / scaled_height;
+      return {
+        width: initialZoomScale * sc.screen_width,
+        height: sc.no_nav_view_height,
+      };
+    }
+    else {
+      var pixel_ratio = actual_image_height / sc.no_nav_view_height;
+      var scaled_width = actual_image_width / pixel_ratio;
+      var initialZoomScale = sc.screen_width / scaled_width;
+      return {
+        width: sc.screen_width,
+        height: initialZoomScale * sc.no_nav_view_height,
+      };
+    }
+  }
+  // CROP THE IMAGE ACCORDING (HOPEFULLY) TO FRAME, AND UPDATE HOOK TO URI OF NEW IMAGE FOR DISPLAY (DEBUGGING) ================
   async function get_cropped_image_uri(event) {
 
-    setImgWidth(event.nativeEvent.contentSize.width);
-    setImgHeight(event.nativeEvent.contentSize.height);
+    //setImgWidth(event.nativeEvent.contentSize.width);
+    //setImgHeight(event.nativeEvent.contentSize.height);
     setZoomScale(event.nativeEvent.zoomScale);
 
+    setTopLeftX(event.nativeEvent.contentOffset.x + xOffset);
 
-    const frameTopLeftX = (sc.screen_width - sc.image_frame_side_length)/2;
-    const newX = event.nativeEvent.contentOffset.x + frameTopLeftX;
-    setTopLeftX(event.nativeEvent.contentOffset.x);
-
-    const frameTopLeftY = (sc.image_frame_side_length + sc.image_frame_top_offset);
-    const newY = event.nativeEvent.contentOffset.y + frameTopLeftY;
-    setTopLeftY(event.nativeEvent.contentOffset.y);
-
-    const newWidth = (sc.image_frame_side_length / zoomScale)*ratio;
-
-    console.log(newWidth);
+    setTopLeftY(event.nativeEvent.contentOffset.y + yOffset);
 
     const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
       selected_image_uri,
-      [{crop:   {originX:newX, originY:newY, width:30, height:30}},
+      [{crop:   {originX:topLeftX, originY:topLeftY, width:30, height:30}},
        {resize: {width:224}}],
       {base64: true}
     );
@@ -73,35 +167,6 @@ function Crop ({navigation}) {
     get_cropped_image_uri(event);
   };
 
-  function get_initial_zoom_scale() {
-
-   const image_aspect_ratio = actual_image_width / actual_image_height;
-   const view_aspect_ratio = sc.screen_width / sc.no_nav_view_height;
-
-   if (image_aspect_ratio > view_aspect_ratio) {
-     var pixel_ratio = actual_image_width / sc.screen_width;
-     pixelRatio = pixel_ratio;
-     var scaled_height = actual_image_height / pixel_ratio;
-     var initialZoomScale = sc.no_nav_view_height / scaled_height;
-     return initialZoomScale;
-   }
-   else if (image_aspect_ratio < view_aspect_ratio) {
-     var pixel_ratio = actual_image_height / sc.no_nav_view_height;
-     pixelRatio = pixel_ratio;
-     var scaled_width = actual_image_width / pixel_ratio;
-     var initialZoomScale = sc.screen_width / scaled_width;
-     return initialZoomScale;
-   }
-   else {
-     pixelRatio = actual_image_width / sc.screen_width;
-     return 1;
-   }
-  }
-
-   /*
-
-   */
-
   return (
     <View>
       <ScrollView onScroll={handleScroll}
@@ -111,12 +176,17 @@ function Crop ({navigation}) {
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         maximumZoomScale={8}
-        zoomScale={get_initial_zoom_scale()}
+        minimumZoomScale={get_minimum_zoom_scale()}
         decelerationRate={0.99}
-        style={{position:'absolute', top:sc.status_bar_height+sc.title_bar_height, backgroundColor:sc.black}}
+        contentInset={get_scrollview_inset()}
+        contentContainerStyle={{flexDirection:'column'}}
+        style={[{position:'absolute',
+                top:sc.status_bar_height+sc.title_bar_height,
+                backgroundColor:sc.black,
+                alignSelf:'center'},
+                get_scrollview_dimensions()]}
       >
-        <Image source={{uri:selected_image_uri}} style={{width:sc.screen_width, height:sc.no_nav_view_height, resizeMode:'contain', marginTop:-100}}/>
-        <View height={sc.image_frame_side_length - sc.image_frame_top_offset}/>
+        <Image source={{uri:selected_image_uri}} style={[{resizeMode:'contain'}, get_image_dimensions()]}/>
       </ScrollView>
 
       <PictureFrame/>
