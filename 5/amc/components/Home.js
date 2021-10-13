@@ -29,59 +29,18 @@ var albumThumbnailURIs = [];
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
-function get_initial_dimensions(actual_image_width, actual_image_height) {
+// SELECT AN IMAGE, GET IT'S SIZE, NAVIGATE TO CROP PAGE =======================================================================
+async function select_pic_and_nav_to_crop(nav, uri) {
 
-  const image_aspect_ratio = actual_image_width / actual_image_height;
-  const view_aspect_ratio = sc.screen_width / sc.no_nav_view_height;
-
-  if (image_aspect_ratio > view_aspect_ratio) {
-    var pixel_ratio = actual_image_width / sc.screen_width;
-    var scaled_height = actual_image_height / pixel_ratio;
-    var initialZoomScale = sc.no_nav_view_height / scaled_height;
-    return {
-      width: initialZoomScale * sc.screen_width,
-      height: sc.no_nav_view_height,
-      marginLeft: (initialZoomScale * sc.screen_width - sc.screen_width) / 2,
-      marginRight: (initialZoomScale * sc.screen_width - sc.screen_width) / 2,
-    };
-  }
-  else if (image_aspect_ratio < view_aspect_ratio) {
-    var pixel_ratio = actual_image_height / sc.no_nav_view_height;
-    var scaled_width = actual_image_width / pixel_ratio;
-    var initialZoomScale = sc.screen_width / scaled_width;
-    return {
-      width: sc.screen_width,
-      height: initialZoomScale * sc.no_nav_view_height,
-      marginTop: (initialZoomScale*sc.no_nav_view_height-sc.no_nav_view_height)/2,
-      marginBottom: (initialZoomScale*sc.no_nav_view_height-sc.no_nav_view_height)/2,
-    };
-  }
-  else {
-   return {
-     width: sc.screen_width,
-     height: sc.no_nav_view_height,
-    }
-  }
-}
-
-
-// SELECT AN IMAGE, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION ==============================================================
-async function select_pic_and_predict_async(nav, uri) {
-
-  // RESIZE IMAGE and CONVERT TO BASE 64 --------------------------------------------------
-  const { newUri, width, height, base64 } = await ImageManipulator.manipulateAsync(
-    uri, [{resize: {width:224}}], {base64: true}
-  );
-  // CONVERT BASE64 IMAGE TO TENSORS AND MAKE PREDICTION ----------------------------------
-
-  Image.getSize(uri, (width, height) => {
-    nav.navigate('Crop', {selected_image_uri: uri, width: width, height: height});
+  // GET SIZE OF IMAGE AND NAV TO CROP PAGE  -----------------------------------
+  Image.getSize(uri, (w, h) => {
+    nav.navigate('Crop', {selected_image_uri: uri, width: w, height: h});
   });
 }
 // RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================
-function ImgButton(props) {
+function ImageButton(props) {
 	return (
-		<TouchableOpacity onPress={() => select_pic_and_predict_async(props.nav, props.img.uri)}>
+		<TouchableOpacity onPress={() => select_pic_and_nav_to_crop(props.nav, props.img.uri)}>
 			<Image source={{uri:props.img.uri}} style={hs.photo_button}/>
 		</TouchableOpacity>
 	);
@@ -491,7 +450,7 @@ function Home ({navigation}) {
                     		onEndReached={on_end_reached}
                     		onEndReachedThreshold={1}
                     		keyExtractor={(item, index) => item + index}
-                    		renderItem={({ item }) => <ImgButton nav={navigation} img={item} />}
+                    		renderItem={({ item }) => <ImageButton nav={navigation} img={item} />}
                     		numColumns={sc.images_per_row}
         	            />
                     )
