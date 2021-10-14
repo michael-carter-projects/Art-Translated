@@ -6,41 +6,43 @@ import { movement_details } from '../mvmt_details.js'
 
 // REALEY MODEL INFO ===========================================================
 var twoDimensionalTF = null;
-const twoDimensionalDict = ['romanticism',
-                              'gothic',
-                              'neoclassicism',
-                              'art_nouveau',
-                              'gothic',
-                              'grotesque',
-                              'gothic',
-                              'byzantine',
-                              'renaissancish',
-                              'symbolism',
-                              'gothic',
-                              'cubism',
-                              'realism_naturalism',
-                              'abstractish',
-                              'baroque',
-                              'vanitas',
-                              'surrealism',
-                              'rococo',
-                              'art_deco',
-                              'egyptian'];
+const twoDimensionalDict = ['renaissanceish',
+                            'cubism',
+                            'neoclassicism',
+                            'romanticism',
+                            'symbolism',
+                            'surrealism',
+                            'baroque',
+                            'realism_naturalism',
+                            'abstractish',
+                            'art_deco',
+                            'rococo',
+                            'byzantine',
+                            'gothic',
+                            'gothic',
+                            'grotesque',
+                            'egyptian',
+                            'gothic',
+                            'gothic',
+                            'art_nouveau',
+                            'vanitas'];
 
 // RENAISSANCE MODEL INFO ======================================================
-var renaissancishTF = null;
-const renaissancishDict = ['mannerism',
+var renaissanceishTF = null;
+const renaissanceishDict = ['high_renaissance',
+                            'mannerism',
+                            'classical',
+                            'academic_classicism',
                             'northern_renaissance',
-                            'high_renaissance',
-                            'early_renaissance',
-                            'academic_classicism'];
+                            'early_renaissance'];
 
 // ABSTRACTISH MODEL INFO ======================================================
 var abstractishTF = null;
-const abstractishDict = ['expressionism',
-                          'fauvism',
-                          'impressionism',
-                          'post_impressionism'];
+const abstractishDict = ['impressionism',
+                         'post_impressionism',
+                         'abstract_expressionism',
+                         'fauvism',
+                         'expressionism'];
 
 // CONVERTS BASE64 IMAGE TO TENSORS FOR PREDICTION =============================================================================
 function b64_to_tensor(base64) {
@@ -52,8 +54,12 @@ function b64_to_tensor(base64) {
 // INSERTS A PREDICTION INTO A LIST OF PREDICTIONS SORTED BY DESCENDING PROBABILITY ============================================
 function insert_descending(sorted_results, prediction) {
 
-  if (prediction.label === 'renaissancish' || prediction.label === 'abstractish') {
+  if (prediction.label === 'renaissanceish' || prediction.label === 'abstractish') {
     return sorted_results;
+  }
+
+  if (sorted_results.length === 0) {
+    return [prediction];
   }
 
   var index = sorted_results.length;
@@ -98,10 +104,10 @@ function remove_duplicates(sorted_results) {
 // GETS LIST OF PREDICTIONS SORTED BY DESCENDING PROBABILITY ABOVE CERTAIN PROBABILITY =========================================
 function get_predictions_info(two, ren, abs) {
 
-    var sorted_results = [two[0]];
+    var sorted_results = [];
 
     // INSERT ALL RESULTS INTO A LIST SORTED BY DESCENDING PROBABILITY ---------
-    for (let i=1; i < two.length; i++) {
+    for (let i=0; i < two.length; i++) {
       sorted_results = insert_descending(sorted_results, two[i]);
     }
     for (let i=0; i < ren.length; i++) {
@@ -110,7 +116,6 @@ function get_predictions_info(two, ren, abs) {
     for (let i=0; i < abs.length; i++) {
       sorted_results = insert_descending(sorted_results, abs[i]);
     }
-
     // REMOVE LOWER PROB DUPLICATES OF SAME PREDICTION -------------------------
     sorted_results = remove_duplicates(sorted_results);
 
@@ -143,6 +148,7 @@ function get_predictions_info(two, ren, abs) {
 
 // GIVEN A PROBABILITY SCORE, RETURNS JSON: { "MOVEMENT MAP", "PROBABILITY" } ==================================================
 function get_movement_info(prediction) {
+
   return { info: movement_details[prediction.label],
            prob: parseInt(prediction.prob*100)
          }
@@ -153,20 +159,20 @@ export async function run_predict_tree(base64) {
 
   const imgTensor = b64_to_tensor(base64); // convert base64 data to tensors
 
-  const threshold_REN = 0.5; // probability with which "renaissancish" must be predicted to run renaissancish model
-  const threshold_ABS = 0.5; // probability with which "abstractish"   must be predicted to run abstractish model
+  const threshold_REN = 0.4; // probability with which "renaissanceish" must be predicted to run renaissanceish model
+  const threshold_ABS = 0.4; // probability with which "abstractish"   must be predicted to run abstractish model
 
-  var predictionREN = []; // list for storing renaissancish predictions
+  var predictionREN = []; // list for storing renaissanceish predictions
   var predictionABS = []; // list for storing abstractish predictions
 
   //console.log("[+] Running Two Dimensional")
   const predictionTWO = await twoDimensionalTF.classify(imgTensor); // run 2D model
 
-  if (predictionTWO[8].prob  > threshold_REN) { // renaissancish = 8
-    predictionREN = await renaissancishTF.classify(imgTensor);
-    //console.log("[+] Running Renaissancish")
+  if (predictionTWO[0].prob  > threshold_REN) { // renaissanceish = 0
+    predictionREN = await renaissanceishTF.classify(imgTensor);
+    //console.log("[+] Running renaissanceish")
   }
-  if (predictionTWO[13].prob > threshold_ABS) { // abstractish = 13
+  if (predictionTWO[8].prob > threshold_ABS) { // abstractish = 8
     predictionABS = await abstractishTF.classify(imgTensor);
     //console.log("[+] Running Abstractish")
   }
@@ -188,9 +194,9 @@ export async function load_model_tree() {
   const abstractishGraph = await tf.loadGraphModel(bundleResourceIO(abstractishModel, abstractishWeights));
   abstractishTF = new automl.ImageClassificationModel(abstractishGraph, abstractishDict);
   //console.log('[+] Tensorflow model B loaded');
-  const renaissancishModel   = await require("./renaissancish/model.json");
-  const renaissancishWeights = await require("./renaissancish/weights.bin");
-  const renaissancishGraph = await tf.loadGraphModel(bundleResourceIO(renaissancishModel, renaissancishWeights));
-  renaissancishTF = new automl.ImageClassificationModel(renaissancishGraph, renaissancishDict);
+  const renaissanceishModel   = await require("./renaissanceish/model.json");
+  const renaissanceishWeights = await require("./renaissanceish/weights.bin");
+  const renaissanceishGraph = await tf.loadGraphModel(bundleResourceIO(renaissanceishModel, renaissanceishWeights));
+  renaissanceishTF = new automl.ImageClassificationModel(renaissanceishGraph, renaissanceishDict);
   //console.log('[+] Tensorflow model C loaded');
 };
