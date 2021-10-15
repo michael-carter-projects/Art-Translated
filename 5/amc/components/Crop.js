@@ -32,7 +32,7 @@ function Crop ({navigation}) {
     if (image_aspect_ratio >= view_aspect_ratio) {
       var pixel_ratio = sc.no_nav_view_height / actual_image_height;
       var scaled_width = pixel_ratio * actual_image_width;
-      var minimum_zoom_scale = sc.image_frame_side_length / scaled_width;
+      var minimum_zoom_scale = (sc.image_frame_side_length-4) / scaled_width;
     }
     else {
       var minimum_zoom_scale = frame_to_view_width_ratio;
