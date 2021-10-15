@@ -89,11 +89,16 @@ function Predictions ({navigation}) {
         right={'camera'}
         rightPress={() => navigation.navigate('Home')}
       />
+
+
+
       <View style={ps.no_nav_safe_area}>
         <ScrollView style={ps.scroll_view}>
           <ShowResults preds={predictions} nav={navigation} uri={selected_image_uri}/>
         </ScrollView>
       </View>
+
+      <Image source={{uri:selected_image_uri}} style={{position:'absolute', top:200, width:sc.screen_width, height:sc.screen_width}}/>
     </View>
   );
 }
