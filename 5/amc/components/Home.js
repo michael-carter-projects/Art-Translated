@@ -29,22 +29,7 @@ var albumThumbnailURIs = [];
 Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
 MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
 
-// SELECT AN IMAGE, GET IT'S SIZE, NAVIGATE TO CROP PAGE =======================================================================
-async function select_pic_and_nav_to_crop(nav, uri) {
 
-  // GET SIZE OF IMAGE AND NAV TO CROP PAGE  -----------------------------------
-  Image.getSize(uri, (w, h) => {
-    nav.navigate('Crop', {selected_image_uri: uri, width: w, height: h});
-  });
-}
-// RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================
-function ImageButton(props) {
-	return (
-		<TouchableOpacity onPress={() => select_pic_and_nav_to_crop(props.nav, props.img.uri)}>
-			<Image source={{uri:props.img.uri}} style={hs.photo_button}/>
-		</TouchableOpacity>
-	);
-}
 
 // RENDER HOME SCREEN ==========================================================================================================
 function Home ({navigation}) {
@@ -265,6 +250,22 @@ function Home ({navigation}) {
     ) : ( null )
     }
     */
+  }
+  // SELECT AN IMAGE, GET IT'S SIZE, NAVIGATE TO CROP PAGE =======================================================================
+  async function select_pic_and_nav_to_crop(nav, uri) {
+
+    // GET SIZE OF IMAGE AND NAV TO CROP PAGE  -----------------------------------
+    Image.getSize(uri, (w, h) => {
+      nav.navigate('Crop', {selected_image_uri: uri, width: w, height: h});
+    });
+  }
+  // RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================
+  function ImageButton(props) {
+  	return (
+  		<TouchableOpacity onPress={() => select_pic_and_nav_to_crop(props.nav, props.img.uri)}>
+  			<Image source={{uri:props.img.uri}} style={hs.photo_button}/>
+  		</TouchableOpacity>
+  	);
   }
 
   // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
