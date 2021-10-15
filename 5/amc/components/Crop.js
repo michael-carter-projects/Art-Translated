@@ -181,60 +181,34 @@ function Crop ({navigation}) {
       if (event.nativeEvent.contentSize.width !== 0) {
         width_in_layout = event.nativeEvent.contentSize.width;
       }
-      console.log("width_in_layout: ", width_in_layout)
       x_in_layout = (event.nativeEvent.contentOffset.x + (xOffset));
-      console.log("x_in_layout: ", x_in_layout);
       x_in_image = parseInt((x_in_layout/width_in_layout) * actual_image_width);
-      console.log("x_in_image: ", x_in_image);
       setTopLeftX(x_in_image);
 
 
       if (event.nativeEvent.contentSize.height !== 0) {
         height_in_layout = event.nativeEvent.contentSize.height;
       }
-      console.log("height_in_layout: ", height_in_layout);
       y_in_layout = (event.nativeEvent.contentOffset.y + (yOffset));
-      console.log("y_in_layout: ", y_in_layout);
       y_in_image = parseInt((y_in_layout/height_in_layout) * actual_image_height);
-      console.log("y_in_image: ", y_in_image);
       setTopLeftY(y_in_image);
     }
     else {
       if (event.nativeEvent.contentSize.width !== 0) {
         width_in_layout = event.nativeEvent.contentSize.width;
       }
-      console.log("width_in_layout: ", width_in_layout);
       x_in_layout = (event.nativeEvent.contentOffset.x + xOffset);
-      console.log("x_in_layout: ", x_in_layout);
       x_in_image = parseInt((x_in_layout/width_in_layout) * actual_image_width);
-      console.log("x_in_image: ", x_in_image);
       setTopLeftX(x_in_image);
 
 
       if (event.nativeEvent.contentSize.height !== 0) {
         height_in_layout = event.nativeEvent.contentSize.height;
       }
-      console.log("height_in_layout: ", height_in_layout);
       y_in_layout = (event.nativeEvent.contentOffset.y + yOffset);
-      console.log("y_in_layout: ", y_in_layout);
       y_in_image = parseInt((y_in_layout/height_in_layout) * actual_image_height);
-      console.log("y_in_image: ", y_in_image);
       setTopLeftY(y_in_image);
     }
-
-    console.log(image_aspect_ratio);
-    console.log(view_aspect_ratio);
-
-    console.log("===================================")
-    console.log("new_size: ", new_size);
-
-    console.log("actual_image_width: ", actual_image_width);
-    console.log("x_in_image: ", x_in_image);
-    console.log("x + n: ", x_in_image+new_size);
-
-    console.log("actual_image_height: ", actual_image_height)
-    console.log("y_in_image: ", y_in_image);
-    console.log("y + n: ", y_in_image+new_size);
 
     const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
       selected_image_uri,
