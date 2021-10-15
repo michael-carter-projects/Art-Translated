@@ -145,5 +145,42 @@ export const hs = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'ArgentumSansLight',
     color: sc.grey
-  }
+  },
+  // CROP PAGE STYLES ----------------------------------------------------------
+  crop_scroll_view: {
+    position: 'absolute',
+    top: sc.status_bar_height+sc.title_bar_height,
+    backgroundColor: sc.black,
+    alignSelf: 'center'
+  },
+  preview_window: {
+    position: 'absolute',
+    resizeMode: 'contain',
+    bottom: 340,
+    alignSelf: 'center',
+    width: sc.screen_width*0.4,
+    height: sc.screen_width*0.4,
+    backgroundColor: sc.black,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: sc.white,
+    borderWidth: 2,
+    borderRadius: 8
+  },
+  analyze_button: {
+    position: 'absolute',
+    bottom: 250,
+    alignSelf: 'center',
+    width: sc.screen_width*0.7,
+    height: sc.title_bar_height*1.3,
+    backgroundColor: sc.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20
+  },
+  analyze_text: {
+    fontFamily: 'ArgentumSansLight',
+    fontSize: 26,
+    color: sc.teal
+  },
 })

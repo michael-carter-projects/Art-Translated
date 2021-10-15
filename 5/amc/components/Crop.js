@@ -16,34 +16,53 @@ import * as sc   from '../styles/style_constants.js';
 
 function Crop ({navigation}) {
 
-  const selected_image_uri = navigation.state.params.selected_image_uri;
-  const actual_image_width = navigation.state.params.width;
+  const selected_image_uri  = navigation.state.params.selected_image_uri;
+  const actual_image_width  = navigation.state.params.width;
   const actual_image_height = navigation.state.params.height;
-  const image_aspect_ratio = actual_image_width / actual_image_height;
-  const view_aspect_ratio = sc.screen_width / sc.no_nav_view_height;
-  if (image_aspect_ratio > 1) {
-    var minimum_zoom_scale = (sc.image_frame_side_length-4) / sc.no_nav_view_height;
+  const image_aspect_ratio  = actual_image_width / actual_image_height;
+  const view_aspect_ratio   = sc.screen_width / sc.no_nav_view_height;
+  const frame_to_view_height_ratio = (sc.image_frame_side_length-4) / sc.no_nav_view_height;
+
+  // CALCULATE THE ZOOM SCALE THAT LIMITS THE USER TO STAY WITHIN BOUNDARIES OF THE IMAGE ======================================
+  if (image_aspect_ratio >= 1) {
+    var minimum_zoom_scale = frame_to_view_height_ratio;
   }
-  else { var minimum_zoom_scale = 0.9; }
+  else {
+    var pixel_ratio = sc.no_nav_view_height / actual_image_height;
+    var scaled_width = pixel_ratio * actual_image_width;
+    var minimum_zoom_scale =  sc.image_frame_side_length / scaled_width;
+  }
+
+  // STORE MAXIMUM ZOOM SCALE ==================================================================================================
   const maximum_zoom_scale = 8;
 
-  const [topLeftX, setTopLeftX] = useState(0);
-  const [topLeftY, setTopLeftY] = useState(0);
-  const [newSize,  setNewSize ] = useState(Math.min(actual_image_width-1, actual_image_height-1));
-  const [croppedImageURI, setCroppedImageURI] = useState('../assets/icons/no_image.png');
-  const [croppedImageB64, setCroppedImageB64] = useState(1);
-  const [aa, setAA] = useState(0.1);
-  const [bb, setBB] = useState(0.1);
+  // CALCULATE THE INITIAL X AND Y OFFSETS OF THE IMAGE FRAME ==================================================================
+  const scaling_factor = minimum_zoom_scale / 1;
+  const yOffset = sc.title_bar_to_top_of_frame;
 
-
-  // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
-  function PictureFrame() {
-    return (
-      <View style={hs.transparent_frame} pointerEvents={'none'}>
-        <View style={hs.photo_outline}/>
-      </View>
-    );
+  if (image_aspect_ratio > view_aspect_ratio) {
+    if (actual_image_width > actual_image_height) {
+      var new_size = actual_image_height * scaling_factor;
+    }
+    else {
+      var new_size = actual_image_width * scaling_factor;
+    }
+    var pixel_ratio = actual_image_width / sc.screen_width;
+    var scaled_height = actual_image_height / pixel_ratio;
+    var initialZoomScale = sc.no_nav_view_height / scaled_height;
+    var xOffset = ((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05;
   }
+  else {
+    var new_size = actual_image_width * scaling_factor;
+    var xOffset = sc.screen_width*0.05+2;
+  }
+
+  // HOOKS FOR STORING CROP INFO OF SUB-IMAGE CURRENTLY SITUATED WITHIN THE ON-SCREEN FRAME ====================================
+  const [topLeftX, setTopLeftX] = useState(parseInt((xOffset/sc.screen_width) * actual_image_width));
+  const [topLeftY, setTopLeftY] = useState(parseInt((yOffset/sc.no_nav_view_height) * actual_image_height));
+  const [newSize,  setNewSize ] = useState(new_size);
+  const [croppedImageURI, setCroppedImageURI] = useState('../assets/icons/no_image.png');
+
   // RETRIEVES THE DIMENSIONS OF THE IMAGE INSIDE THE SCROLLVIEW ===============================================================
   function get_image_dimensions() {
 
@@ -82,8 +101,8 @@ function Crop ({navigation}) {
       return {
         top: sc.title_bar_to_top_of_frame,
         bottom: (sc.no_nav_view_height - sc.image_frame_side_length) - sc.title_bar_to_top_of_frame+4,
-        left: ((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05,
-        right: ((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05,
+        left:  (((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05)+2,
+        right: (((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05)+2,
       };
     }
     else {
@@ -120,95 +139,140 @@ function Crop ({navigation}) {
       };
     }
   }
-  // CROP THE IMAGE ACCORDING (HOPEFULLY) TO FRAME, AND UPDATE HOOK TO URI OF NEW IMAGE FOR DISPLAY (DEBUGGING) ================
-  async function get_cropped_image_uri(event) {
+  // UPDATE HOOKS THAT STORE CROP INFO OF SUB-IMAGE CURRENTLY SITUATED WITHIN THE ON-SCREEN FRAMEE =============================
+  async function update_crop_info_hooks_async(event) {
 
     // CALCULATE NEW SIZE TO CROP IMAGE TO ACCORDING TO ZOOM SCALE -------------
-    const min_zoom = minimum_zoom_scale;
-    const max_zoom = maximum_zoom_scale;
-    const cur_zoom = event.nativeEvent.zoomScale;
-    var scaling_factor = 0;
-
-    if (cur_zoom < 1) {
-      scaling_factor = (min_zoom + (1-cur_zoom));
-    }
-    else if (cur_zoom > 1) {
-      var a = (min_zoom - (1 / max_zoom));     setAA(a);
-      var b = (cur_zoom - 1) / (max_zoom - 1); setBB(b);
-      scaling_factor = min_zoom - (a * b);
-    }
-    else {
-      scaling_factor = min_zoom;
-    }
+    const scaling_factor = minimum_zoom_scale / event.nativeEvent.zoomScale;
 
     if (image_aspect_ratio > view_aspect_ratio) {
-      var new_size = actual_image_height * scaling_factor;
+      if (actual_image_width > actual_image_height) {
+        var new_size = actual_image_height * scaling_factor;
+      }
+      else {
+        var new_size = actual_image_width * scaling_factor;
+      }
+      setNewSize(new_size);
 
       var pixel_ratio = actual_image_width / sc.screen_width;
       var scaled_height = actual_image_height / pixel_ratio;
       var initialZoomScale = sc.no_nav_view_height / scaled_height;
-
       var xOffset = ((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05;
-      var yOffset = sc.title_bar_to_top_of_frame;
     }
     else {
-      var new_size = actual_image_width * scaling_factor;
-
+      var new_size = parseInt(actual_image_width * scaling_factor);
+      setNewSize(new_size);
       var xOffset = sc.screen_width*0.05+2;
-      var yOffset = sc.title_bar_to_top_of_frame;
     }
+
+    var width_in_layout = sc.screen_width;
+    var x_in_layout = 0;
+    var x_in_image = 0;
+    var height_in_layout = sc.no_nav_view_height;
+    var y_in_layout = 0;
+    var y_in_image = 0;
+
+
 
     // CALCULATE X Y OFFSET FOR CROPPING ---------------------------------------
-    if (cur_zoom > 1) {
-      var width_in_layout = event.nativeEvent.contentSize.width;
-      var x_in_layout = (event.nativeEvent.contentOffset.x + (xOffset));
-      var x_in_image = (x_in_layout/width_in_layout) * actual_image_width;
+    if (event.nativeEvent.zoomScale > 1) {
 
-      var height_in_layout = event.nativeEvent.contentSize.height;
-      var y_in_layout = (event.nativeEvent.contentOffset.y + (yOffset));
-      var y_in_image =  (y_in_layout/height_in_layout) * actual_image_height;
+
+      if (event.nativeEvent.contentSize.width !== 0) {
+        width_in_layout = event.nativeEvent.contentSize.width;
+      }
+      console.log("width_in_layout: ", width_in_layout)
+      x_in_layout = (event.nativeEvent.contentOffset.x + (xOffset));
+      console.log("x_in_layout: ", x_in_layout);
+      x_in_image = parseInt((x_in_layout/width_in_layout) * actual_image_width);
+      console.log("x_in_image: ", x_in_image);
+      setTopLeftX(x_in_image);
+
+
+      if (event.nativeEvent.contentSize.height !== 0) {
+        height_in_layout = event.nativeEvent.contentSize.height;
+      }
+      console.log("height_in_layout: ", height_in_layout);
+      y_in_layout = (event.nativeEvent.contentOffset.y + (yOffset));
+      console.log("y_in_layout: ", y_in_layout);
+      y_in_image = parseInt((y_in_layout/height_in_layout) * actual_image_height);
+      console.log("y_in_image: ", y_in_image);
+      setTopLeftY(y_in_image);
     }
     else {
-      var width_in_layout = event.nativeEvent.contentSize.width;
-      var x_in_layout = (event.nativeEvent.contentOffset.x + xOffset);
-      var x_in_image = (x_in_layout/width_in_layout) * actual_image_width;
+      if (event.nativeEvent.contentSize.width !== 0) {
+        width_in_layout = event.nativeEvent.contentSize.width;
+      }
+      console.log("width_in_layout: ", width_in_layout);
+      x_in_layout = (event.nativeEvent.contentOffset.x + xOffset);
+      console.log("x_in_layout: ", x_in_layout);
+      x_in_image = parseInt((x_in_layout/width_in_layout) * actual_image_width);
+      console.log("x_in_image: ", x_in_image);
+      setTopLeftX(x_in_image);
 
-      var height_in_layout = event.nativeEvent.contentSize.height;
-      var y_in_layout = (event.nativeEvent.contentOffset.y + yOffset);
-      var y_in_image =  (y_in_layout/height_in_layout) * actual_image_height;
+
+      if (event.nativeEvent.contentSize.height !== 0) {
+        height_in_layout = event.nativeEvent.contentSize.height;
+      }
+      console.log("height_in_layout: ", height_in_layout);
+      y_in_layout = (event.nativeEvent.contentOffset.y + yOffset);
+      console.log("y_in_layout: ", y_in_layout);
+      y_in_image = parseInt((y_in_layout/height_in_layout) * actual_image_height);
+      console.log("y_in_image: ", y_in_image);
+      setTopLeftY(y_in_image);
     }
+
+    console.log(image_aspect_ratio);
+    console.log(view_aspect_ratio);
+
+    console.log("===================================")
+    console.log("new_size: ", new_size);
+
+    console.log("actual_image_width: ", actual_image_width);
+    console.log("x_in_image: ", x_in_image);
+    console.log("x + n: ", x_in_image+new_size);
+
+    console.log("actual_image_height: ", actual_image_height)
+    console.log("y_in_image: ", y_in_image);
+    console.log("y + n: ", y_in_image+new_size);
 
     const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
       selected_image_uri,
       [{crop:   {originX:x_in_image, originY:y_in_image, width:new_size, height:new_size}},
        {resize: {width:224}}],
-      {base64: true}
+      {base64: false}
     );
     setCroppedImageURI(uri);
-    setCroppedImageB64(base64);
   }
-
-  /*
-  const [imgWidth, setImgWidth]   = useState(0);
-  const [imgHeight, setImgHeight] = useState(0);
-  <View style={{position:'absolute', bottom: 220, alignSelf:'center', width:sc.screen_width*0.9, height:sc.title_bar_height*1.5, backgroundColor:sc.white, alignItems:'center', justifyContent:'center', borderColor:sc.orange, borderWidth:3, borderRadius:5}}>
-    <Text style={{fontFamily:'ArgentumSansLight', fontSize:18, color:sc.teal}}>{"x: "+parseInt(topLeftX)+" y: "+parseInt(topLeftY)}</Text>
-    <Text style={{fontFamily:'ArgentumSansLight', fontSize:18, color:sc.teal}}>{"w: "+parseInt(imgWidth)+" h: "+parseInt(imgHeight)}</Text>
-    <Text style={{fontFamily:'ArgentumSansLight', fontSize:18, color:sc.teal}}>{"a: "+aa+" b: "+bb}</Text>
-  </View>
-  */
-
+  // ALLOWS ASYNC FUNCTION TO BE CALLED ONSCROLL ===============================================================================
   const handleScroll = (event) => {
-    get_cropped_image_uri(event);
+    update_crop_info_hooks_async(event);
   };
 
+  // CALLED WHEN THE USER PRESSES ANALYZE BUTTON: CROPS IMAGE, MAKES PREDICTION, NAVIGATES TO PREDICTIONS PAGE =================
   async function make_prediction_async(nav) {
+
+    const { uri, width, height, base64 } = await ImageManipulator.manipulateAsync(
+      selected_image_uri,
+      [{crop:   {originX:topLeftX, originY:topLeftY, width:newSize, height:newSize}},
+       {resize: {width:224}}],
+      {base64: true}
+    );
+
     // MAKE PREDICTION ---------------------------------------------------------
-    const predictions = await run_predict_tree(croppedImageB64);
-    nav.navigate('Predictions', {selected_image_uri: croppedImageURI,
-                                 predictions: predictions
-                                }
-                );
+    const predictions = await run_predict_tree(base64);
+    nav.navigate('Predictions', { selected_image_uri: uri,
+                                  predictions: predictions
+                                });
+  }
+
+  // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
+  function PictureFrame() {
+    return (
+      <View style={hs.transparent_frame} pointerEvents={'none'}>
+        <View style={hs.photo_outline}/>
+      </View>
+    );
   }
 
   return (
@@ -228,25 +292,20 @@ function Crop ({navigation}) {
         decelerationRate={0.99}
         contentInset={get_scrollview_inset()}
         contentContainerStyle={{flexDirection:'column'}}
-        style={[{position:'absolute',
-                top:sc.status_bar_height+sc.title_bar_height,
-                backgroundColor:sc.black,
-                alignSelf:'center'},
-                get_scrollview_dimensions()]}
+        style={[hs.crop_scroll_view, get_scrollview_dimensions()]}
       >
         <Image source={{uri:selected_image_uri}} style={[{resizeMode:'contain'}, get_image_dimensions()]}/>
       </ScrollView>
 
       <PictureFrame/>
 
-      <Image source={{uri:croppedImageURI}} style={{position:'absolute', resizeMode:'contain', bottom: 340, alignSelf:'center', width:sc.screen_width*0.4, height:sc.screen_width*0.4, backgroundColor:sc.black, alignItems:'center', justifyContent:'center', borderColor:sc.white, borderWidth:2, borderRadius:8}}/>
+      <Image source={{uri:croppedImageURI}} style={hs.preview_window}/>
 
       <TouchableOpacity onPress={() => make_prediction_async(navigation)}>
-        <View style={{position:'absolute', bottom:250, alignSelf:'center', width:sc.screen_width*0.7, height:sc.title_bar_height*1.3, backgroundColor:sc.white, alignItems:'center', justifyContent:'center', borderRadius:20}}>
-          <Text style={{fontFamily:'ArgentumSansLight', fontSize:26, color:sc.teal}}>Analyze</Text>
+        <View style={hs.analyze_button}>
+          <Text style={hs.analyze_text}>Analyze</Text>
         </View>
       </TouchableOpacity>
-
 
       <TitleBar
         bgColor={sc.white}
