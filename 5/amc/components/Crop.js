@@ -22,6 +22,7 @@ function Crop ({navigation}) {
   const image_aspect_ratio  = actual_image_width / actual_image_height;
   const view_aspect_ratio   = sc.screen_width / sc.no_nav_view_height;
   const frame_to_view_height_ratio = (sc.image_frame_side_length-4) / sc.no_nav_view_height;
+  const frame_to_view_width_ratio  = (sc.image_frame_side_length-4) / sc.screen_width;
 
   // CALCULATE THE ZOOM SCALE THAT LIMITS THE USER TO STAY WITHIN BOUNDARIES OF THE IMAGE ======================================
   if (image_aspect_ratio >= 1) {
@@ -34,7 +35,7 @@ function Crop ({navigation}) {
       var minimum_zoom_scale = sc.image_frame_side_length / scaled_width;
     }
     else {
-      var minimum_zoom_scale =  (sc.image_frame_side_length-4) / sc.screen_width;
+      var minimum_zoom_scale = frame_to_view_width_ratio;
     }
   }
 
