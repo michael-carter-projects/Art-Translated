@@ -31,7 +31,7 @@ function Crop ({navigation}) {
     var pixel_ratio = sc.no_nav_view_height / actual_image_height;
     var scaled_width = pixel_ratio * actual_image_width;
     var minimum_zoom_scale =  sc.image_frame_side_length / scaled_width;
-  }
+  } 
 
   // STORE MAXIMUM ZOOM SCALE ==================================================================================================
   const maximum_zoom_scale = 8;
