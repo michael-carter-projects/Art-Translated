@@ -120,7 +120,6 @@ function Crop ({navigation}) {
     }
 
     // CALCULATE X Y OFFSET FOR CROPPING ---------------------------------------------------------------------------------------
-
     if (event.nativeEvent.zoomScale > 1 && event.nativeEvent.contentSize.width > 0 && event.nativeEvent.contentSize.height > 0)
     {
       var width_in_layout = event.nativeEvent.contentSize.width;
@@ -224,10 +223,7 @@ function Crop ({navigation}) {
 
       <PictureFrame/>
 
-
-
       <View>
-
         { readyToAnalyze ? (
           <TouchableOpacity onPress={() => make_prediction_async(navigation)}>
             <View style={hs.analyze_button}>
@@ -239,10 +235,7 @@ function Crop ({navigation}) {
             <Text style={hs.analyze_text}>Analyze</Text>
           </View>
         )}
-
       </View>
-
-
 
       <TitleBar
         bgColor={sc.white}
