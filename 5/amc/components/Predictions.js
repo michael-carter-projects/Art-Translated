@@ -74,10 +74,6 @@ function ShowResults(props) {
   return results;
 }
 
-
-// <Image source={{uri:selected_image_uri}} style={{position:'absolute', top:200, width:sc.screen_width, height:sc.screen_width}}/>
-
-
 // RENDER PREDICTION PAGE ======================================================================================================
 function Predictions ({navigation}) {
 
