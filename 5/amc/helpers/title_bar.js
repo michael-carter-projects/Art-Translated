@@ -84,9 +84,9 @@ function Title(props) {
 export function TitleBar(props) {
   return (
     <View style={styles.title_bar_outer}>
-      <View style={styles.status_bar}/>
+      <View style={[styles.status_bar, {backgroundColor:props.bgColor}]}/>
 
-      <View  style={[styles.title_bar, {backgroundColor:props.color}]}>
+      <View  style={[styles.title_bar, {backgroundColor:props.bgColor}]}>
 
         <View style={{flex:1}}>
           <TouchableOpacity style={{alignItems:'center'}} onPress={props.leftPress}>
