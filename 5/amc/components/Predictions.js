@@ -12,6 +12,8 @@ import * as sc   from '../styles/style_constants.js';
 // SHOW ALL RESULTS OF PREDICTION ==============================================================================================
 function ShowResults(props) {
 
+  const selected_image_uri = props.uri;
+
   const res1info = props.preds[0].info;
   const res1prob = props.preds[0].prob;
 
@@ -31,6 +33,8 @@ function ShowResults(props) {
         <View style={ps.first_result_learn_more_arrow}>
           <Entypo name="chevron-right" size={24} color={sc.teal}/>
         </View>
+
+        <Image source={{uri:selected_image_uri}} style={ps.first_result_user_image_preview}/>
       </View>
     </TouchableOpacity>
   ];
@@ -70,6 +74,10 @@ function ShowResults(props) {
   return results;
 }
 
+
+// <Image source={{uri:selected_image_uri}} style={{position:'absolute', top:200, width:sc.screen_width, height:sc.screen_width}}/>
+
+
 // RENDER PREDICTION PAGE ======================================================================================================
 function Predictions ({navigation}) {
 
@@ -90,15 +98,12 @@ function Predictions ({navigation}) {
         rightPress={() => navigation.navigate('Home')}
       />
 
-
-
       <View style={ps.no_nav_safe_area}>
         <ScrollView style={ps.scroll_view}>
           <ShowResults preds={predictions} nav={navigation} uri={selected_image_uri}/>
         </ScrollView>
       </View>
 
-      <Image source={{uri:selected_image_uri}} style={{position:'absolute', top:200, width:sc.screen_width, height:sc.screen_width}}/>
     </View>
   );
 }

@@ -255,8 +255,79 @@ function Home ({navigation}) {
   async function select_pic_and_nav_to_crop(nav, uri) {
 
     // GET SIZE OF IMAGE AND NAV TO CROP PAGE  -----------------------------------
-    Image.getSize(uri, (w, h) => {
-      nav.navigate('Crop', {selected_image_uri: uri, width: w, height: h});
+    Image.getSize(uri, (width, height) => {
+
+      const image_aspect_ratio = width / height;
+
+      // CALCULATE THE ZOOM SCALE THAT LIMITS THE USER TO STAY WITHIN BOUNDARIES OF THE IMAGE ----------------------------------
+      if (image_aspect_ratio >= 1) {
+        var minimum_zoom_scale = sc.frame_to_view_height_ratio;
+      }
+      else {
+        if (image_aspect_ratio >= sc.crop_view_aspect_ratio) {
+          var pixel_ratio = sc.no_nav_view_height / height;
+          var scaled_width = pixel_ratio * width;
+          var minimum_zoom_scale = (sc.image_frame_side_length-4) / scaled_width;
+        }
+        else {
+          var minimum_zoom_scale = sc.frame_to_view_width_ratio;
+        }
+      }
+
+      // GET VALUES FOR SIDE SIZE AND XOFFSET TO BE USED FOR CROPPING ----------------------------------------------------------
+      if (image_aspect_ratio > sc.crop_view_aspect_ratio) {
+        if (width > height) {
+          var side_size = height * minimum_zoom_scale;
+        }
+        else {
+          var side_size = width * minimum_zoom_scale;
+        }
+        var pixel_ratio = width / sc.screen_width;
+        var scaled_height = height / pixel_ratio;
+        var initialZoomScale = sc.no_nav_view_height / scaled_height;
+        var xOffset = ((initialZoomScale * sc.screen_width - sc.screen_width) / 2) + sc.screen_width*0.05;
+      }
+      else {
+        var side_size = width * minimum_zoom_scale;
+        var xOffset = sc.screen_width*0.05+2;
+      }
+
+      // GET DIMENSIONS OF IMAGE INSIDE SCROLLVIEW -------------------------------------------------------------------------------
+      if (image_aspect_ratio > sc.crop_view_aspect_ratio) {
+        var pixel_ratio = width / sc.screen_width;
+        var scaled_height = height / pixel_ratio;
+        var initialZoomScale = sc.no_nav_view_height / scaled_height;
+
+        var image_width_in_view  = initialZoomScale * sc.screen_width;
+        var image_height_in_view = sc.no_nav_view_height;
+      }
+      else if (image_aspect_ratio < sc.crop_view_aspect_ratio) {
+        var pixel_ratio = height / sc.no_nav_view_height;
+        var scaled_width = width / pixel_ratio;
+        var initialZoomScale = sc.screen_width / scaled_width;
+
+        var image_width_in_view  = sc.screen_width;
+        var image_height_in_view = initialZoomScale * sc.no_nav_view_height;
+      }
+      else {
+       var image_width_in_view  = sc.screen_width;
+       var image_height_in_view = sc.no_nav_view_height;
+      }
+
+      var top_left_x = parseInt((xOffset/image_width_in_view) * width);
+      var top_left_y = parseInt((sc.universal_y_offset/image_height_in_view) * height);
+
+
+      nav.navigate('Crop', {selected_image_uri: uri,
+                            width_actual: width,
+                            height_actual: height,
+                            width_in_view: image_width_in_view,
+                            height_in_view: image_height_in_view,
+                            minimum_zoom_scale: minimum_zoom_scale,
+                            top_left_x: top_left_x,
+                            top_left_y: top_left_y,
+                            side_size: side_size,
+                          });
     });
   }
   // RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================

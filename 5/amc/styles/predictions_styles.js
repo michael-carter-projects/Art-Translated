@@ -89,6 +89,15 @@ export const ps = StyleSheet.create({
     right: sc.card_width*0.025,
     bottom: sc.card_width/37,
   },
+  first_result_user_image_preview: {
+    position: 'absolute',
+    right: sc.card_width/30,
+    top: sc.card_width/30,
+    width: sc.card_width * 13/30,
+    height: sc.card_width * 13/30,
+    borderColor: sc.white,
+    borderWidth: 2,
+  },
   // THIS COULD ALSO BE STYLES -------------------------------------------------
   this_could_also_be_view: {
     alignSelf: 'center',

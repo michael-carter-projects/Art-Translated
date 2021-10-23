@@ -34,11 +34,16 @@ export const image_frame_top_offset = image_frame_side_length*-0.5;
 
 export const title_bar_to_top_of_frame = (image_frame_side_length+image_frame_top_offset -title_bar_height -status_bar_height)+2
 
-
-
 export const images_per_row = 4;
 const total_margin = (images_per_row+1)*margin_width;
 export const photos_image_size = (screen_width - total_margin) / images_per_row;
+
+// CONSTANTS FOR CROP PAGE -----------------------------------------------------
+export const crop_view_aspect_ratio = screen_width / no_nav_view_height;
+export const frame_to_view_height_ratio = (image_frame_side_length-4) / no_nav_view_height;
+export const frame_to_view_width_ratio  = (image_frame_side_length-4) / screen_width;
+export const maximum_zoom_scale = 8;
+export const universal_y_offset = title_bar_to_top_of_frame;
 
 // CONSTANTS FOR PREDICTIONS PAGE ----------------------------------------------
 export const more_results_height = 120;
