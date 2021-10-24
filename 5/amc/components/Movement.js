@@ -150,7 +150,7 @@ function Movement ({navigation})
       if (field !== 'name'
        && field !== 'key_timespan'
        && field !== 'quick_take'
-       && field !== 'image'
+       && field !== 'relevant_images'
        && field !== 'thumbnail') {
         if (Object.prototype.hasOwnProperty.call(props.mvmt_info, field)) {
           details.push(<Card.Title key={Functions.get_unique_id(field, 1)} style={ms.section_title}>{Functions.capitalize(field)}</Card.Title>);
