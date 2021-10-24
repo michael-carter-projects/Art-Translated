@@ -21,16 +21,6 @@ import * as sc   from '../styles/style_constants.js';
 let camera: Camera; // camera ref to allow abort
 
 
-// iwuehfiwuehfiwuehfiwuegfiwuegf
-var albums = [{id: "recents", title:"Recents"}];
-var albumThumbnailURIs = [];
-
-// ON STARTUP ==================================================================================================================
-Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
-MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS (NOT NECESSARY?)
-
-
-
 // RENDER HOME SCREEN ==========================================================================================================
 function Home ({navigation}) {
 
@@ -53,6 +43,10 @@ function Home ({navigation}) {
   const [takenPhoto, setTakenPhoto] = useState(null);
 
   const [cropping, setCropping] = useState(false);
+
+  // TEMP (REMOVE EVENTUALLY) FOR STORING INITIAL ALBUM INFO ---------------------
+  var albums = [{id: "recents", title:"Recents"}];
+  var albumThumbnailURIs = [];
 
   // FETCH THE FIRST 36 IMAGES IN AN ALBUM =====================================================================================
   const fetch_initial_images = async (album_id) => {
@@ -153,6 +147,9 @@ function Home ({navigation}) {
   useEffect(() => {
     async function prepare() {
       try {
+        Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
+        MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS
+
         console.log("Loading assets....")
 
         await SplashScreen.preventAutoHideAsync();  // Keep the splash screen visible while we fetch resources
