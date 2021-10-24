@@ -20,34 +20,34 @@ import * as sc   from '../styles/style_constants.js';
 
 let camera: Camera; // camera ref to allow abort
 
+// TEMP (REMOVE EVENTUALLY) FOR STORING INITIAL ALBUM INFO ---------------------
+var albums = [{id: "recents", title:"Recents"}];
+var albumThumbnailURIs = [];
 
 // RENDER HOME SCREEN ==========================================================================================================
 function Home ({navigation}) {
 
+  const [cameraPermissions,  setCameraPermissions ] = useState(null);
+  const [galleryPermissions, setGalleryPermissions] = useState(null);
+  const [appIsReady,         setAppIsReady        ] = useState(false);
+
   const [isCameraScreen, setCameraScreen] = useState(true );
   const [inProgress,     setInProgress  ] = useState(false);
-  const [appIsReady,     setAppIsReady  ] = useState(false);
-
   const [photosTitle,    setPhotosTitle ] = useState("Albums");
-  const [album,          setAlbum       ] = useState();
+  const [album,          setAlbum       ] = useState(null);
 
-  const [displayImages,  setDisplayImages ] = useState();
-  const [lastAsset,      setLastAsset     ] = useState();
+  const [displayImages,  setDisplayImages ] = useState(null);
+  const [lastAsset,      setLastAsset     ] = useState(null);
   const [refreshing,     setRefreshing    ] = useState(false);
   const [showRefreshing, setShowRefreshing] = useState(false);
-
   const total_images_loaded   = useRef(0);
   const total_images_in_album = useRef(0);
   const recents_image_count   = useRef(0);
+  //const [takenPhoto, setTakenPhoto] = useState(null);
 
-  const [takenPhoto, setTakenPhoto] = useState(null);
 
-  const [cropping, setCropping] = useState(false);
 
-  // TEMP (REMOVE EVENTUALLY) FOR STORING INITIAL ALBUM INFO ---------------------
-  var albums = [{id: "recents", title:"Recents"}];
-  var albumThumbnailURIs = [];
-
+  // ===========================================================================================================================
   // FETCH THE FIRST 36 IMAGES IN AN ALBUM =====================================================================================
   const fetch_initial_images = async (album_id) => {
 
@@ -143,16 +143,24 @@ function Home ({navigation}) {
     setShowRefreshing(false);
   }, [refreshing]);
 
+
+
+  // ===========================================================================================================================
   // LOAD ASSETS DURING SPLASH SCREEN ==========================================================================================
   useEffect(() => {
     async function prepare() {
+
+      // LOAD ALL OTHER ASSETS WHILE SPLASH SCREEN IS SHOWING ------------------
       try {
-        Camera.requestPermissionsAsync(); // REQUEST CAMERA PERMISSIONS
-        MediaLibrary.requestPermissionsAsync(); // REQUEST MEDIA LIBRARY PERMISSIONS
-
         console.log("Loading assets....")
+        await SplashScreen.preventAutoHideAsync();
 
-        await SplashScreen.preventAutoHideAsync();  // Keep the splash screen visible while we fetch resources
+        // REQUEST USER FOR CAMERA PERMISSIONS ---------------------------------
+        const cameraPermission = await Camera.requestPermissionsAsync();
+        setCameraPermissions(cameraPermission.status === 'granted');
+        // REQUEST USER FOR GALLERY PERMISSIONS --------------------------------
+        const galleryPermission = await MediaLibrary.requestPermissionsAsync();
+        setGalleryPermissions(galleryPermission.status === 'granted');
 
         // LOAD FONTS ----------------------------------------------------------
         await Font.loadAsync({
@@ -160,29 +168,30 @@ function Home ({navigation}) {
           ArgentumSansRegular: require('../assets/fonts/argentum-sans.regular.ttf'),
         });
 
-        // LOAD ALBUM THUMBNAILS -----------------------------------------------
-        albums = await MediaLibrary.getAlbumsAsync();
+        // IF USER GRANTED GALLERY ACCESS, LOAD ALBUM THUMBNAILS ---------------
+        if (galleryPermission.status === 'granted') {
+          albums = await MediaLibrary.getAlbumsAsync();
 
-        let recentAssets = await MediaLibrary.getAssetsAsync({first:36});
-        recents_image_count.current = recentAssets.totalCount;
+          let recentAssets = await MediaLibrary.getAssetsAsync({first:36});
+          recents_image_count.current = recentAssets.totalCount;
 
-        albumThumbnailURIs.push(recentAssets.assets[0].uri);
-        for (let i=0; i < albums.length; i++) {
-          let albumAssets = await MediaLibrary.getAssetsAsync({album: albums[i].id});
-          albumThumbnailURIs.push(albumAssets.assets[0].uri);
+          albumThumbnailURIs.push(recentAssets.assets[0].uri);
+          for (let i=0; i < albums.length; i++) {
+            let albumAssets = await MediaLibrary.getAssetsAsync({album: albums[i].id});
+            albumThumbnailURIs.push(albumAssets.assets[0].uri);
+          }
         }
+
         // LOAD MODEL TREE -----------------------------------------------------
         await load_model_tree();
-
-        console.log("== APP IS READY ==")
 
       } catch (e) {
         console.warn(e);
       } finally {
+        console.log("== APP IS READY ==")
         setAppIsReady(true);
       }
     }
-
     prepare();
 
   }, []);
@@ -196,6 +205,8 @@ function Home ({navigation}) {
   }
 
 
+
+  // ===========================================================================================================================
   // TAKE PHOTO, MAKE A PREDICTION, NAVIGATE & PASS PREDICTION =================================================================
   async function take_pic_and_predict_async(nav) {
     if (camera) { // skip execution if camera is undefined/null
@@ -234,7 +245,7 @@ function Home ({navigation}) {
          {resize: {width:224}}],
         {base64: true}
       );
-      setTakenPhoto(uri);
+      //setTakenPhoto(uri);
     }
     else {
       console.log('CAMERA ACCESS NOT GRANTED?')
@@ -248,7 +259,7 @@ function Home ({navigation}) {
     }
     */
   }
-  // SELECT AN IMAGE, GET IT'S SIZE, NAVIGATE TO CROP PAGE =======================================================================
+  // SELECT AN IMAGE, GET IT'S SIZE, NAVIGATE TO CROP PAGE =====================================================================
   async function select_pic_and_nav_to_crop(nav, uri) {
 
     // GET SIZE OF IMAGE AND NAV TO CROP PAGE  -----------------------------------
@@ -327,7 +338,11 @@ function Home ({navigation}) {
                           });
     });
   }
-  // RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION ===========================================
+
+
+
+  // ===========================================================================================================================
+  // RENDERS A SINGLE IMAGE IN THE PHOTOS PAGE THAT CAN BE SELECTED TO MAKE PREDICTION =========================================
   function ImageButton(props) {
   	return (
   		<TouchableOpacity onPress={() => select_pic_and_nav_to_crop(props.nav, props.img.uri)}>
@@ -335,7 +350,6 @@ function Home ({navigation}) {
   		</TouchableOpacity>
   	);
   }
-
   // COMPONENT FOR SHOWING PICTURE FRAME AND PROGRESS BAR ======================================================================
   function PictureFrameProgressBar() {
     return (
@@ -361,42 +375,66 @@ function Home ({navigation}) {
             </View>
           ) : (null)
         }
+
+        { cameraPermissions === false ?
+          (
+            <Text style={[hs.analyze_text, {alignSelf: 'center', color:sc.white}]}>Please grant camera permissions from settings</Text>
+          ) : (null)
+        }
       </View>
     );
   }
   // COMPONENT FOR TAKE PICTURE BUTTON =========================================================================================
   function TakePictureButton() {
-    return (
-        <View style={hs.button_panel}>
+
+    const take_pic_button = ([
+      <View key={1} style={hs.button_panel}>
+        <Svg>
+          <Circle
+            cx={sc.screen_width/2}
+            cy={sc.take_pic_button_diameter/2}
+            r={sc.take_pic_button_diameter/2}
+            fill={sc.white}
+          />
+          <Circle
+            cx={sc.screen_width/2}
+            cy={sc.take_pic_button_diameter/2}
+            r={sc.take_pic_button_diameter/2 - 4}
+            fill={sc.teal}
+          />
+          <Circle
+            cx={sc.screen_width/2}
+            cy={sc.take_pic_button_diameter/2}
+            r={sc.take_pic_button_diameter/2 - 8}
+            fill={sc.orange}
+          />
+          <Circle
+            cx={sc.screen_width/2}
+            cy={sc.take_pic_button_diameter/2}
+            r={sc.take_pic_button_diameter/2 - 10}
+            fill={sc.white}
+            onPress={() => take_pic_and_predict_async(navigation)}
+          />
+        </Svg>
+      </View>
+    ]
+    );
+
+    if (cameraPermissions === false) {
+      take_pic_button.push(
+        <View key={2} style={hs.button_panel}>
           <Svg>
             <Circle
               cx={sc.screen_width/2}
               cy={sc.take_pic_button_diameter/2}
               r={sc.take_pic_button_diameter/2}
-              fill={sc.white}
-            />
-            <Circle
-              cx={sc.screen_width/2}
-              cy={sc.take_pic_button_diameter/2}
-              r={sc.take_pic_button_diameter/2 - 4}
-              fill={sc.teal}
-            />
-            <Circle
-              cx={sc.screen_width/2}
-              cy={sc.take_pic_button_diameter/2}
-              r={sc.take_pic_button_diameter/2 - 8}
-              fill={sc.orange}
-            />
-            <Circle
-              cx={sc.screen_width/2}
-              cy={sc.take_pic_button_diameter/2}
-              r={sc.take_pic_button_diameter/2 - 10}
-              fill={sc.white}
-              onPress={() => take_pic_and_predict_async(navigation)}
+              fill={'rgba(0, 0, 0, 0.8)'}
             />
           </Svg>
         </View>
-    );
+      );
+    }
+    return take_pic_button;
   }
   // COMPONENT FOR NAVIGATION BAR ==============================================================================================
   function NavigationPanel() {
@@ -428,27 +466,32 @@ function Home ({navigation}) {
   // COMPONENT FOR SHOWING LIST OF ALBUMS IN PHOTOS PAGE =======================================================================
   function ShowAlbums() {
 
-    let albumViews = [
-      <TouchableOpacity key="Recents" onPress={() => open_album({id:"recents", title:"Recents"})}>
-        <View style={hs.album_card}>
-          <Image source={{uri: albumThumbnailURIs[0]}} style={hs.album_image}/>
-          <Text style={hs.album_name_text}>Recents</Text>
-          <Text style={hs.album_image_count_text}>{recents_image_count.current} images</Text>
-        </View>
-        <View height={sc.margin_width}/>
-      </TouchableOpacity>
-    ];
-    for (let i=0; i < albums.length; i++) {
-      albumViews.push(
-        <TouchableOpacity key={albums[i].id} onPress={() => open_album(albums[i])}>
+    if (galleryPermissions === true) {
+      var albumViews = [
+        <TouchableOpacity key={0} onPress={() => open_album({id:"recents", title:"Recents"})}>
           <View style={hs.album_card}>
-            <Image source={{uri: albumThumbnailURIs[i+1]}} style={hs.album_image}/>
-            <Text style={hs.album_name_text}>{ albums[i].title }</Text>
-            <Text style={hs.album_image_count_text}>{ albums[i].assetCount } images</Text>
+            <Image source={{uri: albumThumbnailURIs[0]}} style={hs.album_image}/>
+            <Text style={hs.album_name_text}>Recents</Text>
+            <Text style={hs.album_image_count_text}>{recents_image_count.current} images</Text>
           </View>
           <View height={sc.margin_width}/>
         </TouchableOpacity>
-      );
+      ];
+      for (let i=0; i < albums.length; i++) {
+        albumViews.push(
+          <TouchableOpacity key={i+1} onPress={() => open_album(albums[i])}>
+            <View style={hs.album_card}>
+              <Image source={{uri: albumThumbnailURIs[i+1]}} style={hs.album_image}/>
+              <Text style={hs.album_name_text}>{ albums[i].title }</Text>
+              <Text style={hs.album_image_count_text}>{ albums[i].assetCount } images</Text>
+            </View>
+            <View height={sc.margin_width}/>
+          </TouchableOpacity>
+        );
+      }
+    }
+    else {
+      var albumViews = [<Text key={0} style={[hs.analyze_text, {alignSelf: 'center', color:sc.black}]}>Please grant camera roll permissions from settings</Text>];
     }
     return (
       <ScrollView>
@@ -458,6 +501,7 @@ function Home ({navigation}) {
   }
 
 
+  // ===========================================================================================================================
   // WHERE THE MAGIC HAPPENS ===================================================================================================
   return (
     <View onLayout={onLayoutRootView} style={{flex: 1, alignItems: 'center'}}>
