@@ -149,9 +149,6 @@ function TreeInfo ({navigation})
 
     for (let i=0; i<alph_movement_names.length; i++) {
       let mvmt_info = movement_details[alph_movement_names[i]];
-
-      console.log("mvmt_info");
-
       all_movements.push(
         <TouchableOpacity key={2*i+1} onPress={() => props.nav.navigate('Movement', {mvmt_info:mvmt_info, prev:'TreeInfo'})}>
           <View  style={{flex:1, flexDirection:'row', marginBottom:sc.margin_width, marginTop:sc.margin_width}}>
