@@ -1,4 +1,5 @@
-package com.mica6085.artmovementclassifier;
+package com.arttranslated.movementclassifier;
+import expo.modules.devlauncher.DevLauncherController;
 
 import android.app.Application;
 import android.content.Context;
@@ -11,7 +12,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.mica6085.artmovementclassifier.generated.BasePackageList;
+import com.arttranslated.movementclassifier.generated.BasePackageList;
 
 import org.unimodules.adapters.react.ReactAdapterPackage;
 import org.unimodules.adapters.react.ModuleRegistryAdapter;
@@ -84,6 +85,7 @@ public class MainApplication extends Application implements ReactApplication {
       UpdatesController.initialize(this);
     }
 
+    DevLauncherController.initialize(this, getReactNativeHost());
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
   }
 
@@ -102,7 +104,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.mica6085.artmovementclassifier.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.arttranslated.movementclassifier.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

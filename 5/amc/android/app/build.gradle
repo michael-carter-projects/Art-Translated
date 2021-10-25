@@ -131,11 +131,11 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.mica6085.artmovementclassifier'
+        applicationId 'com.arttranslated.movementclassifier'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "0.9.0"
+        versionName "0.9.1"
     }
     splits {
         abi {
