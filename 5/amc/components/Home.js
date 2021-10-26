@@ -156,7 +156,7 @@ function Home ({navigation}) {
         await SplashScreen.preventAutoHideAsync();
 
         // REQUEST USER FOR CAMERA PERMISSIONS ---------------------------------
-        const cameraPermission = await Camera.requestPermissionsAsync();
+        const cameraPermission = await Camera.requestCameraPermissionsAsync();
         setCameraPermissions(cameraPermission.status === 'granted');
         // REQUEST USER FOR GALLERY PERMISSIONS --------------------------------
         const galleryPermission = await MediaLibrary.requestPermissionsAsync();
