@@ -1,7 +1,6 @@
 import { Camera }            from 'expo-camera';
 import * as FileSystem       from 'expo-file-system';
 import * as Font             from 'expo-font';
-import * as ImagePicker      from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as MediaLibrary     from 'expo-media-library';
 import * as SplashScreen     from 'expo-splash-screen';
