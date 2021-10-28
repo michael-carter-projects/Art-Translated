@@ -2,7 +2,7 @@
   "expo": {
     "name": "Movement Classifier",
     "slug": "movement-classifier",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "orientation": "portrait",
     "icon": "./assets/icons/icon.png",
     "splash": {
@@ -18,7 +18,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.arttranslated.movementclassifier",
-      "buildNumber": "0.9.1",
+      "buildNumber": "0.9.2",
       "userInterfaceStyle": "light",
       "supportsTablet": true,
     },
