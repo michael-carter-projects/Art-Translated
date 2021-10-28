@@ -26,7 +26,8 @@ export const ts = StyleSheet.create({
     color: sc.black,
     fontSize: 18,
     textAlign: 'left',
-    fontFamily: 'ArgentumSansLight'
+    fontFamily: 'ArgentumSansLight',
+    marginBottom: 15
   },
   info_box: {
     width: sc.card_width,

@@ -334,6 +334,7 @@ function TreeInfo ({navigation})
                 <Text style={ts.section_content}>Average Precision: {modelInfo.accu}</Text>
                 <Card.Divider/>
                 <Text style={ts.section_content}>Size: {modelInfo.size} MB</Text>
+                <Card.Divider/>
               </ScrollView>
             </View>
           ) : (
