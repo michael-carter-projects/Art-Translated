@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Ionicons }  from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 import   React, { useState, useEffect, useCallback }                   from 'react';
 import { Image, ScrollView, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
@@ -44,11 +45,11 @@ function TitleBarButton(props) {
       );
     case 'back':
       return (
-        <Ionicons name="ios-arrow-back" size={40} color={props.color}/>
+        <Feather name="chevron-left" size={40} color={props.color}/>
       );
     case 'camera':
       return (
-        <Ionicons name="ios-camera" size={42} color={props.color}/>
+        <Ionicons name="ios-camera" size={38} color={props.color}/>
       );
     case 'home':
       return (
@@ -56,7 +57,7 @@ function TitleBarButton(props) {
       );
     case 'help':
       return (
-        <Ionicons name="md-help-circle" size={37} color={props.color}/>
+        <Feather name="help-circle" size={35} color={props.color}/>
       );
     default:
       return (
@@ -88,15 +89,16 @@ export function TitleBar(props) {
 
       <View  style={[styles.title_bar, {backgroundColor:props.bgColor}]}>
 
-        <View style={{flex:1}}>
+        <View style={{flex:2}}>
           <TouchableOpacity style={{alignItems:'center'}} onPress={props.leftPress}>
             <TitleBarButton button_name={props.left} color={props.buttonColor}/>
           </TouchableOpacity>
         </View>
-        <View style={{flex:3}}>
+        <View style={{flex:0}}/>
+        <View style={{flex:6}}>
           <Title title={props.middle}/>
         </View>
-        <View style={{flex:1}}>
+        <View style={{flex:2}}>
           <TouchableOpacity style={{alignItems:'center'}} onPress={props.rightPress}>
             <TitleBarButton button_name={props.right} color={props.buttonColor}/>
           </TouchableOpacity>

@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import { Ionicons }  from '@expo/vector-icons';
+import { Feather }  from '@expo/vector-icons';
 
 import   React, { useState, useEffect, useCallback, useRef }         from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
@@ -84,17 +84,17 @@ function Movement ({navigation})
         <View style={ms.overlay_control_panel}>
           <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
             <TouchableOpacity onPress={() => change_image('back')}>
-              <Ionicons name="ios-arrow-back" size={40} color={sc.white}/>
+              <Feather name="chevron-left" size={45} color={sc.white}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:3, alignItems:'center', justifyContent:'center'}}>
             <TouchableOpacity onPress={() => setSelectedImageIndex(-1)}>
-              <Ionicons name="ios-close" size={67} color={sc.white}/>
+              <Feather name="x" size={45} color={sc.white}/>
             </TouchableOpacity>
           </View>
           <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
             <TouchableOpacity onPress={() => change_image('forward')}>
-              <Ionicons name="ios-arrow-forward" size={40} color={sc.white}/>
+              <Feather name="chevron-right" size={45} color={sc.white}/>
               </TouchableOpacity>
           </View>
         </View>

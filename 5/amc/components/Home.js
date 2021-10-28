@@ -154,18 +154,18 @@ function Home ({navigation}) {
         console.log("Loading assets....")
         await SplashScreen.preventAutoHideAsync();
 
+        // LOAD FONTS ----------------------------------------------------------
+        await Font.loadAsync({
+          ArgentumSansLight: require('../assets/fonts/argentum-sans.light.ttf'),
+          ArgentumSansRegular: require('../assets/fonts/argentum-sans.regular.ttf'),
+        });
+
         // REQUEST USER FOR CAMERA PERMISSIONS ---------------------------------
         const cameraPermission = await Camera.requestCameraPermissionsAsync();
         setCameraPermissions(cameraPermission.status === 'granted');
         // REQUEST USER FOR GALLERY PERMISSIONS --------------------------------
         const galleryPermission = await MediaLibrary.requestPermissionsAsync();
         setGalleryPermissions(galleryPermission.status === 'granted');
-
-        // LOAD FONTS ----------------------------------------------------------
-        await Font.loadAsync({
-          ArgentumSansLight: require('../assets/fonts/argentum-sans.light.ttf'),
-          ArgentumSansRegular: require('../assets/fonts/argentum-sans.regular.ttf'),
-        });
 
         // IF USER GRANTED GALLERY ACCESS, LOAD ALBUM THUMBNAILS ---------------
         if (galleryPermission.status === 'granted') {
