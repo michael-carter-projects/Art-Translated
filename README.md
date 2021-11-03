@@ -71,22 +71,3 @@
     mlp.py                   - python code pertaining to multi-layered perceptron
     plots.py                 - python code pertaining to plotting data from training/testing
     progress_bar.py          - contains a nice command line progress bar from StackOverflow
-
-**5:** React Native Movement Classification App
-
-[Video demonstration](https://www.youtube.com/watch?v=QGAyUAiePt4) of v1.2.0 (7/27/2021)
-
-    This is a cross-platform app that uses a local Tensorflow model trained in Google AutoML to predict the
-    art movement associated with an image provided by the user either through the camera roll or by
-    taking a picture. Currently photos can be taken or selected from storage and the Tensorflow model
-    will provide the user with the 3 most likely movements. The user may then select a movement and read
-    the details about the movement which were provided originally by my boss as a spreadsheet. Movement data
-    and model are stored locally so that cell service is not required for the app to function, and the
-    prediction itself currently takes less than a second.
-
-    amd/App.js                    - the file that handles navigation through the app (react-navigation)
-    amd/components                - folder that contains the .js files responsible for each page of the app
-    amd/components/Home.js        - renders the home screen (camera)
-    amd/components/TreeInfo.js    - renders a visual representation of the model tree used to predict
-    amd/components/Predictions.js - renders prediction buttons (nav to details)
-    amd/components/Movement.js    - renders movement details
